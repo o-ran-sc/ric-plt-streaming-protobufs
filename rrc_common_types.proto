@@ -1,0 +1,6445 @@
+/*
+   Copyright (c) 2019 AT&T Intellectual Property.
+   Copyright (c) 2019 Nokia.
+
+   Licensed under the Creative Commons Attribution 4.0 International
+   Public License (the "License"); you may not use this file except
+   in compliance with the License. You may obtain a copy of the License at
+
+       https://creativecommons.org/licenses/by/4.0/
+
+   Unless required by applicable law or agreed to in writing, documentation
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+
+syntax = "proto3";
+
+package streaming_protobufs;
+
+option go_package = "gerrit.o-ran-sc.org/r/ric-plt/streaming-protobufs";
+
+import "google/protobuf/wrappers.proto";
+import "common_types.proto";
+
+/*
+   Protocol Buffer definitions for ASN.1 RRC Information Element (IE) types what are used
+   commonly in Protocol Buffer files of RRC messages.
+
+   Naming conversion of RRC IEs follows the naming defined in 3GPP 38.331 version 15.4.0)
+   specification.
+
+   http://www.3gpp.org/ftp//Specs/archive/38_series/38.331/38331-f40.zip
+
+   Dashes converted to underscores to make protobuf message syntax correct.
+
+   DO NOT USE rrc_common_types.proto FILE FOR TYPE DEFINITIONS:
+   a) What are ONLY used in X2AP messages (X2AP messages are defined in 3GPP 36.423
+      specification), instead put those types to x2ap_common_types.proto file.
+   b) What are used BOTH in RRC and X2AP messages (X2AP messages are defined in 3GPP 36.423
+      specification), instead put those types to common_types.proto file.
+*/
+
+
+message CellGroupConfig
+{
+    uint32 cellGroupId = 1;
+    repeated RLC_BearerConfig rlc_BearerToAddModList = 2;
+    repeated uint32 rlc_BearerToReleaseList = 3;
+    MAC_CellGroupConfig mac_CellGroupConfig = 4;
+    PhysicalCellGroupConfig physicalCellGroupConfig = 5;
+    SpCellConfig spCellConfig = 6;
+    repeated SCellConfig sCellToAddModList = 7;
+    repeated uint32 sCellToReleaseList = 8;
+    google.protobuf.BoolValue reportUplinkTxDirectCurrent_v1530 = 9;
+}
+
+message RLC_BearerConfig
+{
+    uint32 logicalChannelIdentity = 1;
+    oneof servedRadioBearer {
+        uint32 srb_Identity = 2;
+        uint32 drb_Identity = 3;
+    }
+    google.protobuf.BoolValue reestablishRLC = 4;
+    RLC_Config rlc_Config = 5;
+    LogicalChannelConfig mac_LogicalChannelConfig = 6;
+}
+
+message RLC_Config
+{
+    AM am = 1;
+    UM_Bi_Directional um_Bi_Directional = 2;
+    UM_Uni_Directional_UL um_Uni_Directional_UL = 3;
+    UM_Uni_Directional_DL um_Uni_Directional_DL = 4;
+}
+
+message AM
+{
+    UL_AM_RLC ul_AM_RLC = 1;
+    DL_AM_RLC dl_AM_RLC = 2;
+}
+
+message UL_AM_RLC
+{
+    SN_FieldLengthAM sn_FieldLength = 1;
+    T_PollRetransmit t_PollRetransmit = 2;
+    PollPDU pollPDU = 3;
+    PollByte pollByte = 4;
+    MaxRetxThreshold maxRetxThreshold = 5;
+}
+
+message MaxRetxThreshold
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        t1 = 1;
+        t2 = 2;
+        t3 = 3;
+        t4 = 4;
+        t6 = 5;
+        t7 = 6;
+        t16 = 7;
+        t32 = 8;
+    }
+    Value value = 1;
+}
+
+message SN_FieldLengthAM
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        size12 = 1;
+        size18 = 2;
+    }
+    Value value = 1;
+}
+
+message T_PollRetransmit
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        ms5 = 1;
+        ms10 = 2;
+        ms15 = 3;
+        ms20 = 4;
+        ms25 = 5;
+        ms30 = 6;
+        ms35 = 7;
+        ms40 = 8;
+        ms45 = 9;
+        ms50 = 10;
+        ms55 = 11;
+        ms60 = 12;
+        ms65 = 13;
+        ms70 = 14;
+        ms75 = 15;
+        ms80 = 16;
+        ms85 = 17;
+        ms90 = 18;
+        ms95 = 19;
+        ms100 = 20;
+        ms105 = 21;
+        ms110 = 22;
+        ms115 = 23;
+        ms120 = 24;
+        ms125 = 25;
+        ms130 = 26;
+        ms135 = 27;
+        ms140 = 28;
+        ms145 = 29;
+        ms150 = 30;
+        ms155 = 31;
+        ms160 = 32;
+        ms165 = 33;
+        ms170 = 34;
+        ms175 = 35;
+        ms180 = 36;
+        ms185 = 37;
+        ms190 = 38;
+        ms195 = 39;
+        ms200 = 40;
+        ms205 = 41;
+        ms210 = 42;
+        ms215 = 43;
+        ms220 = 44;
+        ms225 = 45;
+        ms230 = 46;
+        ms235 = 47;
+        ms240 = 48;
+        ms245 = 49;
+        ms250 = 50;
+        ms300 = 51;
+        ms350 = 52;
+        ms400 = 53;
+        ms450 = 54;
+        ms500 = 55;
+        ms800 = 56;
+        ms1000 = 57;
+        ms2000 = 58;
+        ms4000 = 59;
+    }
+    Value value = 1;
+}
+
+message PollPDU
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        p4 = 1;
+        p8 = 2;
+        p16 = 3;
+        p32 = 4;
+        p64 = 5;
+        p128 = 6;
+        p256 = 7;
+        p512 = 8;
+        p1024 = 9;
+        p2048 = 10;
+        p4096 = 11;
+        p6144 = 12;
+        p8192 = 13;
+        p12288 = 14;
+        p16384 = 15;
+        p20480 = 16;
+        p24576 = 17;
+        p28672 = 18;
+        p32768 = 19;
+        p40960 = 20;
+        p49152 = 21;
+        p57344 = 22;
+        p65536 = 23;
+        infinity = 24;
+    }
+    Value value = 1;
+}
+
+message PollByte
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        kb1 = 1;
+        kb2 = 2;
+        kb5 = 3;
+        kb8 = 4;
+        kb10 = 5;
+        kb15 = 6;
+        kb25 = 7;
+        kb50 = 8;
+        kb75 = 9;
+        kb100 = 10;
+        kb125 = 11;
+        kb250 = 12;
+        kb375 = 13;
+        kb500 = 14;
+        kb750 = 15;
+        kb1000 = 16;
+        kb1250 = 17;
+        kb1500 = 18;
+        kb2000 = 19;
+        kb3000 = 20;
+        kb4000 = 21;
+        kb4500 = 22;
+        kb5000 = 23;
+        kb5500 = 24;
+        kb6000 = 25;
+        kb6500 = 26;
+        kb7000 = 27;
+        kb7500 = 28;
+        mb8 = 29;
+        mb9 = 30;
+        mb10 = 31;
+        mb11 = 32;
+        mb12 = 33;
+        mb13 = 34;
+        mb14 = 35;
+        mb15 = 36;
+        mb16 = 37;
+        mb17 = 38;
+        mb18 = 39;
+        mb20 = 40;
+        mb25 = 41;
+        mb30 = 42;
+        mb40 = 43;
+        infinity = 44;
+    }
+    Value value = 1;
+}
+
+
+message DL_AM_RLC
+{
+    SN_FieldLengthAM sn_FieldLength = 1;
+    T_Reassembly t_Reassembly = 2;
+    T_StatusProhibit t_statusProhibit = 3;
+}
+
+message T_Reassembly
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        ms0 = 1;
+        ms5 = 2;
+        ms10 = 3;
+        ms15 = 4;
+        ms20 = 5;
+        ms25 = 6;
+        ms30 = 7;
+        ms35 = 8;
+        ms40 = 9;
+        ms45 = 10;
+        ms50 = 11;
+        ms55 = 12;
+        ms60 = 13;
+        ms65 = 14;
+        ms70 = 15;
+        ms75 = 16;
+        ms80 = 17;
+        ms85 = 18;
+        ms90 = 19;
+        ms95 = 20;
+        ms100 = 21;
+        ms110 = 22;
+        ms120 = 23;
+        ms130 = 24;
+        ms140 = 25;
+        ms150 = 26;
+        ms160 = 27;
+        ms170 = 28;
+        ms180 = 29;
+        ms190 = 30;
+        ms200 = 31;
+    }
+    Value value = 1;
+}
+
+message T_StatusProhibit
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        ms0 = 1;
+        ms5 = 2;
+        ms10 = 3;
+        ms15 = 4;
+        ms20 = 5;
+        ms25 = 6;
+        ms30 = 7;
+        ms35 = 8;
+        ms40 = 9;
+        ms45 = 10;
+        ms50 = 11;
+        ms55 = 12;
+        ms60 = 13;
+        ms65 = 14;
+        ms70 = 15;
+        ms75 = 16;
+        ms80 = 17;
+        ms85 = 18;
+        ms90 = 19;
+        ms95 = 20;
+        ms100 = 21;
+        ms105 = 22;
+        ms110 = 23;
+        ms115 = 24;
+        ms120 = 25;
+        ms125 = 26;
+        ms130 = 27;
+        ms135 = 28;
+        ms140 = 29;
+        ms145 = 30;
+        ms150 = 31;
+        ms155 = 32;
+        ms160 = 33;
+        ms165 = 34;
+        ms170 = 35;
+        ms175 = 36;
+        ms180 = 37;
+        ms185 = 38;
+        ms190 = 39;
+        ms195 = 40;
+        ms200 = 41;
+        ms205 = 42;
+        ms210 = 43;
+        ms215 = 44;
+        ms220 = 45;
+        ms225 = 46;
+        ms230 = 47;
+        ms235 = 48;
+        ms240 = 49;
+        ms245 = 50;
+        ms250 = 51;
+        ms300 = 52;
+        ms350 = 53;
+        ms400 = 54;
+        ms450 = 55;
+        ms500 = 56;
+        ms800 = 57;
+        ms1000 = 58;
+        ms1200 = 59;
+        ms1600 = 60;
+        ms2000 = 61;
+        ms2400 = 62;
+    }
+    Value value = 1;
+}
+
+message UM_Bi_Directional
+{
+    UL_UM_RLC ul_UM_RLC = 1;
+    DL_UM_RLC dl_UM_RLC = 2;
+}
+
+message UL_UM_RLC
+{
+    SN_FieldLengthUM sn_FieldLength = 1;
+}
+
+message SN_FieldLengthUM
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        size6 = 1;
+        size12 = 2;
+    }
+    Value value = 1;
+}
+
+message DL_UM_RLC
+{
+    SN_FieldLengthUM sn_FieldLength = 1;
+    T_Reassembly t_Reassembly = 2;
+}
+
+message UM_Uni_Directional_UL
+{
+    UL_UM_RLC ul_UM_RLC = 1;
+}
+
+message UM_Uni_Directional_DL
+{
+    DL_UM_RLC dl_UM_RLC = 1;
+}
+
+message LogicalChannelConfig
+{
+    UL_SpecificParameters ul_SpecificParameters = 1;
+}
+
+message UL_SpecificParameters
+{
+    uint32 priority = 1;
+    PrioritisedBitRate prioritisedBitRate = 2;
+    BucketSizeDuration bucketSizeDuration = 3;
+    repeated uint32 allowedServingCells = 4;
+    repeated SubcarrierSpacing allowedSCS_List = 5;
+    MaxPUSCH_Duration maxPUSCH_Duration = 6;
+    google.protobuf.BoolValue configuredGrantType1Allowed = 7;
+    google.protobuf.UInt32Value logicalChannelGroup = 8;
+    google.protobuf.UInt32Value schedulingRequestID = 9;
+    bool logicalChannelSR_Mask = 10;
+    bool logicalChannelSR_DelayTimerApplied = 11;
+    BitRateQueryProhibitTimer bitRateQueryProhibitTimer = 12;
+}
+
+message PrioritisedBitRate
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        kbps0 = 1;
+        kbps8 = 2;
+        kbps16 = 3;
+        kbps32 = 4;
+        kbps64 = 5;
+        kbps128 = 6;
+        kbps256 = 7;
+        kbps512 = 8;
+        kbps1024 = 9;
+        kbps2048 = 10;
+        kbps4096 = 11;
+        kbps8192 = 12;
+        kbps16384 =13;
+        kbps32768 = 14;
+        kbps65536 = 15;
+        infinity = 16;
+    }
+    Value value = 1;
+}
+
+message BucketSizeDuration
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        ms5 = 1;
+        ms10 = 2;
+        ms20 = 3;
+        ms50 = 4;
+        ms100 = 5;
+        ms150 = 6;
+        ms300 = 7;
+        ms500 = 8;
+        ms1000 = 9;
+    }
+    Value value = 1;
+}
+
+message SubcarrierSpacing
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        kHz15 = 1;
+        kHz30 = 2;
+        kHz60 = 3;
+        kHz120 = 4;
+        kHz240 = 5;
+    }
+    Value value = 1;
+}
+
+message MaxPUSCH_Duration
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        ms0p02 = 1;
+        ms0p04 = 2;
+        ms0p0625 = 3;
+        ms0p125 = 4;
+        ms0p25 = 5;
+        ms0p5 = 6;
+    }
+    Value value = 1;
+}
+
+message BitRateQueryProhibitTimer
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        s0 = 1;
+        s0dot4 = 2;
+        s0dot8 = 3;
+        s1dot6 = 4;
+        s3 = 5;
+        s6 = 6;
+        s12 = 7;
+        s30 = 8;
+    }
+    Value value = 1;
+}
+
+
+message MAC_CellGroupConfig
+{
+    oneof drx_Config {
+        Null release_drx_Config = 1;
+        DRX_Config setup_drx_Config = 2;
+    }
+    SchedulingRequestConfig schedulingRequestConfig = 3;
+    BSR_Config bsr_Config = 4;
+    TAG_Config tag_Config = 5;
+    oneof phr_Config {
+        Null release_phr_Config = 6;
+        PHR_Config setup_phr_Config = 7;
+    }
+    bool skipUplinkTxDynamic = 8;
+    google.protobuf.BoolValue csi_Mask_v1530 = 9;
+    oneof dataInactivityTimer_v1530 {
+        Null release_dataInactivityTimer_v1530 = 10;
+        DataInactivityTimer setup_dataInactivityTimer_v1530 = 11;
+    }
+}
+
+message DRX_Config
+{
+    oneof drx_onDurationTimer {
+        uint32 subMilliSeconds = 1;
+        MilliSeconds milliSeconds = 2;
+    }
+    DRX_InactivityTimer drx_InactivityTimer = 3;
+    uint32 drx_HARQ_RTT_TimerDL = 4;
+    uint32 drx_HARQ_RTT_TimerUL = 5;
+    DRX_RetransmissionTimer drx_RetransmissionTimerDL = 6;
+    DRX_RetransmissionTimer drx_RetransmissionTimerUL = 7;
+    oneof drx_LongCycleStartOffset {
+        uint32 ms10 = 8;
+        uint32 ms20 = 9;
+        uint32 ms32 = 10;
+        uint32 ms40 = 11;
+        uint32 ms60 = 12;
+        uint32 ms64 = 13;
+        uint32 ms70 = 14;
+        uint32 ms80 = 15;
+        uint32 ms128 = 16;
+        uint32 ms160 = 17;
+        uint32 ms256 = 18;
+        uint32 ms320 = 19;
+        uint32 ms512 = 20;
+        uint32 ms640 = 21;
+        uint32 ms1024 = 22;
+        uint32 ms1280 = 23;
+        uint32 ms2048 = 24;
+        uint32 ms2560 = 25;
+        uint32 ms5120 = 26;
+        uint32 ms10240 = 27;
+    }
+    ShortDRX shortDRX = 28;
+    uint32 drx_SlotOffset = 29;
+}
+
+message MilliSeconds
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        ms1 = 1;
+        ms2 = 2;
+        ms3 = 3;
+        ms4 = 4;
+        ms5 = 5;
+        ms6 = 6;
+        ms8 = 7;
+        ms10 = 8;
+        ms20 = 9;
+        ms30 = 10;
+        ms40 = 11;
+        ms50 = 12;
+        ms60 = 13;
+        ms80 = 14;
+        ms100 = 15;
+        ms200 = 16;
+        ms300 = 17;
+        ms400 = 18;
+        ms500 = 19;
+        ms600 = 20;
+        ms800 = 21;
+        ms1000 = 22;
+        ms1200 = 23;
+        ms1600 = 24;
+    }
+    Value value = 1;
+}
+message DRX_InactivityTimer
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        ms0 = 1;
+        ms1 = 2;
+        ms2 = 3;
+        ms3 = 4;
+        ms4 = 5;
+        ms5 = 6;
+        ms6 = 7;
+        ms8 = 8;
+        ms10 = 9;
+        ms20 = 10;
+        ms30 = 11;
+        ms40 = 12;
+        ms50 = 13;
+        ms60 = 14;
+        ms80 = 15;
+        ms100 = 16;
+        ms200 = 17;
+        ms300 = 18;
+        ms500 = 19;
+        ms750 = 20;
+        ms1280 = 21;
+        ms1920 = 22;
+        ms2560 = 23;
+    }
+    Value value = 1;
+}
+
+message DRX_RetransmissionTimer
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        sl0 = 1;
+        sl1 = 2;
+        sl2 = 3;
+        sl4 = 4;
+        sl6 = 5;
+        sl8 = 6;
+        sl16 = 7;
+        sl24 = 8;
+        sl33 = 9;
+        sl40 = 10;
+        sl64 = 11;
+        sl80 = 12;
+        sl96 = 13;
+        sl112 = 14;
+        sl128 = 15;
+        sl160 = 16;
+        sl320 = 17;
+    }
+    Value value = 1;
+}
+
+message ShortDRX
+{
+    DRX_ShortCycle drx_ShortCycle = 1;
+    uint32 drx_ShortCycleTimer = 2;
+}
+
+message DRX_ShortCycle
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        ms2 = 1;
+        ms3 = 2;
+        ms4 = 3;
+        ms5 = 4;
+        ms6 = 5;
+        ms7 = 6;
+        ms8 = 7;
+        ms10 = 8;
+        ms14 = 9;
+        ms16 = 10;
+        ms20 = 11;
+        ms30 = 12;
+        ms32 = 13;
+        ms35 = 14;
+        ms40 = 15;
+        ms64 = 16;
+        ms80 = 17;
+        ms128 = 18;
+        ms160 = 19;
+        ms256 = 20;
+        ms320 = 21;
+        ms512 = 22;
+        ms640 = 23;
+    }
+    Value value = 1;
+}
+
+message SchedulingRequestConfig
+{
+    repeated SchedulingRequestToAddMod schedulingRequestToAddModList = 1;
+    repeated uint32 schedulingRequestToReleaseList = 2;
+}
+
+message SchedulingRequestToAddMod
+{
+    uint32 schedulingRequestId = 1;
+    SR_ProhibitTimer sr_ProhibitTimer = 2;
+    SR_TransMax sr_TransMax = 3;
+}
+
+message SR_ProhibitTimer
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        ms1 = 1;
+        ms2 = 2;
+        ms4 = 3;
+        ms8 = 4;
+        ms16 = 5;
+        ms32 = 6;
+        ms64 = 7;
+        ms128 = 8;
+    }
+    Value value = 1;
+}
+
+message SR_TransMax
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        n4 = 1;
+        n8 = 2;
+        n16 = 3;
+        n32 = 4;
+        n64 = 5;
+    }
+    Value value = 1;
+}
+
+message BSR_Config
+{
+    PeriodicBSR_Timer periodicBSR_Timer = 1;
+    RetxBSR_Timer retxBSR_Timer = 2;
+    LogicalChannelSR_DelayTimer logicalChannelSR_DelayTimer = 3;
+}
+
+message PeriodicBSR_Timer
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        sf1 = 1;
+        sf5 = 2;
+        sf10 = 3;
+        sf16 = 4;
+        sf20 = 5;
+        sf32 = 6;
+        sf40 = 7;
+        sf64 = 8;
+        sf80 = 9;
+        sf128 = 10;
+        sf160 = 11;
+        sf320 = 12;
+        sf640 = 13;
+        sf1280 = 14;
+        sf2560 = 15;
+        infinity = 16;
+    }
+    Value value = 1;
+}
+
+message RetxBSR_Timer
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        sf10 = 1;
+        sf20 = 2;
+        sf40 = 3;
+        sf80 = 4;
+        sf160 = 5;
+        sf320 = 6;
+        sf640 = 7;
+        sf1280 = 8;
+        sf2560 = 9;
+        sf5120 = 10;
+        sf10240 = 11;
+    }
+    Value value = 1;
+}
+
+message LogicalChannelSR_DelayTimer
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        sf20 = 1;
+        sf40 = 2;
+        sf64 = 3;
+        sf128 = 4;
+        sf512 = 5;
+        sf1024 = 6;
+        sf2560 = 7;
+    }
+    Value value = 1;
+}
+
+message TAG_Config
+{
+    repeated google.protobuf.UInt32Value tag_ToReleaseList = 1;
+    repeated TAG tag_ToAddModList = 2;
+}
+
+message TAG
+{
+    uint32 tag_Id = 1;
+    TimeAlignmentTimer timeAlignmentTimer = 2;
+}
+
+message TimeAlignmentTimer
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        ms500 = 1;
+        ms750 = 2;
+        ms1280 = 3;
+        ms1920 = 4;
+        ms2560 = 5;
+        ms5120 = 6;
+        ms10240 = 7;
+        infinity = 8;
+    }
+    Value value = 1;
+}
+
+message PHR_Config
+{
+    PHR_PeriodicTimer phr_PeriodicTimer = 1;
+    PHR_ProhibitTimer phr_ProhibitTimer = 2;
+    PHR_Tx_PowerFactorChange phr_Tx_PowerFactorChange = 3;
+    bool multiplePHR = 4;
+    bool dummy = 5;
+    bool phr_Type2OtherCell = 6;
+    PHR_ModeOtherCG phr_ModeOtherCG = 7;
+}
+
+message PHR_PeriodicTimer
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        sf10 = 1;
+        sf20 = 2;
+        sf50 = 3;
+        sf100 = 4;
+        sf200 = 5;
+        sf500 = 6;
+        sf1000 = 7;
+        infinity = 8;
+    }
+    Value value = 1;
+}
+
+message PHR_ProhibitTimer
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        sf0 = 1;
+        sf10 = 2;
+        sf20 = 3;
+        sf50 = 4;
+        sf100 = 5;
+        sf200 = 6;
+        sf500 = 7;
+        sf1000 = 8;
+    }
+    Value value = 1;
+}
+
+message PHR_Tx_PowerFactorChange
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        dB1 = 1;
+        dB3 = 2;
+        dB6 = 3;
+        infinity = 4;
+    }
+    Value value = 1;
+}
+
+message PHR_ModeOtherCG
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        real = 1;
+        virtual = 2;
+    }
+    Value value = 1;
+}
+
+message DataInactivityTimer
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        s1 = 1;
+        s2 = 2;
+        s3 = 3;
+        s5 = 4;
+        s7 = 5;
+        s10 = 6;
+        s15 = 7;
+        s20 = 8;
+        s40 = 9;
+        s50 = 10;
+        s60 = 11;
+        s80 = 12;
+        s100 = 13;
+        s120 = 14;
+        s150 = 15;
+        s180 = 16;
+    }
+    Value value = 1;
+}
+
+message PhysicalCellGroupConfig
+{
+    enum PDSCH_HARQ_ACK_Codebook {
+        protobuf_unspecified = 0;
+        semiStatic = 1;
+        dynamic = 2;
+    }
+    google.protobuf.BoolValue harq_ACK_SpatialBundlingPUCCH = 1;
+    google.protobuf.BoolValue harq_ACK_SpatialBundlingPUSCH = 2;
+    google.protobuf.Int32Value p_NR_FR1 = 3;
+    PDSCH_HARQ_ACK_Codebook pdsch_HARQ_ACK_Codebook = 4;
+    google.protobuf.UInt32Value tpc_SRS_RNTI = 5;
+    google.protobuf.UInt32Value tpc_PUCCH_RNTI = 6;
+    google.protobuf.UInt32Value tpc_PUSCH_RNTI = 7;
+    google.protobuf.UInt32Value sp_CSI_RNTI = 8;
+    oneof cs_RNTI {
+        Null release_cs_RNTI = 9;
+        uint32 setup_cs_RNTI = 10;
+    }
+    google.protobuf.UInt32Value mcs_C_RNTI = 11;
+    google.protobuf.Int32Value p_UE_FR1 = 12;
+    XScale xScale = 13;
+}
+
+message XScale
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        dB0 = 1;
+        dB6 = 2;
+    }
+    Value value = 1;
+}
+
+message SpCellConfig
+{
+    google.protobuf.UInt32Value servCellIndex = 1;
+    ReconfigurationWithSync reconfigurationWithSync = 2;
+    oneof rlf_TimersAndConstants {
+        Null release_rlf_TimersAndConstants = 3;
+        RLF_TimersAndConstants setup_rlf_TimersAndConstants = 4;
+    }
+    RlmInSyncOutOfSyncThreshold rlmInSyncOutOfSyncThreshold = 5;
+    ServingCellConfig spCellConfigDedicated = 6;
+}
+
+message ReconfigurationWithSync
+{
+    ServingCellConfigCommon spCellConfigCommon = 1;
+    uint32 newUE_Identity = 2;
+    T304 t304 = 3;
+    oneof rach_ConfigDedicated {
+        RACH_ConfigDedicated uplink = 4;
+        RACH_ConfigDedicated supplementaryUplink = 5;
+    }
+    SSB_MTC smtc = 6;
+}
+
+message ServingCellConfigCommon
+{
+    google.protobuf.UInt32Value physCellId = 1;
+    DownlinkConfigCommon downlinkConfigCommon = 2;
+    UplinkConfigCommon uplinkConfigCommon = 3;
+    UplinkConfigCommon supplementaryUplinkConfigCommon = 4;
+    N_TimingAdvanceOffset n_TimingAdvanceOffset = 5;
+    oneof ssb_PositionsInBurst {
+        string shortBitmap = 6;
+        string mediumBitmap = 7;
+        string longBitmap = 8;
+    }
+    SSB_PeriodicityServingCell ssb_PeriodicityServingCell = 9;
+    DMRS_TypeA_Position dmrs_TypeA_Position = 10;
+    oneof lte_CRS_ToMatchAround {
+        Null release_lte_CRS_ToMatchAround = 11;
+        RateMatchPatternLTE_CRS setup_lte_CRS_ToMatchAround = 12;
+    }
+    repeated RateMatchPattern rateMatchPatternToAddModList = 13;
+    repeated uint32 rateMatchPatternToReleaseList = 14;
+    SubcarrierSpacing subcarrierSpacing = 15;
+    TDD_UL_DL_ConfigCommon tdd_UL_DL_ConfigCommon = 16;
+    sint32 ss_PBCH_BlockPower = 17;
+}
+
+message DownlinkConfigCommon
+{
+    FrequencyInfoDL frequencyInfoDL = 1;
+    BWP_DownlinkCommon initialDownlinkBWP = 2;
+}
+
+message FrequencyInfoDL
+{
+    google.protobuf.UInt32Value absoluteFrequencySSB = 1;
+    MultiFrequencyBandListNR frequencyBandList = 2;
+    uint32 absoluteFrequencyPointA = 3;
+    repeated SCS_SpecificCarrier scs_SpecificCarrier = 4;
+}
+
+message SCS_SpecificCarrier
+{
+    uint32 offsetToCarrier = 1;
+    SubcarrierSpacing subcarrierSpacing = 2;
+    uint32 carrierBandwidth = 3;
+    google.protobuf.UInt32Value txDirectCurrentLocation_v1530 = 4;
+}
+
+message BWP_DownlinkCommon
+{
+    BWP genericParameters = 1;
+    oneof pdcch_ConfigCommon {
+        Null release_pdcch_ConfigCommon = 2;
+        PDCCH_ConfigCommon setup_pdcch_ConfigCommon = 3;
+    }
+    oneof pdsch_ConfigCommon {
+        Null release_pdsch_ConfigCommon = 4;
+        PDSCH_ConfigCommon setup_pdsch_ConfigCommon = 5;
+    }
+}
+
+message BWP
+{
+    uint32 locationAndBandwidth = 1;
+    SubcarrierSpacing subcarrierSpacing = 2;
+    CyclicPrefix cyclicPrefix = 3;
+}
+
+message CyclicPrefix
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        extended = 1;
+    }
+    Value value = 1;
+}
+
+message PDCCH_ConfigCommon
+{
+    google.protobuf.UInt32Value controlResourceSetZero = 1;
+    ControlResourceSet commonControlResourceSet = 2;
+    google.protobuf.UInt32Value searchSpaceZero = 3;
+    repeated SearchSpace commonSearchSpaceList = 4;
+    google.protobuf.UInt32Value searchSpaceSIB1 = 5;
+    google.protobuf.UInt32Value searchSpaceOtherSystemInformation = 6;
+    google.protobuf.UInt32Value pagingSearchSpace = 7;
+    google.protobuf.UInt32Value ra_SearchSpace = 8;
+    FirstPDCCH_MonitoringOccasionOfP0 firstPDCCH_MonitoringOccasionOfP0 = 9;
+}
+
+message ControlResourceSet
+{
+    uint32 controlResourceSetId = 1;
+    string frequencyDomainResources = 2;
+    uint32 duration = 3;
+    oneof cce_REG_MappingType {
+        Interleaved interleaved = 4;
+        Null nonInterleaved = 5;
+    }
+    PrecoderGranularity precoderGranularity = 6;
+    repeated uint32 tci_StatesPDCCH_ToAddList = 7;
+    repeated uint32 tci_StatesPDCCH_ToReleaseList = 8;
+    EnabledOpt tci_PresentInDCI = 9;
+    google.protobuf.UInt32Value pdcch_DMRS_ScramblingId = 10;
+}
+
+message Interleaved
+{
+    Reg_BundleSize reg_BundleSize = 1;
+    InterleaverSize interleaverSize = 2;
+    google.protobuf.UInt32Value shiftIndex = 3;
+}
+
+message Reg_BundleSize
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        n2 = 1;
+        n3 = 2;
+        n6 = 3;
+    }
+    Value value = 1;
+}
+
+message InterleaverSize
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        n2 = 1;
+        n3 = 2;
+        n6 = 3;
+    }
+    Value value = 1;
+}
+
+message PrecoderGranularity
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        sameAsREG_bundle = 1;
+        allContiguousRBs = 2;
+    }
+    Value value = 1;
+}
+
+message FirstPDCCH_MonitoringOccasionOfP0
+{
+    oneof firstPDCCHMonitoringOccasionOfP0 {
+        Sequence_Of_Integer sCS15KHZoneT = 1;
+        Sequence_Of_Integer sCS30KHZoneT_SCS15KHZhalfT = 2;
+        Sequence_Of_Integer sCS60KHZoneT_SCS30KHZhalfT_SCS15KHZquarterT = 3;
+        Sequence_Of_Integer sCS120KHZoneT_SCS60KHZhalfT_SCS30KHZquarterT_SCS15KHZoneEighthT = 4;
+        Sequence_Of_Integer sCS120KHZhalfT_SCS60KHZquarterT_SCS30KHZoneEighthT_SCS15KHZoneSixteenthT = 5;
+        Sequence_Of_Integer sCS120KHZquarterT_SCS60KHZoneEighthT_SCS30KHZoneSixteenthT = 6;
+        Sequence_Of_Integer sCS120KHZoneEighthT_SCS60KHZoneSixteenthT = 7;
+        Sequence_Of_Integer sCS120KHZoneSixteenthT = 8;
+    }
+}
+
+message Sequence_Of_Integer
+{
+    repeated uint32 sequence_Of_Integer = 1;
+}
+
+message PDSCH_ConfigCommon
+{
+    PDSCH_TimeDomainResourceAllocationList pdsch_TimeDomainAllocationList = 1;
+}
+
+message PDSCH_TimeDomainResourceAllocationList
+{
+    repeated PDSCH_TimeDomainResourceAllocation items = 1;
+}
+
+message PDSCH_TimeDomainResourceAllocation
+{
+    google.protobuf.UInt32Value k0 = 1;
+    MappingType mappingType = 2;
+    uint32 startSymbolAndLength = 3;
+}
+
+message MappingType
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        typeA = 1;
+        typeB = 2;
+    }
+    Value value = 1;
+}
+
+message UplinkConfigCommon
+{
+    FrequencyInfoUL frequencyInfoUL = 1;
+    BWP_UplinkCommon initialUplinkBWP = 2;
+    TimeAlignmentTimer dummy = 3;
+}
+
+message FrequencyInfoUL
+{
+    MultiFrequencyBandListNR frequencyBandList = 1;
+    google.protobuf.UInt32Value absoluteFrequencyPointA = 2;
+    repeated SCS_SpecificCarrier scs_SpecificCarrierList = 3;
+    google.protobuf.UInt32Value additionalSpectrumEmission = 4;
+    google.protobuf.Int32Value p_Max = 5;
+    google.protobuf.BoolValue frequencyShift7p5khz = 6;
+}
+
+message BWP_UplinkCommon
+{
+    BWP genericParameters = 1;
+    oneof rach_ConfigCommon {
+        Null release_rach_ConfigCommon = 2;
+        RACH_ConfigCommon setup_rach_ConfigCommon = 3;
+    }
+    oneof pusch_ConfigCommon {
+        Null release_pusch_ConfigCommon = 4;
+        PUSCH_ConfigCommon setup_pusch_ConfigCommon = 5;
+    }
+    oneof pucch_ConfigCommon {
+        Null release_pucch_ConfigCommon = 6;
+        PUCCH_ConfigCommon setup_pucch_ConfigCommon = 7;
+    }
+}
+
+message BWP_Uplink
+{
+    uint32 bwp_Id = 1;
+    BWP_UplinkCommon bwp_Common = 2;
+    BWP_UplinkDedicated bwp_Dedicated = 3;
+}
+
+message RACH_ConfigCommon
+{
+    RACH_ConfigGeneric rach_ConfigGeneric = 1;
+    google.protobuf.UInt32Value totalNumberOfRA_Preambles = 2;
+    oneof ssb_perRACH_OccasionAndCB_PreamblesPerSSB {
+        Fraction oneEighth = 3;
+        Fraction oneFourth = 4;
+        Fraction oneHalf = 5;
+        Fraction one = 6;
+        OtherFraction two = 7;
+        uint32 four = 8;
+        uint32 eight = 9;
+        uint32 sixteen = 10;
+    }
+    GroupBconfigured groupBconfigured = 11;
+    RA_ContentionResolutionTimer ra_ContentionResolutionTimer = 12;
+    google.protobuf.UInt32Value rsrp_ThresholdSSB = 13;
+    google.protobuf.UInt32Value rsrp_ThresholdSSB_SUL = 14;
+    oneof prach_RootSequenceIndex {
+        uint32 l839 = 15;
+        uint32 l139 = 16;
+    }
+    SubcarrierSpacing msg1_SubcarrierSpacing = 17;
+    RestrictedSetConfig restrictedSetConfig = 18;
+    EnabledOpt msg3_transformPrecoder = 19;
+}
+
+message RACH_ConfigGeneric
+{
+    uint32 prach_ConfigurationIndex = 1;
+    Msg1_FDM msg1_FDM = 2;
+    uint32 msg1_FrequencyStart = 3;
+    uint32 zeroCorrelationZoneConfig = 4;
+    sint32 preambleReceivedTargetPower = 5;
+    PreambleTransMax preambleTransMax = 6;
+    PowerRampingStep powerRampingStep = 7;
+    RA_ResponseWindow ra_ResponseWindow = 8;
+}
+
+message Msg1_FDM
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        one = 1;
+        two = 2;
+        four = 3;
+        eight = 4;
+    }
+    Value value = 1;
+}
+
+message PreambleTransMax
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        n3 = 1;
+        n4 = 2;
+        n5 = 3;
+        n6 = 4;
+        n7 = 5;
+        n8 = 6;
+        n10 = 7;
+        n20 = 8;
+        n50 = 9;
+        n100 = 10;
+        n200 = 11;
+    }
+    Value value = 1;
+}
+
+message PowerRampingStep
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        dB0 = 1;
+        dB2 = 2;
+        dB4 = 3;
+        dB6 = 4;
+    }
+    Value value = 1;
+}
+
+message RA_ResponseWindow
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        sl1 = 1;
+        sl2 = 2;
+        sl4 = 3;
+        sl8 = 4;
+        sl10 = 5;
+        sl20 = 6;
+        sl40 = 7;
+        sl80 = 8;
+    }
+    Value value = 1;
+}
+
+message Fraction
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        n4 = 1;
+        n8 = 2;
+        n12 = 3;
+        n16 = 4;
+        n20 = 5;
+        n24 = 6;
+        n28 = 7;
+        n32 = 8;
+        n36 = 9;
+        n40 = 10;
+        n44 = 11;
+        n48 = 12;
+        n52 = 13;
+        n56 = 14;
+        n60 = 15;
+        n64 = 16;
+    }
+    Value value = 1;
+}
+
+message OtherFraction
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        n4 = 1;
+        n8 = 2;
+        n12 = 3;
+        n16 = 4;
+        n20 = 5;
+        n24 = 6;
+        n28 = 7;
+        n32 = 8;
+    }
+    Value value = 1;
+}
+
+message GroupBconfigured
+{
+    RA_Msg3SizeGroupA ra_Msg3SizeGroupA = 1;
+    MessagePowerOffsetGroupB messagePowerOffsetGroupB = 2;
+    uint32 numberOfRA_PreamblesGroupA = 3;
+}
+
+message RA_Msg3SizeGroupA
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        b56 = 1;
+        b144 = 2;
+        b208 = 3;
+        b256 = 4;
+        b282 = 5;
+        b480 = 6;
+        b640 = 7;
+        b800 = 8;
+        b1000 = 9;
+        b72 = 10;
+    }
+    Value value = 1;
+}
+
+message MessagePowerOffsetGroupB
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        minusinfinity = 1;
+        dB0 = 2;
+        dB5 = 3;
+        dB8 = 4;
+        dB10 = 5;
+        dB12 = 6;
+        dB15 = 7;
+        dB18 = 8;
+    }
+    Value value = 1;
+}
+
+message RA_ContentionResolutionTimer
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        sf8 = 1;
+        sf16 = 2;
+        sf24 = 3;
+        sf32 = 4;
+        sf40 = 5;
+        sf48 = 6;
+        sf56 = 7;
+        sf64 = 8;
+    }
+    Value value = 1;
+}
+
+message RestrictedSetConfig
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        unrestrictedSet = 1;
+        restrictedSetTypeA = 2;
+        restrictedSetTypeB = 3;
+    }
+    Value value = 1;
+}
+
+message PUSCH_ConfigCommon
+{
+    EnabledOpt groupHoppingEnabledTransformPrecoding = 1;
+    PUSCH_TimeDomainResourceAllocationList pusch_TimeDomainAllocationList = 2;
+    google.protobuf.Int32Value msg3_DeltaPreamble = 3;
+    google.protobuf.Int32Value p0_NominalWithGrant = 4;
+}
+
+message PUSCH_TimeDomainResourceAllocationList
+{
+    repeated PUSCH_TimeDomainResourceAllocation items = 1;
+}
+
+message PUSCH_TimeDomainResourceAllocation
+{
+    google.protobuf.UInt32Value k2 = 1;
+    MappingType mappingType = 2;
+    uint32 startSymbolAndLength = 3;
+}
+
+message PUCCH_ConfigCommon
+{
+    google.protobuf.UInt32Value pucch_ResourceCommon = 1;
+    PUCCH_GroupHopping pucch_GroupHopping = 2;
+    google.protobuf.UInt32Value hoppingId = 3;
+    google.protobuf.Int32Value p0_nominal = 4;
+}
+
+message PUCCH_GroupHopping
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        neither = 1;
+        enable = 2;
+        disable = 3;
+    }
+    Value value = 1;
+}
+
+message N_TimingAdvanceOffset
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        n0 = 1;
+        n25600 = 2;
+        n39936 = 3;
+    }
+    Value value = 1;
+}
+
+message SSB_PeriodicityServingCell
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        ms5 = 1;
+        ms10 = 2;
+        ms20 = 3;
+        ms40 = 4;
+        ms80 = 5;
+        ms160 = 6;
+    }
+    Value value = 1;
+}
+
+message DMRS_TypeA_Position
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        pos2 = 1;
+        pos3 = 2;
+    }
+    Value value = 1;
+}
+
+message RateMatchPatternLTE_CRS
+{
+    uint32 carrierFreqDL = 1;
+    CarrierBandwidthDL carrierBandwidthDL = 2;
+    EUTRA_MBSFN_SubframeConfigList mbsfn_SubframeConfigList = 3;
+    NrofCRS_Ports nrofCRS_Ports = 4;
+    V_Shift v_Shift = 5;
+}
+
+message CarrierBandwidthDL
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        n6 = 1;
+        n15 = 2;
+        n25 = 3;
+        n50 = 4;
+        n75 = 5;
+        n100 = 6;
+    }
+    Value value = 1;
+}
+
+message EUTRA_MBSFN_SubframeConfigList
+{
+    repeated EUTRA_MBSFN_SubframeConfig items = 1;
+}
+
+message EUTRA_MBSFN_SubframeConfig
+{
+    RadioframeAllocationPeriod radioframeAllocationPeriod = 1;
+    uint32 radioframeAllocationOffset = 2;
+    SubframeAllocation subframeAllocation1 = 3;
+    SubframeAllocation subframeAllocation2 = 4;
+}
+
+message RadioframeAllocationPeriod
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        n1 = 1;
+        n2 = 2;
+        n4 = 3;
+        n8 = 4;
+        n16 = 5;
+        n32 = 6;
+    }
+    Value value = 1;
+}
+
+message SubframeAllocation
+{
+    oneof sfAllocation {
+        string oneFrame = 1;
+        string fourFrames = 2;
+    }
+}
+
+message NrofCRS_Ports
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        n1 = 1;
+        n2 = 2;
+        n4 = 3;
+    }
+    Value value = 1;
+}
+
+message V_Shift
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        n0 = 1;
+        n1 = 2;
+        n2 = 3;
+        n3 = 4;
+        n4 = 5;
+        n5 = 6;
+    }
+    Value value = 1;
+}
+
+message RateMatchPattern
+{
+    uint32 rateMatchPatternId = 1;
+    oneof patternType {
+        Bitmaps bitmaps = 2;
+        uint32 controlResourceSet = 3;
+    }
+    SubcarrierSpacing subcarrierSpacing = 4;
+    Dummy dummy = 5;
+}
+
+message Bitmaps
+{
+    string resourceBlocks = 1;
+    oneof symbolsInResourceBlock {
+        string oneSlot = 2;
+        string twoSlots = 3;
+    }
+    oneof periodicityAndPattern {
+        string n2 = 4;
+        string n4 = 5;
+        string n5 = 6;
+        string n8 = 7;
+        string n10 = 8;
+        string n20 = 9;
+        string n40 = 10;
+    }
+}
+
+message Dummy
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        dynamic = 1;
+        semiStatic = 2;
+    }
+    Value value = 1;
+}
+
+message TDD_UL_DL_ConfigCommon
+{
+    SubcarrierSpacing referenceSubcarrierSpacing = 1;
+    TDD_UL_DL_Pattern pattern1 = 2;
+    TDD_UL_DL_Pattern pattern2 = 3;
+}
+
+message TDD_UL_DL_Pattern
+{
+    DL_UL_TransmissionPeriodicity dl_UL_TransmissionPeriodicity = 1;
+    uint32 nrofDownlinkSlots = 2;
+    uint32 nrofDownlinkSymbols = 3;
+    uint32 nrofUplinkSlots = 4;
+    uint32 nrofUplinkSymbols = 5;
+    DL_UL_TransmissionPeriodicity_v1530 dl_UL_TransmissionPeriodicity_v1530 = 6;
+}
+
+message DL_UL_TransmissionPeriodicity
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        ms0p5 = 1;
+        ms0p625 = 2;
+        ms1 = 3;
+        ms1p25 = 4;
+        ms2 = 5;
+        ms2p5 = 6;
+        ms5 = 7;
+        ms10 = 8;
+    }
+    Value value = 1;
+}
+
+message DL_UL_TransmissionPeriodicity_v1530
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        ms3 = 1;
+        ms4 = 2;
+    }
+    Value value = 1;
+}
+
+message T304
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        ms50 = 1;
+        ms100 = 2;
+        ms150 = 3;
+        ms200 = 4;
+        ms500 = 5;
+        ms1000 = 6;
+        ms2000 = 7;
+        ms10000 = 8;
+    }
+    Value value = 1;
+}
+
+message RACH_ConfigDedicated
+{
+    CFRA cfra = 1;
+    RA_Prioritization ra_Prioritization = 2;
+}
+
+message CFRA
+{
+    Occasions occasions = 1;
+    oneof resource {
+        SSB ssb = 2;
+        CSIRS csirs = 3;
+    }
+    google.protobuf.UInt32Value totalNumberOfRA_Preambles_v1530 = 4;
+}
+
+message Occasions
+{
+    RACH_ConfigGeneric rach_ConfigGeneric = 1;
+    SSB_perRACH_Occasion ssb_perRACH_Occasion = 2;
+}
+
+message SSB
+{
+    repeated CFRA_SSB_Resource ssb_ResourceList = 1;
+    uint32 ra_ssb_occasion_mask_index = 2;
+}
+
+message CFRA_SSB_Resource
+{
+    uint32 ssb = 1;
+    uint32 ra_PreambleIndex = 2;
+}
+
+message CSIRS
+{
+    repeated CFRA_CSIRS_Resource csirs_ResourceList = 1;
+    uint32 rsrp_ThresholdCSI_RS = 2;
+}
+
+message CFRA_CSIRS_Resource
+{
+    uint32 csi_RS = 1;
+    repeated uint32 ra_OccasionList = 2;
+    uint32 ra_PreambleIndex = 3;
+}
+
+message RA_Prioritization
+{
+    PowerRampingStepHighPriority powerRampingStepHighPriority = 1;
+    ScalingFactorBI scalingFactorBI = 2;
+}
+
+message PowerRampingStepHighPriority
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        dB0 = 1;
+        dB2 = 2;
+        dB4 = 3;
+        dB6 = 4;
+    }
+    Value value = 1;
+}
+
+message ScalingFactorBI
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        zero = 1;
+        dot25 = 2;
+        dot5 = 3;
+        dot75 = 4;
+    }
+    Value value = 1;
+}
+
+message SSB_MTC
+{
+    oneof periodicityAndOffset {
+        uint32 sf5 = 1;
+        uint32 sf10 = 2;
+        uint32 sf20 = 3;
+        uint32 sf40 = 4;
+        uint32 sf80 = 5;
+        uint32 sf160 = 6;
+    }
+    Duration duration = 7;
+}
+
+message Duration
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        sf1 = 1;
+        sf2 = 2;
+        sf3 = 3;
+        sf4 = 4;
+        sf5 = 5;
+    }
+    Value value = 1;
+}
+
+message SSB_MTC2
+{
+    repeated uint32 pci_List = 1;
+    Periodicity periodicity = 2;
+}
+
+message Periodicity
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        sf5 = 1;
+        sf10 = 2;
+        sf20 = 3;
+        sf40 = 4;
+        sf80 = 5;
+    }
+    Value value = 1;
+}
+
+message RLF_TimersAndConstants
+{
+    T310 t310 = 1;
+    N310 n310 = 2;
+    N311 n311 = 3;
+    T311_v1530 t311_v1530 = 4;
+}
+
+message T310
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        ms0 = 1;
+        ms50 = 2;
+        ms100 = 3;
+        ms200 = 4;
+        ms500 = 5;
+        ms1000 = 6;
+        ms2000 = 7;
+        ms4000 = 8;
+        ms6000 = 9;
+    }
+    Value value = 1;
+}
+
+message N310
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        n1 = 1;
+        n2 = 2;
+        n3 = 3;
+        n4 = 4;
+        n6 = 5;
+        n8 = 6;
+        n10 = 7;
+        n20 = 8;
+    }
+    Value value = 1;
+}
+
+message N311
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        n1 = 1;
+        n2 = 2;
+        n3 = 3;
+        n4 = 4;
+        n5 = 5;
+        n6 = 6;
+        n8 = 7;
+        n10 = 8;
+    }
+    Value value = 1;
+}
+
+message T311_v1530
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        ms1000 = 1;
+        ms3000 = 2;
+        ms5000 = 3;
+        ms10000 = 4;
+        ms15000 = 5;
+        ms20000 = 6;
+        ms30000 = 7;
+    }
+    Value value = 1;
+}
+
+message RlmInSyncOutOfSyncThreshold
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        n1 = 1;
+    }
+    Value value = 1;
+}
+
+message ServingCellConfig
+{
+    TDD_UL_DL_ConfigDedicated tdd_UL_DL_ConfigDedicated = 1;
+    BWP_DownlinkDedicated initialDownlinkBWP = 2;
+    repeated uint32 downlinkBWP_ToReleaseList = 3;
+    repeated BWP_Downlink downlinkBWP_ToAddModList = 4;
+    google.protobuf.UInt32Value firstActiveDownlinkBWP_Id = 5;
+    BWP_InactivityTimer bwp_InactivityTimer = 6;
+    google.protobuf.UInt32Value defaultDownlinkBWP_Id = 7;
+    UplinkConfig uplinkConfig = 8;
+    UplinkConfig supplementaryUplink = 9;
+    oneof pdcch_ServingCellConfig {
+        Null release_pdcch_ServingCellConfig = 10;
+        PDCCH_ServingCellConfig setup_pdcch_ServingCellConfig = 11;
+    }
+    oneof pdsch_ServingCellConfig {
+        Null release_pdsch_ServingCellConfig = 12;
+        PDSCH_ServingCellConfig setup_pdsch_ServingCellConfig = 13;
+    }
+    CSI_MeasConfig csi_MeasConfig = 14;
+    SCellDeactivationTimer sCellDeactivationTimer = 15;
+    CrossCarrierSchedulingConfig crossCarrierSchedulingConfig = 16;
+    uint32 tag_Id = 17;
+    EnabledOpt ue_BeamLockFunction = 18;
+    PathlossReferenceLinking pathlossReferenceLinking = 19;
+    google.protobuf.UInt32Value servingCellMO = 20;
+    oneof lte_CRS_ToMatchAround {
+        Null release_lte_CRS_ToMatchAround = 21;
+        RateMatchPatternLTE_CRS setup_lte_CRS_ToMatchAround = 22;
+    }
+    repeated RateMatchPattern rateMatchPatternToAddModList = 23;
+    repeated google.protobuf.UInt32Value rateMatchPatternToReleaseList = 24;
+    repeated SCS_SpecificCarrier downlinkChannelBW_PerSCS_List = 25;
+}
+
+message TDD_UL_DL_ConfigDedicated
+{
+    repeated TDD_UL_DL_SlotConfig slotSpecificConfigurationsToAddModList = 1;
+    repeated uint32 TDD_UL_DL_SlotIndex = 2;
+}
+
+message TDD_UL_DL_SlotConfig
+{
+    uint32 slotIndex = 1;
+    oneof symbols {
+        Null allDownlink = 2;
+        Null allUplink = 3;
+        Explicit explicit = 4;
+    }
+}
+
+message Explicit
+{
+    google.protobuf.UInt32Value nrofDownlinkSymbols = 1;
+    google.protobuf.UInt32Value nrofUplinkSymbols = 2;
+}
+
+message BWP_DownlinkDedicated
+{
+    oneof pdcch_Config {
+        Null release_pdcch_Config = 1;
+        PDCCH_Config setup_pdcch_Config = 2;
+    }
+    oneof pdsch_Config {
+        Null release_pdsch_Config = 3;
+        PDSCH_Config setup_pdsch_Config = 4;
+    }
+    oneof sps_Config {
+        Null release_sps_Config = 5;
+        SPS_Config setup_sps_Config = 6;
+    }
+    oneof radioLinkMonitoringConfig {
+        Null release_radioLinkMonitoringConfig = 7;
+        RadioLinkMonitoringConfig setup_radioLinkMonitoringConfig = 8;
+    }
+}
+
+message PDCCH_Config
+{
+    repeated ControlResourceSet controlResourceSetToAddModList = 1;
+    repeated uint32 controlResourceSetToReleaseList = 2;
+    repeated SearchSpace searchSpacesToAddModList = 3;
+    repeated uint32 searchSpacesToReleaseList = 4;
+    oneof downlinkPreemption {
+        Null release_downlinkPreemption = 5;
+        DownlinkPreemption setup_downlinkPreemption = 6;
+    }
+    oneof tpc_PUSCH {
+        Null release_tpc_PUSCH = 7;
+        PUSCH_TPC_CommandConfig setup_tpc_PUSCH = 8;
+    }
+    oneof tpc_PUCCH {
+        Null release_tpc_PUCCH = 9;
+        PUCCH_TPC_CommandConfig setup_tpc_PUCCH = 10;
+    }
+    oneof tpc_SRS {
+        Null release_tpc_SRS = 11;
+        SRS_TPC_CommandConfig setup_tpc_SRS = 12;
+    }
+}
+
+message DownlinkPreemption
+{
+    uint32 int_RNTI = 1;
+    TimeFrequencySet timeFrequencySet = 2;
+    uint32 dci_PayloadSize = 3;
+    repeated INT_ConfigurationPerServingCell int_ConfigurationPerServingCell = 4;
+}
+
+message TimeFrequencySet
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        set0 = 1;
+        set1 = 2;
+    }
+    Value value = 1;
+}
+
+message INT_ConfigurationPerServingCell
+{
+    uint32 servingCellId = 1;
+    uint32 positionInDCI = 2;
+}
+
+message PUSCH_TPC_CommandConfig
+{
+    google.protobuf.UInt32Value tpc_Index = 1;
+    google.protobuf.UInt32Value tpc_IndexSUL = 2;
+    google.protobuf.UInt32Value targetCell = 3;
+}
+
+message PUCCH_TPC_CommandConfig
+{
+    google.protobuf.UInt32Value tpc_IndexPCell = 1;
+    google.protobuf.UInt32Value tpc_IndexPUCCH_SCell = 2;
+}
+
+message SRS_TPC_CommandConfig
+{
+    google.protobuf.UInt32Value startingBitOfFormat2_3 = 1;
+    google.protobuf.UInt32Value fieldTypeFormat2_3 = 2;
+    google.protobuf.UInt32Value startingBitOfFormat2_3SUL_v1530 = 3;
+}
+
+message PDSCH_Config
+{
+    google.protobuf.UInt32Value dataScramblingIdentityPDSCH = 1;
+    oneof dmrs_DownlinkForPDSCH_MappingTypeA {
+        Null release_dmrs_DownlinkForPDSCH_MappingTypeA = 2;
+        DMRS_DownlinkConfig setup_dmrs_DownlinkForPDSCH_MappingTypeA = 3;
+    }
+    oneof dmrs_DownlinkForPDSCH_MappingTypeB {
+        Null release_dmrs_DownlinkForPDSCH_MappingTypeB = 4;
+        DMRS_DownlinkConfig setup_dmrs_DownlinkForPDSCH_MappingTypeB = 5;
+    }
+    repeated TCI_State tci_StatesToAddModList = 6;
+    repeated uint32 tci_StatesToReleaseList = 7;
+    VRB_ToPRB_Interleaver vrb_ToPRB_Interleaver = 8;
+    ResourceAllocation resourceAllocation = 9;
+    oneof pdsch_TimeDomainAllocationList {
+        Null release_pdsch_TimeDomainAllocationList = 10;
+        PDSCH_TimeDomainResourceAllocationList setup_pdsch_TimeDomainAllocationList = 11;
+    }
+    PDSCH_AggregationFactor pdsch_AggregationFactor = 12;
+    repeated RateMatchPattern rateMatchPatternToAddModList = 13;
+    repeated uint32 rateMatchPatternToReleaseList = 14;
+    RateMatchPatternGroup rateMatchPatternGroup1 = 15;
+    RateMatchPatternGroup rateMatchPatternGroup2 = 16;
+    RBG_Size rbg_Size = 17;
+    MCS_Table mcs_Table = 18;
+    MaxNrofCodeWordsScheduledByDCI maxNrofCodeWordsScheduledByDCI = 19;
+    oneof prb_BundlingType {
+        StaticBundling staticBundling = 20;
+        DynamicBundling dynamicBundling = 21;
+    }
+    repeated ZP_CSI_RS_Resource zp_CSI_RS_ResourceToAddModList = 22;
+    repeated uint32 zp_CSI_RS_ResourceToReleaseList = 23;
+    repeated ZP_CSI_RS_ResourceSet aperiodic_ZP_CSI_RS_ResourceSetsToAddModList = 24;
+    repeated uint32 aperiodic_ZP_CSI_RS_ResourceSetsToReleaseList = 25;
+    repeated ZP_CSI_RS_ResourceSet sp_ZP_CSI_RS_ResourceSetsToAddModList = 26;
+    repeated uint32 sp_ZP_CSI_RS_ResourceSetsToReleaseList = 27;
+    oneof p_ZP_CSI_RS_ResourceSet {
+        Null release_p_ZP_CSI_RS_ResourceSet = 28;
+        ZP_CSI_RS_ResourceSet setup_p_ZP_CSI_RS_ResourceSet = 29;
+    }
+}
+
+message DMRS_DownlinkConfig
+{
+    DMRS_Type dmrs_Type = 1;
+    DMRS_AdditionalPosition dmrs_AdditionalPosition = 2;
+    MaxLength maxLength = 3;
+    google.protobuf.UInt32Value scramblingId0 = 4;
+    google.protobuf.UInt32Value scramblingId1 = 5;
+    oneof phaseTrackingRS {
+        Null release_phaseTrackingRS = 6;
+        PTRS_DownlinkConfig setup_phaseTrackingRS = 7;
+    }
+}
+
+message DMRS_Type
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        type2 = 1;
+    }
+    Value value = 1;
+}
+
+message DMRS_AdditionalPosition
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        pos0 = 1;
+        pos1 = 2;
+        pos3 = 3;
+    }
+    Value value = 1;
+}
+
+message MaxLength
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        len2 = 1;
+    }
+    Value value = 1;
+}
+
+message PTRS_DownlinkConfig
+{
+    repeated uint32 frequencyDensity = 1;
+    repeated uint32 timeDensity = 2;
+    google.protobuf.UInt32Value epre_Ratio = 3;
+    ResourceElementOffset resourceElementOffset = 4;
+}
+
+message ResourceElementOffset
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        offset01 = 1;
+        offset10 = 2;
+        offset11 = 3;
+    }
+    Value value = 1;
+}
+
+message TCI_State
+{
+    uint32 tci_StateId = 1;
+    QCL_Info qcl_Type1 = 2;
+    QCL_Info qcl_Type2 = 3;
+}
+
+message QCL_Info
+{
+    google.protobuf.UInt32Value cell = 1;
+    google.protobuf.UInt32Value bwp_Id = 2;
+    oneof referenceSignal {
+        uint32 csi_rs = 3;
+        uint32 ssb = 4;
+    }
+    QCL_Type qcl_Type = 5;
+}
+
+message QCL_Type
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        typeA = 1;
+        typeB = 2;
+        typeC = 3;
+        typeD = 4;
+    }
+    Value value = 1;
+}
+
+message VRB_ToPRB_Interleaver
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        n2 = 1;
+        n4 = 2;
+    }
+    Value value = 1;
+}
+
+message ResourceAllocation
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        resourceAllocationType0 = 1;
+        resourceAllocationType1 = 2;
+        dynamicSwitch = 3;
+    }
+    Value value = 1;
+}
+
+message PDSCH_AggregationFactor
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        n2 = 1;
+        n4 = 2;
+        n8 = 3;
+    }
+    Value value = 1;
+}
+
+message RateMatchPatternGroup
+{
+    repeated RateMatchPatternGroupItem items = 1;
+}
+
+message RateMatchPatternGroupItem
+{
+    oneof c {
+        uint32 cellLevel = 1;
+        uint32 bwpLevel = 2;
+    }
+}
+
+message RBG_Size
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        config1 = 1;
+        config2 = 2;
+    }
+    Value value = 1;
+}
+
+message MCS_Table
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        qam256 = 1;
+        qam64LowSE = 2;
+    }
+    Value value = 1;
+}
+
+message MaxNrofCodeWordsScheduledByDCI
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        n1 = 1;
+        n2 = 2;
+    }
+    Value value = 1;
+}
+
+message StaticBundling
+{
+    BundleSize bundleSize = 1;
+}
+
+message BundleSize
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        n4 = 1;
+        wideband = 2;
+    }
+    Value value = 1;
+}
+
+message DynamicBundling
+{
+    BundleSizeSet1 bundleSizeSet1 = 1;
+    BundleSizeSet2 bundleSizeSet2 = 2;
+}
+
+message BundleSizeSet1
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        n4 = 1;
+        wideband = 2;
+        n2_wideband = 3;
+        n4_wideband = 4;
+    }
+    Value value = 1;
+}
+
+message BundleSizeSet2
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        n4 = 1;
+        wideband = 2;
+    }
+    Value value = 1;
+}
+
+message ZP_CSI_RS_Resource
+{
+    uint32 zp_CSI_RS_ResourceId = 1;
+    CSI_RS_ResourceMapping resourceMapping = 2;
+    CSI_ResourcePeriodicityAndOffset periodicityAndOffset = 3;
+}
+
+message CSI_RS_ResourceMapping
+{
+    oneof frequencyDomainAllocation {
+        string row1 = 1;
+        string row2 = 2;
+        string row4 = 3;
+        string other = 5;
+    }
+    NrofPorts nrofPorts = 6;
+    uint32 firstOFDMSymbolInTimeDomain = 7;
+    google.protobuf.UInt32Value firstOFDMSymbolInTimeDomain2 = 8;
+    CDM_Type cdm_Type = 9;
+    oneof density {
+        Dot5 dot5 = 10;
+        Null one = 11;
+        Null three = 12;
+    }
+    CSI_FrequencyOccupation freqBand = 13;
+}
+
+message NrofPorts
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        p1 = 1;
+        p2 = 2;
+        p4 = 3;
+        p8 = 4;
+        p12 = 5;
+        p16 = 6;
+        p24 = 7;
+        p32 = 8;
+    }
+    Value value = 1;
+}
+
+message CDM_Type
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        noCDM = 1;
+        fd_CDM2 = 2;
+        cdm4_FD2_TD2 = 3;
+        cdm8_FD2_TD4 = 4;
+    }
+    Value value = 1;
+}
+
+message Dot5
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        evenPRBs = 1;
+        oddPRBs = 2;
+    }
+    Value value = 1;
+}
+
+message CSI_FrequencyOccupation
+{
+    uint32 startingRB = 1;
+    uint32 nrofRBs = 2;
+}
+
+message CSI_ResourcePeriodicityAndOffset
+{
+    oneof c {
+        uint32 slots4 = 1;
+        uint32 slots5 = 2;
+        uint32 slots8 = 3;
+        uint32 slots10 = 4;
+        uint32 slots16 = 5;
+        uint32 slots20 = 6;
+        uint32 slots32 = 7;
+        uint32 slots40 = 8;
+        uint32 slots64 = 9;
+        uint32 slots80 = 10;
+        uint32 slots160 = 11;
+        uint32 slots320 = 12;
+        uint32 slots640 = 13;
+    }
+}
+
+message ZP_CSI_RS_ResourceSet
+{
+    uint32 zp_CSI_RS_ResourceSetId = 1;
+    repeated uint32 zp_CSI_RS_ResourceIdList = 2;
+}
+
+message SPS_Config
+{
+    SPS_ConfigPeriodicity periodicity = 1;
+    uint32 nrofHARQ_Processes = 2;
+    google.protobuf.UInt32Value n1PUCCH_AN = 3;
+    SPS_MCS_Table mcs_Table = 4;
+}
+
+message SPS_ConfigPeriodicity
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        ms10 = 1;
+        ms20 = 2;
+        ms32 = 3;
+        ms40 = 4;
+        ms64 = 5;
+        ms80 = 6;
+        ms128 = 7;
+        ms160 = 8;
+        ms320 = 9;
+        ms640 = 10;
+    }
+    Value value = 1;
+}
+
+message SPS_MCS_Table
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        qam64LowSE = 1;
+    }
+    Value value = 1;
+}
+
+message RadioLinkMonitoringConfig
+{
+    repeated RadioLinkMonitoringRS failureDetectionResourcesToAddModList = 1;
+    repeated uint32 failureDetectionResourcesToReleaseList = 2;
+    BeamFailureInstanceMaxCount beamFailureInstanceMaxCount = 3;
+    BeamFailureDetectionTimer beamFailureDetectionTimer = 4;
+}
+
+message RadioLinkMonitoringRS
+{
+    uint32 radioLinkMonitoringRS_Id = 1;
+    Purpose purpose = 2;
+    oneof detectionResource {
+        uint32 ssb_Index = 3;
+        uint32 csi_RS_Index = 4;
+    }
+}
+
+message Purpose
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        beamFailure = 1;
+        rlf = 2;
+        both = 3;
+    }
+    Value value = 1;
+}
+
+message BeamFailureInstanceMaxCount
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        n1 = 1;
+        n2 = 2;
+        n3 = 3;
+        n4 = 4;
+        n5 = 5;
+        n6 = 6;
+        n8 = 7;
+        n10 = 8;
+    }
+    Value value = 1;
+}
+
+message BeamFailureDetectionTimer
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        pbfd1 = 1;
+        pbfd2 = 2;
+        pbfd3 = 3;
+        pbfd4 = 4;
+        pbfd5 = 5;
+        pbfd6 = 6;
+        pbfd8 = 7;
+        pbfd10 = 8;
+    }
+    Value value = 1;
+}
+
+message BWP_Downlink
+{
+    uint32 bwp_Id = 1;
+    BWP_DownlinkCommon bwp_Common = 2;
+    BWP_DownlinkDedicated bwp_Dedicated = 3;
+}
+
+message BWP_InactivityTimer
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        ms2 = 1;
+        ms3 = 2;
+        ms4 = 3;
+        ms5 = 4;
+        ms6 = 5;
+        ms8 = 6;
+        ms10 = 7;
+        ms20 = 8;
+        ms30 = 9;
+        ms40 = 10;
+        ms50 = 11;
+        ms60 = 12;
+        ms80 = 13;
+        ms100 = 14;
+        ms200 = 15;
+        ms300 = 16;
+        ms500 = 17;
+        ms750 = 18;
+        ms1280 = 19;
+        ms1920 = 20;
+        ms2560 = 21;
+    }
+    Value value = 1;
+}
+
+message UplinkConfig
+{
+    BWP_UplinkDedicated initialUplinkBWP = 1;
+    repeated google.protobuf.UInt32Value uplinkBWP_ToReleaseList = 2;
+    repeated BWP_Uplink uplinkBWP_ToAddModList = 3;
+    google.protobuf.UInt32Value firstActiveUplinkBWP_Id = 4;
+    oneof pusch_ServingCellConfig {
+        Null release_pusch_ServingCellConfig = 5;
+        PUSCH_ServingCellConfig setup_pusch_ServingCellConfig = 6;
+    }
+    oneof carrierSwitching {
+        Null release_carrierSwitching = 7;
+        SRS_CarrierSwitching setup_carrierSwitching = 8;
+    }
+    google.protobuf.BoolValue powerBoostPi2BPSK = 9;
+    repeated SCS_SpecificCarrier uplinkChannelBW_PerSCS_List = 10;
+}
+
+message BWP_UplinkDedicated
+{
+    oneof pucch_Config {
+        Null release_pucch_Config = 1;
+        PUCCH_Config setup_pucch_Config = 2;
+    }
+    oneof pusch_Config {
+        Null release_pusch_Config = 3;
+        PUSCH_Config setup_pusch_Config = 4;
+    }
+    oneof configuredGrantConfig {
+        Null release_configuredGrantConfig = 5;
+        ConfiguredGrantConfig setup_configuredGrantConfig = 6;
+    }
+    oneof srs_Config {
+        Null release_srs_Config = 7;
+        SRS_Config setup_srs_Config = 8;
+    }
+    oneof beamFailureRecoveryConfig {
+        Null release_beamFailureRecoveryConfig = 9;
+        BeamFailureRecoveryConfig setup_beamFailureRecoveryConfig = 10;
+    }
+}
+
+message PUCCH_Config
+{
+    repeated PUCCH_ResourceSet resourceSetToAddModList = 1;
+    repeated uint32 resourceSetToReleaseList = 2;
+    repeated PUCCH_Resource resourceToAddModList = 3;
+    repeated uint32 resourceToReleaseList = 4;
+    oneof format1 {
+        Null release_format1 = 5;
+        PUCCH_FormatConfig setup_format1 = 6;
+    }
+    oneof format2 {
+        Null release_format2 = 7;
+        PUCCH_FormatConfig setup_format2 = 8;
+    }
+    oneof format3 {
+        Null release_format3 = 9;
+        PUCCH_FormatConfig setup_format3 = 10;
+    }
+    oneof format4 {
+        Null release_format4 = 11;
+        PUCCH_FormatConfig setup_format4 = 12;
+    }
+    repeated SchedulingRequestResourceConfig schedulingRequestResourceToAddModList = 13;
+    repeated uint32 schedulingRequestResourceToReleaseList = 14;
+    repeated uint32 multi_CSI_PUCCH_ResourceList = 15;
+    repeated uint32 dl_DataToUL_ACK = 16;
+    repeated PUCCH_SpatialRelationInfo spatialRelationInfoToAddModList = 17;
+    repeated uint32 spatialRelationInfoToReleaseList = 18;
+    PUCCH_PowerControl pucch_PowerControl = 19;
+}
+
+message PUCCH_ResourceSet
+{
+    uint32 pucch_ResourceSetId = 1;
+    repeated uint32 resourceList = 2;
+    google.protobuf.UInt32Value maxPayloadMinus1 = 3;
+}
+
+message PUCCH_Resource
+{
+    uint32 pucch_ResourceId = 1;
+    uint32 startingPRB = 2;
+    EnabledOpt intraSlotFrequencyHopping = 3;
+    google.protobuf.UInt32Value secondHopPRB = 4;
+    oneof format {
+        PUCCH_format0 format0 = 5;
+        PUCCH_format1 format1 = 6;
+        PUCCH_format2 format2 = 7;
+        PUCCH_format3 format3 = 8;
+        PUCCH_format4 format4 = 9;
+    }
+}
+
+message PUCCH_format0
+{
+    uint32 initialCyclicShift = 1;
+    uint32 nrofSymbols = 2;
+    uint32 startingSymbolIndex = 3;
+}
+
+message PUCCH_format1
+{
+    uint32 initialCyclicShift = 1;
+    uint32 nrofSymbols = 2;
+    uint32 startingSymbolIndex = 3;
+    uint32 timeDomainOCC = 4;
+}
+
+message PUCCH_format2
+{
+    uint32 nrofPRBs = 1;
+    uint32 nrofSymbols = 2;
+    uint32 startingSymbolIndex = 3;
+}
+
+message PUCCH_format3
+{
+    uint32 nrofPRBs = 1;
+    uint32 nrofSymbols = 2;
+    uint32 startingSymbolIndex = 3;
+}
+
+message PUCCH_format4
+{
+    uint32 nrofSymbols = 1;
+    OCC_Length occ_Length = 2;
+    OCC_Index occ_Index = 3;
+    uint32 startingSymbolIndex = 4;
+}
+
+message OCC_Length
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        n2 = 1;
+        n4 = 2;
+    }
+    Value value = 1;
+}
+
+message OCC_Index
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        n0 = 1;
+        n1 = 2;
+        n2 = 3;
+        n3 = 4;
+    }
+    Value value = 1;
+}
+
+message PUCCH_FormatConfig
+{
+    EnabledOpt interslotFrequencyHopping = 1;
+    google.protobuf.BoolValue additionalDMRS = 2;
+    PUCCH_MaxCodeRate maxCodeRate = 3;
+    NrofSlots nrofSlots = 4;
+    EnabledOpt pi2BPSK = 5;
+    google.protobuf.BoolValue simultaneousHARQ_ACK_CSI = 6;
+}
+
+message PUCCH_MaxCodeRate
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        zeroDot08 = 1;
+        zeroDot15 = 2;
+        zeroDot25 = 3;
+        zeroDot35 = 4;
+        zeroDot45 = 5;
+        zeroDot60 = 6;
+        zeroDot80 = 7;
+    }
+    Value value = 1;
+}
+
+message NrofSlots
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        n2 = 1;
+        n4 = 2;
+        n8 = 3;
+    }
+    Value value = 1;
+}
+
+message SchedulingRequestResourceConfig
+{
+    uint32 schedulingRequestResourceId = 1;
+    uint32 schedulingRequestID = 2;
+    oneof periodicityAndOffset {
+        Null sym2 = 3;
+        Null sym6or7 = 4;
+        Null sl1 = 5;
+        uint32 sl2 = 6;
+        uint32 sl4 = 7;
+        uint32 sl5 = 8;
+        uint32 sl8 = 9;
+        uint32 sl10 = 10;
+        uint32 sl16 = 11;
+        uint32 sl20 = 12;
+        uint32 sl40 = 13;
+        uint32 sl80 = 14;
+        uint32 sl160 = 15;
+        uint32 sl320 = 16;
+        uint32 sl640 = 17;
+    }
+    google.protobuf.UInt32Value resource = 18;
+}
+
+message PUCCH_SpatialRelationInfo
+{
+    uint32 pucch_SpatialRelationInfoId = 1;
+    google.protobuf.UInt32Value servingCellId = 2;
+    oneof referenceSignal {
+        uint32 ssb_Index = 3;
+        uint32 csi_RS_Index = 4;
+        Srs srs = 5;
+    }
+    uint32 pucch_PathlossReferenceRS_Id = 6;
+    uint32 p0_PUCCH_Id = 7;
+    ClosedLoopIndex closedLoopIndex = 8;
+}
+
+message Srs
+{
+    uint32 resourceId = 1;
+    uint32 uplinkBWP = 2;
+}
+
+message ClosedLoopIndex
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        i0 = 1;
+        i1 = 2;
+    }
+    Value value = 1;
+}
+
+message PUCCH_PowerControl
+{
+    google.protobuf.Int32Value deltaF_PUCCH_f0 = 1;
+    google.protobuf.Int32Value deltaF_PUCCH_f1 = 2;
+    google.protobuf.Int32Value deltaF_PUCCH_f2 = 3;
+    google.protobuf.Int32Value deltaF_PUCCH_f3 = 4;
+    google.protobuf.Int32Value deltaF_PUCCH_f4 = 5;
+    repeated P0_PUCCH p0_Set = 6;
+    repeated PUCCH_PathlossReferenceRS pathlossReferenceRSs = 7;
+    TwoPUCCH_PC_AdjustmentStates twoPUCCH_PC_AdjustmentStates = 8;
+}
+
+message P0_PUCCH
+{
+    uint32 p0_PUCCH_Id = 1;
+    sint32 p0_PUCCH_Value = 2;
+}
+
+message PUCCH_PathlossReferenceRS
+{
+    uint32 pucch_PathlossReferenceRS_Id = 1;
+    oneof referenceSignal {
+        uint32 ssb_Index = 2;
+        uint32 csi_RS_Index = 3;
+    }
+}
+
+message TwoPUCCH_PC_AdjustmentStates
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        twoStates = 1;
+    }
+    Value value = 1;
+}
+
+message PUSCH_ServingCellConfig
+{
+    oneof codeBlockGroupTransmission {
+        Null release_codeBlockGroupTransmission = 1;
+        PUSCH_CodeBlockGroupTransmission setup_codeBlockGroupTransmission = 2;
+    }
+    RateMatching rateMatching = 3;
+    XOverhead xOverhead = 4;
+    google.protobuf.UInt32Value maxMIMO_Layers = 5;
+    google.protobuf.BoolValue processingType2Enabled = 6;
+}
+
+message PUSCH_CodeBlockGroupTransmission
+{
+    MaxCodeBlockGroupsPerTransportBlock maxCodeBlockGroupsPerTransportBlock = 1;
+}
+
+message RateMatching
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        limitedBufferRM = 1;
+    }
+    Value value = 1;
+}
+
+message SRS_CarrierSwitching
+{
+    google.protobuf.UInt32Value srs_SwitchFromServCellIndex = 1;
+    SRS_SwitchFromCarrier srs_SwitchFromCarrier = 2;
+    oneof srs_TPC_PDCCH_Group {
+        SRS_TPC_PDCCH_ConfigList typeA = 3;
+        SRS_TPC_PDCCH_Config typeB = 4;
+    }
+    repeated uint32 monitoringCells = 5;
+}
+
+message SRS_SwitchFromCarrier
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        sUL = 1;
+        nUL = 2;
+    }
+    Value value = 1;
+}
+
+message SRS_TPC_PDCCH_ConfigList
+{
+    repeated SRS_TPC_PDCCH_Config items = 1;
+}
+
+message SRS_TPC_PDCCH_Config
+{
+    repeated SRS_CC_SetIndex srs_CC_SetIndexList = 1;
+}
+
+message SRS_CC_SetIndex
+{
+    google.protobuf.UInt32Value cc_SetIndex = 1;
+    google.protobuf.UInt32Value cc_IndexInOneCC_Set = 2;
+}
+
+message PUSCH_Config
+{
+    google.protobuf.UInt32Value dataScramblingIdentityPUSCH = 1;
+    Tx_Config tx_Config = 2;
+    oneof dmrs_UplinkForPUSCH_MappingTypeA {
+        Null release_dmrs_UplinkForPUSCH_MappingTypeA = 3;
+        DMRS_UplinkConfig setup_dmrs_UplinkForPUSCH_MappingTypeA = 4;
+    }
+    oneof dmrs_UplinkForPUSCH_MappingTypeB {
+        Null release_dmrs_UplinkForPUSCH_MappingTypeB = 5;
+        DMRS_UplinkConfig setup_dmrs_UplinkForPUSCH_MappingTypeB = 6;
+    }
+    PUSCH_PowerControl pusch_PowerControl = 7;
+    FrequencyHopping frequencyHopping = 8;
+    repeated uint32 frequencyHoppingOffsetLists = 9;
+    ResourceAllocation resource_allocation = 10;
+    oneof pusch_TimeDomainAllocationList {
+        Null release_pusch_TimeDomainAllocationList = 11;
+        PUSCH_TimeDomainResourceAllocationList setup_pusch_TimeDomainAllocationList = 12;
+    }
+    PUSCH_AggregationFactor pusch_AggregationFactor = 13;
+    MCS_Table mcs_Table = 14;
+    MCS_Table mcs_TableTransformPrecoder = 15;
+    EnabledDisabledOpt transformPrecoder = 16;
+    CodebookSubset codebookSubset = 17;
+    google.protobuf.UInt32Value maxRank = 18;
+    RBG_Size2 rbg_Size = 19;
+    oneof uci_OnPUSCH {
+        Null release_uci_OnPUSCH = 20;
+        UCI_OnPUSCH setup_uci_OnPUSCH = 21;
+    }
+    EnabledOpt tp_pi2BPSK = 22;
+}
+
+message Tx_Config
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        codebook = 1;
+        nonCodebook = 2;
+    }
+    Value value = 1;
+}
+
+message DMRS_UplinkConfig
+{
+    DMRS_Type dmrs_Type = 1;
+    DMRS_AdditionalPosition dmrs_AdditionalPosition = 2;
+    oneof phaseTrackingRS {
+        Null release_phaseTrackingRS = 3;
+        PTRS_UplinkConfig setup_phaseTrackingRS = 4;
+    }
+    MaxLength maxLength = 5;
+    TransformPrecodingDisabled transformPrecodingDisabled = 6;
+    TransformPrecodingEnabled transformPrecodingEnabled = 7;
+}
+
+message PTRS_UplinkConfig
+{
+    TransformPrecoderDisabled transformPrecoderDisabled = 1;
+    TransformPrecoderEnabled transformPrecoderEnabled = 2;
+}
+
+message TransformPrecoderDisabled
+{
+    repeated uint32 frequencyDensity = 1;
+    repeated uint32 timeDensity = 2;
+    MaxNrofPorts maxNrofPorts = 3;
+    ResourceElementOffset resourceElementOffset = 4;
+    PTRS_Power ptrs_Power = 5;
+}
+
+message MaxNrofPorts
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        n1 = 1;
+        n2 = 2;
+    }
+    Value value = 1;
+}
+
+message PTRS_Power
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        p00 = 1;
+        p01 = 2;
+        p10 = 3;
+        p11 = 4;
+    }
+    Value value = 1;
+}
+
+message TransformPrecoderEnabled
+{
+    repeated uint32 sampleDensity = 1;
+    TimeDensityTransformPrecoding timeDensityTransformPrecoding = 2;
+}
+
+message TimeDensityTransformPrecoding
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        d2 = 1;
+    }
+    Value value = 1;
+}
+
+message TransformPrecodingDisabled
+{
+    google.protobuf.UInt32Value scramblingID0 = 1;
+    google.protobuf.UInt32Value scramblingID1 = 2;
+}
+
+message TransformPrecodingEnabled
+{
+    google.protobuf.UInt32Value nPUSCH_Identity = 1;
+    DisabledOpt sequenceGroupHopping = 2;
+    EnabledOpt sequenceHopping = 3;
+}
+
+message PUSCH_PowerControl
+{
+    EnabledOpt tpc_Accumulation = 1;
+    Alpha msg3_Alpha = 2;
+    google.protobuf.Int32Value p0_NominalWithoutGrant = 3;
+    repeated P0_PUSCH_AlphaSet p0_AlphaSets = 4;
+    repeated PUSCH_PathlossReferenceRS pathlossReferenceRSToAddModList = 5;
+    repeated uint32 pathlossReferenceRSToReleaseList = 6;
+    TwoPUSCH_PC_AdjustmentStates twoPUSCH_PC_AdjustmentStates = 7;
+    EnabledOpt deltaMCS = 8;
+    repeated SRI_PUSCH_PowerControl sri_PUSCH_MappingToAddModList = 9;
+    repeated uint32 sri_PUSCH_MappingToReleaseList = 10;
+}
+
+message Alpha
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        alpha0 = 1;
+        alpha04 = 2;
+        alpha05 = 3;
+        alpha06 = 4;
+        alpha07 = 5;
+        alpha08 = 6;
+        alpha09 = 7;
+        alpha1 = 8;
+    }
+    Value value = 1;
+}
+
+message P0_PUSCH_AlphaSet
+{
+    uint32 p0_PUSCH_AlphaSetId = 1;
+    google.protobuf.Int32Value p0 = 2;
+    Alpha alpha = 3;
+}
+
+message PUSCH_PathlossReferenceRS
+{
+    uint32 pusch_PathlossReferenceRS_Id = 1;
+    oneof referenceSignal {
+        uint32 ssb_Index = 2;
+        uint32 csi_RS_Index = 3;
+    }
+}
+
+message TwoPUSCH_PC_AdjustmentStates
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        twoStates = 1;
+    }
+    Value value = 1;
+}
+
+message SRI_PUSCH_PowerControl
+{
+    uint32 sri_PUSCH_PowerControlId = 1;
+    uint32 sri_PUSCH_PathlossReferenceRS_Id = 2;
+    uint32 sri_P0_PUSCH_AlphaSetId = 3;
+    ClosedLoopIndex sri_PUSCH_ClosedLoopIndex = 4;
+}
+
+message FrequencyHopping
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        intraSlot = 1;
+        interSlot = 2;
+    }
+    Value value = 1;
+}
+
+message PUSCH_AggregationFactor
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        n2 = 1;
+        n4 = 2;
+        n8 = 3;
+    }
+    Value value = 1;
+}
+
+message CodebookSubset
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        fullyAndPartialAndNonCoherent = 1;
+        partialAndNonCoherent = 2;
+        nonCoherent = 3;
+    }
+    Value value = 1;
+}
+
+message RBG_Size2
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        config2 = 1;
+    }
+    Value value = 1;
+}
+
+message UCI_OnPUSCH
+{
+    oneof betaOffsets {
+        BetaOffsetsList dynamic = 1;
+        BetaOffsets semiStatic = 2;
+    }
+    Scaling scaling = 3;
+}
+
+message BetaOffsetsList
+{
+    repeated BetaOffsets betaOffsets = 1;
+}
+
+message Scaling
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        f0p5 = 1;
+        f0p65 = 2;
+        f0p8 = 3;
+        f1 = 4;
+    }
+    Value value = 1;
+}
+
+message ConfiguredGrantConfig
+{
+    FrequencyHopping frequencyHopping = 1;
+    DMRS_UplinkConfig cg_DMRS_Configuration = 2;
+    MCS_Table mcs_Table = 3;
+    MCS_Table mcs_TableTransformPrecoder = 4;
+    oneof uci_OnPUSCH {
+        Null release_uci_OnPUSCH = 5;
+        CG_UCI_OnPUSCH setup_uci_OnPUSCH = 6;
+    }
+    ResourceAllocation resourceAllocation = 7;
+    RBG_Size2 rbg_Size = 8;
+    PowerControlLoopToUse powerControlLoopToUse = 9;
+    uint32 p0_PUSCH_Alpha = 10;
+    EnabledDisabledOpt transformPrecoder = 11;
+    uint32 nrofHARQ_Processes = 12;
+    RepK repK = 13;
+    RepK_RV repK_RV = 14;
+    GrantPeriodicity periodicity = 15;
+    google.protobuf.UInt32Value configuredGrantTimer = 16;
+    RRC_ConfiguredUplinkGrant rrc_ConfiguredUplinkGrant = 17;
+}
+
+message CG_UCI_OnPUSCH
+{
+    oneof betaOffsets {
+        BetaOffsetsList dynamic = 1;
+        BetaOffsets semiStatic = 2;
+    }
+}
+
+message BetaOffsets
+{
+    google.protobuf.UInt32Value betaOffsetACK_Index1 = 1;
+    google.protobuf.UInt32Value betaOffsetACK_Index2 = 2;
+    google.protobuf.UInt32Value betaOffsetACK_Index3 = 3;
+    google.protobuf.UInt32Value betaOffsetCSI_Part1_Index1 = 4;
+    google.protobuf.UInt32Value betaOffsetCSI_Part1_Index2 = 5;
+    google.protobuf.UInt32Value betaOffsetCSI_Part2_Index1 = 6;
+    google.protobuf.UInt32Value betaOffsetCSI_Part2_Index2 = 7;
+}
+
+message PowerControlLoopToUse
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        n0 = 1;
+        n1 = 2;
+    }
+    Value value = 1;
+}
+
+message RepK
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        n1 = 1;
+        n2 = 2;
+        n4 = 3;
+        n8 = 4;
+    }
+    Value value = 1;
+}
+
+message RepK_RV
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        s1_0231 = 1;
+        s2_0303 = 2;
+        s3_0000 = 3;
+    }
+    Value value = 1;
+}
+
+message GrantPeriodicity
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        sym2 = 1;
+        sym7 = 2;
+        sym1x14 = 3;
+        sym2x14 = 4;
+        sym4x14 = 5;
+        sym5x14 = 6;
+        sym8x14 = 7;
+        sym10x14 = 8;
+        sym16x14 = 9;
+        sym20x14 = 10;
+        sym32x14 = 11;
+        sym40x14 = 12;
+        sym64x14 = 13;
+        sym80x14 = 14;
+        sym128x14 = 15;
+        sym160x14 = 16;
+        sym256x14 = 17;
+        sym320x14 = 18;
+        sym512x14 = 19;
+        sym640x14 = 20;
+        sym1024x14 = 21;
+        sym1280x14 = 22;
+        sym2560x14 = 23;
+        sym5120x14 = 24;
+        sym6 = 25;
+        sym1x12 = 26;
+        sym2x12 = 27;
+        sym4x12 = 28;
+        sym5x12 = 29;
+        sym8x12 = 30;
+        sym10x12 = 31;
+        sym16x12 = 32;
+        sym20x12 = 33;
+        sym32x12 = 34;
+        sym40x12 = 35;
+        sym64x12 = 36;
+        sym80x12 = 37;
+        sym128x12 = 38;
+        sym160x12 = 39;
+        sym256x12 = 40;
+        sym320x12 = 41;
+        sym512x12 = 42;
+        sym640x12 = 43;
+        sym1280x12 = 44;
+        sym2560x12 = 45;
+    }
+    Value value = 1;
+}
+
+message RRC_ConfiguredUplinkGrant
+{
+    uint32 timeDomainOffset = 1;
+    uint32 timeDomainAllocation = 2;
+    string frequencyDomainAllocation = 3;
+    uint32 antennaPort = 4;
+    google.protobuf.UInt32Value dmrs_SeqInitialization = 5;
+    uint32 precodingAndNumberOfLayers = 6;
+    google.protobuf.UInt32Value srs_ResourceIndicator = 7;
+    uint32 mcsAndTBS = 8;
+    google.protobuf.UInt32Value frequencyHoppingOffset = 9;
+    uint32 pathlossReferenceIndex = 10;
+}
+
+message SRS_Config
+{
+    repeated uint32 srs_ResourceSetToReleaseList = 1;
+    repeated SRS_ResourceSet srs_ResourceSetToAddModList = 2;
+    repeated uint32 srs_ResourceToReleaseList = 3;
+    repeated SRS_Resource srs_ResourceToAddModList = 4;
+    DisabledOpt tpc_Accumulation = 5;
+}
+
+message SRS_ResourceSet
+{
+    uint32 srs_ResourceSetId = 1;
+    repeated uint32 srs_ResourceIdList = 2;
+    oneof resourceType {
+        SRS_ResourceSetType_Aperiodic aperiodic = 3;
+        SRS_ResourceSetType_Semi_Persistent semi_persistent = 4;
+        SRS_ResourceSetType_Periodic periodic = 5;
+    }
+    SRS_ResourceSet_Usage usage = 6;
+    Alpha alpha = 7;
+    google.protobuf.Int32Value p0 = 8;
+    oneof pathlossReferenceRS {
+        uint32 ssb_Index = 9;
+        uint32 csi_RS_Index = 10;
+    }
+    SRS_PowerControlAdjustmentStates srs_PowerControlAdjustmentStates = 11;
+}
+
+message SRS_ResourceSetType_Aperiodic
+{
+    uint32 aperiodicSRS_ResourceTrigger = 1;
+    google.protobuf.UInt32Value csi_RS = 2;
+    google.protobuf.UInt32Value slotOffset = 3;
+    repeated uint32 aperiodicSRS_ResourceTriggerList_v1530 = 4;
+}
+
+message SRS_ResourceSetType_Semi_Persistent
+{
+    google.protobuf.UInt32Value associatedCSI_RS = 1;
+}
+
+message SRS_ResourceSetType_Periodic
+{
+    google.protobuf.UInt32Value associatedCSI_RS = 1;
+}
+
+message SRS_ResourceSet_Usage
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        beamManagement = 1;
+        codebook = 2;
+        nonCodebook = 3;
+        antennaSwitching = 4;
+    }
+    Value value = 1;
+}
+
+message SRS_PowerControlAdjustmentStates
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        sameAsFci2 = 1;
+        separateClosedLoop = 2;
+    }
+    Value value = 1;
+}
+
+message SRS_Resource
+{
+    uint32  srs_ResourceId = 1;
+    NrofSRS_Ports nrofSRS_Ports = 2;
+    PTRS_PortIndex ptrs_PortIndex = 3;
+    oneof transmissionComb {
+        N2 n2 = 4;
+        N4 n4 = 5;
+    }
+    ResourceMapping resourceMapping = 6;
+    uint32 freqDomainPosition = 7;
+    uint32 freqDomainShift = 8;
+    FreqHopping freqHopping = 9;
+    GroupOrSequenceHopping groupOrSequenceHopping = 10;
+    oneof resourceType {
+        SRS_ResourceType_Aperiodic aperiodic = 11;
+        SRS_ResourceType_Semi_Persistent semi_persistent = 12;
+        SRS_ResourceType_Periodic periodic = 13;
+    }
+    uint32 sequenceId = 14;
+    SRS_SpatialRelationInfo spatialRelationInfo = 15;
+}
+
+message NrofSRS_Ports
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        port1 = 1;
+        ports2 = 2;
+        ports4 = 3;
+    }
+    Value value = 1;
+}
+
+message PTRS_PortIndex
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        n0 = 1;
+        n1 = 2;
+    }
+    Value value = 1;
+}
+
+message N2
+{
+    uint32 combOffset_n2 = 1;
+    uint32 cyclicShift_n2 = 2;
+}
+
+message N4
+{
+    uint32 combOffset_n4 = 1;
+    uint32 cyclicShift_n4 = 2;
+}
+
+message ResourceMapping
+{
+    uint32 startPosition = 1;
+    NrofSymbols nrofSymbols = 2;
+    RepetitionFactor repetitionFactor = 3;
+}
+
+message NrofSymbols
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        n1 = 1;
+        n2 = 2;
+        n4 = 3;
+    }
+    Value value = 1;
+}
+
+message RepetitionFactor
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        n1 = 1;
+        n2 = 2;
+        n4 = 3;
+    }
+    Value value = 1;
+}
+
+message FreqHopping
+{
+    uint32 c_SRS = 1;
+    uint32 b_SRS = 2;
+    uint32 b_hop = 3;
+}
+
+message GroupOrSequenceHopping
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        neither = 1;
+        groupHopping = 2;
+        sequenceHopping = 3;
+    }
+    Value value = 1;
+}
+
+message SRS_ResourceType_Aperiodic
+{
+}
+
+message SRS_ResourceType_Semi_Persistent
+{
+    SRS_PeriodicityAndOffset periodicityAndOffset_sp = 1;
+}
+
+message SRS_PeriodicityAndOffset
+{
+    oneof c {
+        Null sl1 = 1;
+        uint32 sl2 = 2;
+        uint32 sl4 = 3;
+        uint32 sl5 = 4;
+        uint32 sl8 = 5;
+        uint32 sl10 = 6;
+        uint32 sl16 = 7;
+        uint32 sl20 = 8;
+        uint32 sl32 = 9;
+        uint32 sl40 = 10;
+        uint32 sl64 = 11;
+        uint32 sl80 = 12;
+        uint32 sl160 = 13;
+        uint32 sl320 = 14;
+        uint32 sl640 = 15;
+        uint32 sl1280 = 16;
+        uint32 sl2560 = 17;
+    }
+}
+
+message SRS_ResourceType_Periodic
+{
+    SRS_PeriodicityAndOffset periodicityAndOffset_p = 1;
+}
+
+message SRS_SpatialRelationInfo
+{
+    google.protobuf.UInt32Value servingCellId = 1;
+    oneof referenceSignal {
+        uint32 ssb_Index = 2;
+        uint32 csi_RS_Index = 3;
+        Srs srs = 4;
+    }
+}
+
+message BeamFailureRecoveryConfig
+{
+    google.protobuf.UInt32Value rootSequenceIndex_BFR = 1;
+    RACH_ConfigGeneric rach_ConfigBFR = 2;
+    google.protobuf.UInt32Value rsrp_ThresholdSSB = 3;
+    repeated PRACH_ResourceDedicatedBFR candidateBeamRSList = 4;
+    SSB_perRACH_Occasion ssb_perRACH_Occasion = 5;
+    google.protobuf.UInt32Value ra_ssb_OccasionMaskIndex = 6;
+    google.protobuf.UInt32Value recoverySearchSpaceId = 7;
+    RA_Prioritization ra_Prioritization = 8;
+    BeamFailureRecoveryTimer beamFailureRecoveryTimer = 9;
+    SubcarrierSpacing msg1_SubcarrierSpacing_v1530 = 10;
+}
+
+message PRACH_ResourceDedicatedBFR
+{
+    oneof c {
+        BFR_SSB_Resource ssb = 1;
+        BFR_CSIRS_Resource csi_RS = 2;
+    }
+}
+
+message BFR_SSB_Resource
+{
+    uint32 ssb = 1;
+    uint32 ra_PreambleIndex = 2;
+}
+
+message BFR_CSIRS_Resource
+{
+    uint32 csi_RS = 1;
+    repeated uint32 ra_OccasionList = 2;
+    google.protobuf.UInt32Value ra_PreambleIndex = 3;
+}
+
+message SSB_perRACH_Occasion
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        oneEighth = 1;
+        oneFourth = 2;
+        oneHalf = 3;
+        one = 4;
+        two = 5;
+        four = 6;
+        eight = 7;
+        sixteen = 8;
+    }
+    Value value = 1;
+}
+
+message BeamFailureRecoveryTimer
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        ms10 = 1;
+        ms20 = 2;
+        ms40 = 3;
+        ms60 = 4;
+        ms80 = 5;
+        ms100 = 6;
+        ms150 = 7;
+        ms200 = 8;
+    }
+    Value value = 1;
+}
+
+message PDCCH_ServingCellConfig
+{
+    oneof slotFormatIndicator {
+        Null release_slotFormatIndicator = 1;
+        SlotFormatIndicator setup_slotFormatIndicator = 2;
+    }
+}
+
+message SlotFormatIndicator
+{
+
+    uint32 sfi_RNTI = 1;
+    uint32 dci_PayloadSize = 2;
+    repeated SlotFormatCombinationsPerCell slotFormatCombToAddModList = 3;
+    repeated uint32 slotFormatCombToReleaseList = 4;
+}
+
+message SlotFormatCombinationsPerCell
+{
+    uint32 servingCellId = 1;
+    SubcarrierSpacing subcarrierSpacing = 2;
+    SubcarrierSpacing subcarrierSpacing2 = 3;
+    repeated SlotFormatCombination slotFormatCombinations = 4;
+    google.protobuf.UInt32Value positionInDCI = 5;
+}
+
+message SlotFormatCombination
+{
+    uint32 slotFormatCombinationId = 1;
+    repeated uint32 slotFormats = 2;
+}
+
+message PDSCH_ServingCellConfig
+{
+    oneof codeBlockGroupTransmission {
+        Null release_codeBlockGroupTransmission = 1;
+        PDSCH_CodeBlockGroupTransmission setup_codeBlockGroupTransmission = 2;
+    }
+    XOverhead xOverhead = 3;
+    NrofHARQ_ProcessesForPDSCH nrofHARQ_ProcessesForPDSCH = 4;
+    google.protobuf.UInt32Value pucch_Cell = 5;
+    google.protobuf.UInt32Value maxMIMO_Layers = 6;
+    google.protobuf.BoolValue processingType2Enabled = 7;
+}
+
+message PDSCH_CodeBlockGroupTransmission
+{
+    MaxCodeBlockGroupsPerTransportBlock maxCodeBlockGroupsPerTransportBlock = 1;
+    bool codeBlockGroupFlushIndicator = 2;
+}
+
+message MaxCodeBlockGroupsPerTransportBlock
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        n2 = 1;
+        n4 = 2;
+        n6 = 3;
+        n8 = 4;
+    }
+    Value value = 1;
+}
+
+message XOverhead
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        xOh6 = 1;
+        xOh12 = 2;
+        xOh18 = 3;
+    }
+    Value value = 1;
+}
+
+message NrofHARQ_ProcessesForPDSCH
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        n2 = 1;
+        n4 = 2;
+        n6 = 3;
+        n10 = 4;
+        n12 = 5;
+        n16 = 6;
+    }
+    Value value = 1;
+}
+
+message CSI_MeasConfig
+{
+    repeated NZP_CSI_RS_Resource nzp_CSI_RS_ResourceToAddModList = 1;
+    repeated uint32 nzp_CSI_RS_ResourceToReleaseList = 2;
+    repeated NZP_CSI_RS_ResourceSet nzp_CSI_RS_ResourceSetToAddModList = 3;
+    repeated uint32 nzp_CSI_RS_ResourceSetToReleaseList = 4;
+    repeated CSI_IM_Resource csi_IM_ResourceToAddModList = 5;
+    repeated uint32 csi_IM_ResourceToReleaseList = 6;
+    repeated CSI_IM_ResourceSet csi_IM_ResourceSetToAddModList = 7;
+    repeated uint32 csi_IM_ResourceSetToReleaseList = 8;
+    repeated CSI_SSB_ResourceSet csi_SSB_ResourceSetToAddModList = 9;
+    repeated uint32 csi_SSB_ResourceSetToAddReleaseList = 10;
+    repeated CSI_ResourceConfig csi_ResourceConfigToAddModList = 11;
+    repeated uint32 csi_ResourceConfigToReleaseList = 12;
+    repeated CSI_ReportConfig csi_ReportConfigToAddModList = 13;
+    repeated uint32 csi_ReportConfigToReleaseList = 14;
+    google.protobuf.UInt32Value reportTriggerSize = 15;
+    oneof csi_AperiodicTriggerStateList {
+        Null release_csi_AperiodicTriggerStateList = 16;
+        CSI_AperiodicTriggerStateList setup_csi_AperiodicTriggerStateList = 17;
+    }
+    oneof semiPersistentOnPUSCH_TriggerStateList {
+        Null release_semiPersistentOnPUSCH_TriggerStateList = 18;
+        CSI_SemiPersistentOnPUSCH_TriggerStateList setup_semiPersistentOnPUSCH_TriggerStateList = 19;
+    }
+}
+
+message NZP_CSI_RS_Resource
+{
+    uint32 nzp_CSI_RS_ResourceId = 1;
+    CSI_RS_ResourceMapping resourceMapping = 2;
+    sint32 powerControlOffset = 3;
+    PowerControlOffsetSS powerControlOffsetSS = 4;
+    uint32 scramblingID = 5;
+    CSI_ResourcePeriodicityAndOffset periodicityAndOffset = 6;
+    google.protobuf.UInt32Value qcl_InfoPeriodicCSI_RS = 7;
+}
+
+message PowerControlOffsetSS
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        minus_db3 = 1;
+        db0 = 2;
+        db3 = 3;
+        db6 = 4;
+    }
+    Value value = 1;
+}
+
+message NZP_CSI_RS_ResourceSet
+{
+    uint32 nzp_CSI_ResourceSetId = 1;
+    repeated uint32 nzp_CSI_RS_Resources = 2;
+    OnOffOpt repetition = 3;
+    google.protobuf.UInt32Value aperiodicTriggeringOffset = 4;
+    TrueOpt trs_Info = 5;
+}
+
+message CSI_IM_Resource
+{
+    uint32 csi_IM_ResourceId = 1;
+    oneof csi_IM_ResourceElementPattern {
+        Pattern0 pattern0 = 2;
+        Pattern1 pattern1 = 3;
+    }
+    CSI_FrequencyOccupation freqBand = 4;
+    CSI_ResourcePeriodicityAndOffset periodicityAndOffset = 5;
+}
+
+message Pattern0
+{
+    SubcarrierLocation_p0 subcarrierLocation_p0 = 1;
+    uint32 symbolLocation_p0 = 2;
+}
+
+message SubcarrierLocation_p0
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        s0 = 1;
+        s2 = 2;
+        s4 = 3;
+        s6 = 4;
+        s8 = 5;
+        s10 = 6;
+    }
+    Value value = 1;
+}
+
+message Pattern1
+{
+    SubcarrierLocation_p1 subcarrierLocation_p1 = 1;
+    uint32 symbolLocation_p1 = 2;
+}
+
+message SubcarrierLocation_p1
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        s0 = 1;
+        s4 = 2;
+        s8 = 3;
+    }
+    Value value = 1;
+}
+
+message CSI_IM_ResourceSet
+{
+    uint32 csi_IM_ResourceSetId = 1;
+    repeated uint32 csi_IM_Resources = 2;
+}
+
+message CSI_SSB_ResourceSet
+{
+    uint32 csi_SSB_ResourceSetId = 1;
+    repeated uint32 csi_SSB_ResourceList = 2;
+}
+
+message CSI_ResourceConfig
+{
+    uint32 csi_ResourceConfigId = 1;
+    oneof csi_RS_ResourceSetList {
+        NZP_CSI_RS_SSB nzp_CSI_RS_SSB = 2;
+        CSI_IM_ResourceSetList csi_IM_ResourceSetList = 3;
+    }
+    uint32 bwp_Id = 4;
+    ResourceType resourceType = 5;
+}
+
+message NZP_CSI_RS_SSB
+{
+    repeated uint32 nzp_CSI_RS_ResourceSetList = 1;
+    repeated uint32 csi_SSB_ResourceSetList = 2;
+}
+
+message CSI_IM_ResourceSetList
+{
+    repeated uint32 items = 1;
+}
+
+message ResourceType
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        aperiodic = 1;
+        semiPersistent = 2;
+        periodic = 3;
+    }
+    Value value = 1;
+}
+
+message CSI_ReportConfig
+{
+    uint32 reportConfigId = 1;
+    google.protobuf.UInt32Value carrier = 2;
+    uint32 resourcesForChannelMeasurement = 3;
+    google.protobuf.UInt32Value csi_IM_ResourcesForInterference = 4;
+    google.protobuf.UInt32Value nzp_CSI_RS_ResourcesForInterference = 5;
+    oneof reportConfigType {
+        CSI_ReportConfigType_Periodic periodic = 6;
+        CSI_ReportConfigType_SemiPersistentOnPUCCH semiPersistentOnPUCCH = 7;
+        CSI_ReportConfigType_SemiPersistentOnPUSCH semiPersistentOnPUSCH = 8;
+        CSI_ReportConfigType_Aperiodic aperiodic = 9;
+    }
+    oneof reportQuantity {
+        Null none = 10;
+        Null cri_RI_PMI_CQI = 11;
+        Null cri_RI_i1 = 12;
+        CRI_RI_i1_CQI cri_RI_i1_CQI = 13;
+        Null cri_RI_CQI = 14;
+        Null cri_RSRP = 15;
+        Null ssb_Index_RSRP = 16;
+        Null cri_RI_LI_PMI_CQI = 17;
+    }
+    ReportFreqConfiguration reportFreqConfiguration = 18;
+    ConfiguredOpt timeRestrictionForChannelMeasurements = 19;
+    ConfiguredOpt timeRestrictionForInterferenceMeasurements = 20;
+    CodebookConfig codebookConfig = 21;
+    CSI_ReportConfigDummy dummy = 22;
+    oneof groupBasedBeamReporting {
+        Null enabled = 23;
+        GroupBasedBeamReporting_Disabled disabled = 24;
+    }
+    CQI_Table cqi_Table = 25;
+    SubbandSize subbandSize = 26;
+    repeated PortIndexFor8Ranks non_PMI_PortIndication = 27;
+    SemiPersistentOnPUSCH_v1530 semiPersistentOnPUSCH_v1530 = 28;
+}
+
+message CSI_ReportConfigType_Periodic
+{
+    CSI_ReportPeriodicityAndOffset reportSlotConfig = 1;
+    repeated PUCCH_CSI_Resource pucch_CSI_ResourceList = 2;
+}
+
+message CSI_ReportPeriodicityAndOffset
+{
+    oneof c {
+        uint32 slots4 = 1;
+        uint32 slots5 = 2;
+        uint32 slots8 = 3;
+        uint32 slots10 = 4;
+        uint32 slots16 = 5;
+        uint32 slots20 = 6;
+        uint32 slots40 = 7;
+        uint32 slots80 = 8;
+        uint32 slots160 = 9;
+        uint32 slots320 = 10;
+    }
+}
+
+message PUCCH_CSI_Resource
+{
+    uint32 uplinkBandwidthPartId = 1;
+    uint32 pucch_Resource = 2;
+}
+
+message CSI_ReportConfigType_SemiPersistentOnPUCCH
+{
+    CSI_ReportPeriodicityAndOffset reportSlotConfig = 1;
+    repeated PUCCH_CSI_Resource pucch_CSI_ResourceList = 2;
+}
+
+message CSI_ReportConfigType_SemiPersistentOnPUSCH
+{
+    ReportSlotConfig reportSlotConfig = 1;
+    repeated uint32 reportSlotOffsetList = 2;
+    uint32 p0alpha = 3;
+}
+
+message ReportSlotConfig
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        sl5 = 1;
+        sl10 = 2;
+        sl20 = 3;
+        sl40 = 4;
+        sl80 = 5;
+        sl160 = 6;
+        sl320 = 7;
+    }
+    Value value = 1;
+}
+
+message CSI_ReportConfigType_Aperiodic
+{
+    repeated uint32 reportSlotOffsetList = 1;
+}
+
+message CRI_RI_i1_CQI
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        n2 = 1;
+        n4 = 2;
+    }
+    Value value = 1;
+}
+
+message ReportFreqConfiguration
+{
+    CQI_FormatIndicator cqi_FormatIndicator = 1;
+    PMI_FormatIndicator pmi_FormatIndicator = 2;
+    oneof csi_ReportingBand {
+        string subbands3 = 3;
+        string subbands4 = 4;
+        string subbands5 = 5;
+        string subbands6 = 6;
+        string subbands7 = 7;
+        string subbands8 = 8;
+        string subbands9 = 9;
+        string subbands10 = 10;
+        string subbands11 = 11;
+        string subbands12 = 12;
+        string subbands13 = 13;
+        string subbands14 = 14;
+        string subbands15 = 15;
+        string subbands16 = 16;
+        string subbands17 = 17;
+        string subbands18 = 18;
+        string subbands19_v1530 = 19;
+    }
+}
+
+message CQI_FormatIndicator
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        widebandCQI = 1;
+        subbandCQI = 2;
+    }
+    Value value = 1;
+}
+
+message PMI_FormatIndicator
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        widebandPMI = 1;
+        subbandPMI = 2;
+    }
+    Value value = 1;
+}
+
+message CodebookConfig
+{
+    oneof codebookType {
+        CodebookType_Type1 type1 = 1;
+        CodebookType_Type2 type2 = 2;
+    }
+}
+
+message CodebookType_Type1
+{
+    oneof subType {
+        CodebookSubType_SinglePanel typeI_SinglePanel = 1;
+        CodebookSubType_MultiPanel typeI_MultiPanell = 2;
+    }
+    uint32 codebookMode = 3;
+}
+
+message CodebookSubType_SinglePanel
+{
+    oneof nrOfAntennaPorts {
+        CodebookNrOfAntennaPorts_Two two = 1;
+        CodebookNrOfAntennaPorts_MoreThanTwo moreThanTwo = 2;
+    }
+    string typeI_SinglePanel_ri_Restriction = 3;
+}
+
+message CodebookNrOfAntennaPorts_Two
+{
+    string twoTX_CodebookSubsetRestriction = 1;
+}
+
+message CodebookNrOfAntennaPorts_MoreThanTwo
+{
+    oneof n1_n2 {
+        string two_one_TypeI_SinglePanel_Restriction = 1;
+        string two_two_TypeI_SinglePanel_Restriction = 2;
+        string four_one_TypeI_SinglePanel_Restriction = 3;
+        string three_two_TypeI_SinglePanel_Restriction = 4;
+        string six_one_TypeI_SinglePanel_Restriction = 5;
+        string four_two_TypeI_SinglePanel_Restriction = 6;
+        string eight_one_TypeI_SinglePanel_Restriction = 7;
+        string four_three_TypeI_SinglePanel_Restriction = 8;
+        string six_two_TypeI_SinglePanel_Restriction = 9;
+        string twelve_one_TypeI_SinglePanel_Restriction = 10;
+        string four_four_TypeI_SinglePanel_Restriction = 11;
+        string eight_two_TypeI_SinglePanel_Restriction = 12;
+        string sixteen_one_TypeI_SinglePanel_Restriction = 13;
+    }
+    google.protobuf.StringValue typeI_SinglePanel_codebookSubsetRestriction_i2 = 14;
+}
+
+message CodebookSubType_MultiPanel
+{
+    oneof ng_n1_n2 {
+        string two_two_one_TypeI_MultiPanel_Restriction = 1;
+        string two_four_one_TypeI_MultiPanel_Restriction = 2;
+        string four_two_one_TypeI_MultiPanel_Restriction = 3;
+        string two_two_two_TypeI_MultiPanel_Restriction = 4;
+        string two_eight_one_TypeI_MultiPanel_Restriction = 5;
+        string four_four_one_TypeI_MultiPanel_Restriction = 6;
+        string two_four_two_TypeI_MultiPanel_Restriction = 7;
+        string four_two_two_TypeI_MultiPanel_Restriction = 8;
+    }
+    string ri_Restriction = 9;
+}
+
+message CodebookType_Type2
+{
+    oneof subType {
+        CodebookSubType_TypeII typeII = 1;
+        CodebookSubType_TypeII_PortSelection typeII_PortSelection = 2;
+    }
+    PhaseAlphabetSize phaseAlphabetSize = 3;
+    bool subbandAmplitude = 4;
+    NumberOfBeams numberOfBeams = 5;
+}
+
+message CodebookSubType_TypeII
+{
+    oneof n1_n2_codebookSubsetRestriction {
+        string two_one = 1;
+        string two_two = 2;
+        string four_one = 3;
+        string three_two = 4;
+        string six_one = 5;
+        string four_two = 6;
+        string eight_one = 7;
+        string four_three = 8;
+        string six_two = 9;
+        string twelve_one = 10;
+        string four_four = 11;
+        string eight_two = 12;
+        string sixteen_one = 13;
+    }
+    string typeII_RI_Restriction = 14;
+}
+
+message CodebookSubType_TypeII_PortSelection
+{
+    PortSelectionSamplingSize portSelectionSamplingSize = 1;
+    string typeII_PortSelectionRI_Restriction = 2;
+}
+
+message PhaseAlphabetSize
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        n4 = 1;
+        n8 = 2;
+    }
+    Value value = 1;
+}
+
+message NumberOfBeams
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        two = 1;
+        three = 2;
+        four = 3;
+    }
+    Value value = 1;
+}
+
+message PortSelectionSamplingSize
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        n1 = 1;
+        n2 = 2;
+        n3 = 3;
+        n4 = 4;
+    }
+    Value value = 1;
+}
+
+message CSI_ReportConfigDummy
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        n1 = 1;
+        n2 = 2;
+    }
+    Value value = 1;
+}
+
+message GroupBasedBeamReporting_Disabled
+{
+    NrofReportedRS nrofReportedRS = 1;
+}
+
+message NrofReportedRS
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        n1 = 1;
+        n2 = 2;
+        n3 = 3;
+        n4 = 4;
+    }
+    Value value = 1;
+}
+
+message CQI_Table
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        table1 = 1;
+        table2 = 2;
+        table3 = 3;
+    }
+    Value value = 1;
+}
+
+message SubbandSize
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        value1 = 1;
+        value2 = 2;
+    }
+    Value value = 1;
+}
+
+message PortIndexFor8Ranks
+{
+    oneof c {
+        PortIndex8 portIndex8 = 1;
+        PortIndex4 portIndex4 = 2;
+        PortIndex2 portIndex2 = 3;
+        Null portIndex1 = 4;
+    }
+}
+
+message PortIndex8
+{
+    google.protobuf.UInt32Value rank1_8 = 1;
+    repeated uint32 rank2_8 = 2;
+    repeated uint32 rank3_8 = 3;
+    repeated uint32 rank4_8 = 4;
+    repeated uint32 rank5_8 = 5;
+    repeated uint32 rank6_8 = 6;
+    repeated uint32 rank7_8 = 7;
+    repeated uint32 rank8_8 = 8;
+}
+message PortIndex4
+{
+    google.protobuf.UInt32Value rank1_4 = 1;
+    repeated uint32 rank2_4 = 2;
+    repeated uint32 rank3_4 = 3;
+    repeated uint32 rank4_4 = 4;
+}
+message PortIndex2
+{
+    google.protobuf.UInt32Value rank1_2 = 1;
+    repeated uint32 rank2_2 = 2;
+}
+
+message SemiPersistentOnPUSCH_v1530
+{
+    enum ReportSlotConfig_v1530 {
+        protobuf_unspecified = 0;
+        sl4 = 1;
+        sl8 = 2;
+        sl16 = 3;
+    }
+    ReportSlotConfig_v1530 reportSlotConfig_v1530 = 1;
+}
+
+message CSI_AperiodicTriggerStateList
+{
+    repeated CSI_AperiodicTriggerState items = 1;
+}
+
+message CSI_AperiodicTriggerState
+{
+    repeated CSI_AssociatedReportConfigInfo associatedReportConfigInfoList = 1;
+}
+
+message CSI_AssociatedReportConfigInfo
+{
+    uint32 reportConfigId = 1;
+    oneof resourcesForChannel {
+        NZP_CSI_RS nzp_CSI_RS = 2;
+        uint32 csi_SSB_ResourceSet = 3;
+    }
+    google.protobuf.UInt32Value csi_IM_ResourcesForInterference = 4;
+    google.protobuf.UInt32Value nzp_CSI_RS_ResourcesForInterference = 5;
+}
+
+message NZP_CSI_RS
+{
+    uint32 resourceSet = 1;
+    repeated uint32 qcl_info = 2;
+}
+
+message CSI_SemiPersistentOnPUSCH_TriggerStateList
+{
+   repeated CSI_SemiPersistentOnPUSCH_TriggerState items = 1;
+}
+
+message CSI_SemiPersistentOnPUSCH_TriggerState
+{
+    uint32 associatedReportConfigInfo = 1;
+}
+
+message SCellDeactivationTimer
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        ms20 = 1;
+        ms40 = 2;
+        ms80 = 3;
+        ms160 = 4;
+        ms200 = 5;
+        ms240 = 6;
+        ms320 = 7;
+        ms400 = 8;
+        ms480 = 9;
+        ms520 = 10;
+        ms640 = 11;
+        ms720 = 12;
+        ms840 = 13;
+        ms1280 = 14;
+    }
+    Value value = 1;
+}
+
+message CrossCarrierSchedulingConfig
+{
+    oneof schedulingCellInfo {
+        OwnCrossCarrierSchedulingConfig own = 1;
+        OtherCrossCarrierSchedulingConfig other = 2;
+    }
+}
+message OwnCrossCarrierSchedulingConfig
+{
+    bool cif_Presence = 1;
+}
+
+message OtherCrossCarrierSchedulingConfig
+{
+    uint32 schedulingCellId = 1;
+    uint32 cif_InSchedulingCell = 2;
+}
+
+message PathlossReferenceLinking
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        pCell = 1;
+        sCell = 2;
+    }
+    Value value = 1;
+}
+
+message MeasConfig
+{
+    MeasObjectToRemoveList measObjectToRemoveList = 1;
+    MeasObjectToAddModList measObjectToAddModList = 2;
+    ReportConfigToRemoveList reportConfigToRemoveList = 3;
+    ReportConfigToAddModList reportConfigToAddModList = 4;
+    MeasIdToRemoveList measIdToRemoveList = 5;
+    MeasIdToAddModList measIdToAddModList = 6;
+    oneof s_MeasureConfig {
+        uint32 ssb_RSRP = 7;
+        uint32 csi_RSRP = 8;
+    }
+    QuantityConfig quantityConfig = 9;
+    MeasGapConfig measGapConfig = 10;
+    MeasGapSharingConfig measGapSharingConfig = 11;
+}
+
+message MeasObjectToRemoveList
+{
+    repeated uint32 items = 1;
+}
+
+message MeasObjectToAddModList
+{
+    repeated MeasObjectToAddMod items = 1;
+}
+
+message ReportConfigToRemoveList
+{
+    repeated uint32 items = 1;
+}
+
+message ReportConfigToAddModList
+{
+    repeated ReportConfigToAddMod items = 1;
+}
+
+message MeasIdToRemoveList
+{
+    repeated uint32 items = 1;
+}
+
+message MeasIdToAddModList
+{
+    repeated MeasIdToAddMod items = 1;
+}
+
+message MeasObjectToAddMod
+{
+    uint32 measObjectId = 1;
+    oneof measObject {
+        MeasObjectNR measObjectNR = 2;
+        MeasObjectEUTRA measObjectEUTRA = 3;
+    }
+}
+
+message MeasObjectNR
+{
+    google.protobuf.UInt32Value ssbFrequency = 1;
+    SubcarrierSpacing ssbSubcarrierSpacing = 2;
+    SSB_MTC smtc1 = 3;
+    SSB_MTC2 smtc2 = 4;
+    google.protobuf.UInt32Value refFreqCSI_RS = 5;
+    ReferenceSignalConfig referenceSignalConfig = 6;
+    ThresholdNR absThreshSS_BlocksConsolidation = 7;
+    ThresholdNR absThreshCSI_RS_Consolidation = 8;
+    google.protobuf.UInt32Value nrofSS_BlocksToAverage = 9;
+    google.protobuf.UInt32Value nrofCSI_RS_ResourcesToAverage = 10;
+    uint32 quantityConfigIndex = 11;
+    Q_OffsetRangeList offsetMO = 12;
+    PCI_List cellsToRemoveList = 13;
+    CellsToAddModList cellsToAddModList = 14;
+    PCI_RangeIndexList blackCellsToRemoveList = 15;
+    repeated PCI_RangeElement blackCellsToAddModList = 16;
+    PCI_RangeIndexList whiteCellsToRemoveList = 17;
+    repeated PCI_RangeElement whiteCellsToAddModList = 18;
+    google.protobuf.UInt32Value freqBandIndicatorNR_v1530 = 19;
+    MeasCycleSCell_v1530 measCycleSCell_v1530 = 20;
+}
+
+message ReferenceSignalConfig
+{
+    SSB_ConfigMobility ssb_ConfigMobility = 1;
+    oneof csi_rs_ResourceConfigMobility {
+        Null release_csi_rs_ResourceConfigMobility = 2;
+        CSI_RS_ResourceConfigMobility setup_csi_rs_ResourceConfigMobility = 3;
+    }
+}
+
+message SSB_ConfigMobility
+{
+    oneof ssb_ToMeasure {
+        Null release_ssb_ToMeasure = 1;
+        SSB_ToMeasure setup_ssb_ToMeasure = 2;
+    }
+    bool deriveSSB_IndexFromCell = 3;
+    SS_RSSI_Measurement ss_RSSI_Measurement = 4;
+}
+
+message SSB_ToMeasure
+{
+    oneof c {
+        string shortBitmap = 1;
+        string mediumBitmap = 2;
+        string longBitmap = 3;
+    }
+}
+
+message SS_RSSI_Measurement
+{
+    string measurementSlots = 1;
+    uint32 endSymbol = 2;
+}
+
+message CSI_RS_ResourceConfigMobility
+{
+    SubcarrierSpacing subcarrierSpacing = 1;
+    repeated CSI_RS_CellMobility csi_RS_CellList_Mobility = 2;
+    google.protobuf.UInt32Value refServCellIndex_v1530 =3;
+}
+
+message CSI_RS_CellMobility
+{
+    uint32 cellId = 1;
+    CSI_RS_MeasurementBW csi_rs_MeasurementBW = 2;
+    Density density = 3;
+    repeated CSI_RS_Resource_Mobility csi_rs_ResourceList_Mobility = 4;
+}
+
+message CSI_RS_MeasurementBW
+{
+    enum NrofPRBs {
+        protobuf_unspecified = 0;
+        size24 = 1;
+        size48 = 2;
+        size96 = 3;
+        size192 = 4;
+        size264 = 5;
+    }
+
+    NrofPRBs nrofPRBs = 1;
+    uint32 startPRB = 2;
+}
+
+message Density
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        d1 = 1;
+        d3 = 2;
+    }
+    Value value = 1;
+}
+
+message CSI_RS_Resource_Mobility
+{
+    uint32 csi_RS_Index = 1;
+    oneof slotConfig {
+        uint32 ms4 = 2;
+        uint32 ms5 = 3;
+        uint32 ms10 = 4;
+        uint32 ms20 = 5;
+        uint32 ms40 = 6;
+    }
+    AssociatedSSB associatedSSB = 7;
+    oneof frequencyDomainAllocation {
+        string row1 = 8;
+        string row2 = 9;
+    }
+    uint32 firstOFDMSymbolInTimeDomain = 10;
+    uint32 sequenceGenerationConfig = 11;
+}
+
+message AssociatedSSB
+{
+    uint32 ssb_Index = 1;
+    bool isQuasiColocated = 2;
+}
+
+message ThresholdNR
+{
+    google.protobuf.UInt32Value thresholdRSRP = 1;
+    google.protobuf.UInt32Value thresholdRSRQ = 2;
+    google.protobuf.UInt32Value thresholdSINR = 3;
+}
+
+
+message Q_OffsetRangeList
+{
+    Q_OffsetRange rsrpOffsetSSB = 1;
+    Q_OffsetRange rsrqOffsetSSB = 2;
+    Q_OffsetRange sinrOffsetSSB = 3;
+    Q_OffsetRange rsrpOffsetCSI_RS = 4;
+    Q_OffsetRange rsrqOffsetCSI_RS = 5;
+    Q_OffsetRange sinrOffsetCSI_RS = 6;
+}
+
+message Q_OffsetRange
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        minus_dB24 = 1;
+        minus_dB22 = 2;
+        minus_dB20 = 3;
+        minus_dB18 = 4;
+        minus_dB16 = 5;
+        minus_dB14 = 6;
+        minus_dB12 = 7;
+        minus_dB10 = 8;
+        minus_dB8 = 9;
+        minus_dB6 = 10;
+        minus_dB5 = 11;
+        minus_dB4 = 12;
+        minus_dB3 = 13;
+        minus_dB2 = 14;
+        minus_dB1 = 15;
+        dB0 = 16;
+        dB1 = 17;
+        dB2 = 18;
+        dB3 = 19;
+        dB4 = 20;
+        dB5 = 21;
+        dB6 = 22;
+        dB8 = 23;
+        dB10 = 24;
+        dB12 = 25;
+        dB14 = 26;
+        dB16 = 27;
+        dB18 = 28;
+        dB20 = 29;
+        dB22 = 30;
+        dB24 = 31;
+    }
+    Value value = 1;
+}
+
+message CellsToAddModList
+{
+    repeated CellsToAddMod items = 1;
+}
+
+message CellsToAddMod
+{
+    uint32 physCellId = 1;
+    Q_OffsetRangeList cellIndividualOffset = 2;
+}
+
+message PCI_List
+{
+    repeated uint32 items = 1;
+}
+
+message PCI_RangeIndexList
+{
+    repeated uint32 items = 1;
+}
+
+message PCI_RangeElement
+{
+    uint32 pci_RangeIndex = 1;
+    PCI_Range pci_Range = 2;
+}
+
+message PCI_Range
+{
+    uint32 start = 1;
+    Range range = 2;
+}
+
+message Range
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        n4 = 1;
+        n8 = 2;
+        n12 = 3;
+        n16 = 4;
+        n24 = 5;
+        n32 = 6;
+        n48 = 7;
+        n64 = 8;
+        n84 = 9;
+        n96 = 10;
+        n128 = 11;
+        n168 = 12;
+        n252 = 13;
+        n504 = 14;
+        n1008 = 15;
+    }
+    Value value = 1;
+}
+
+message MeasCycleSCell_v1530
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        sf160 = 1;
+        sf256 = 2;
+        sf320 = 3;
+        sf512 = 4;
+        sf640 = 5;
+        sf1024 = 6;
+        sf1280 = 7;
+    }
+    Value value = 1;
+}
+
+message MeasObjectEUTRA
+{
+    uint32 carrierFreq = 1;
+    EUTRA_AllowedMeasBandwidth allowedMeasBandwidth = 2;
+    EUTRA_CellIndexList cellsToRemoveListEUTRAN = 3;
+    repeated EUTRA_Cell cellsToAddModListEUTRAN = 4;
+    EUTRA_CellIndexList blackCellsToRemoveListEUTRAN = 5;
+    repeated EUTRA_BlackCell blackCellsToAddModListEUTRAN = 6;
+    bool eutra_PresenceAntennaPort1 = 7;
+    EUTRA_Q_OffsetRange eutra_Q_OffsetRange = 8;
+    bool widebandRSRQ_Meas = 9;
+}
+
+message EUTRA_AllowedMeasBandwidth
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        mbw6 = 1;
+        mbw15 = 2;
+        mbw25 = 3;
+        mbw50 = 4;
+        mbw75 = 5;
+        mbw100 = 6;
+    }
+    Value value = 1;
+}
+
+message EUTRA_CellIndexList
+{
+    repeated uint32 items = 1;
+}
+
+message EUTRA_Cell
+{
+    uint32 cellIndexEUTRA = 1;
+    uint32 physCellId = 2;
+    EUTRA_Q_OffsetRange cellIndividualOffset = 3;
+}
+
+message EUTRA_Q_OffsetRange
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        minus_dB24 = 1;
+        minus_dB22 = 2;
+        minus_dB20 = 3;
+        minus_dB18 = 4;
+        minus_dB16 = 5;
+        minus_dB14 = 6;
+        minus_dB12 = 7;
+        minus_dB10 = 8;
+        minus_dB8 = 9;
+        minus_dB6 = 10;
+        minus_dB5 = 11;
+        minus_dB4 = 12;
+        minus_dB3 = 13;
+        minus_dB2 = 14;
+        minus_dB1 = 15;
+        dB0 = 16;
+        dB1 = 17;
+        dB2 = 18;
+        dB3 = 19;
+        dB4 = 20;
+        dB5 = 21;
+        dB6 = 22;
+        dB8 = 23;
+        dB10 = 24;
+        dB12 = 25;
+        dB14 = 26;
+        dB16 = 27;
+        dB18 = 28;
+        dB20 = 29;
+        dB22 = 30;
+        dB24 = 31;
+    }
+    Value value = 1;
+}
+
+message EUTRA_BlackCell
+{
+    uint32  cellIndexEUTRA = 1;
+    EUTRA_PhysCellIdRange physCellIdRange = 2;
+}
+
+message EUTRA_PhysCellIdRange
+{
+    uint32 start = 1;
+    EUTRA_Range range = 2;
+}
+
+message EUTRA_Range
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        n4 = 1;
+        n8 = 2;
+        n12 = 3;
+        n16 = 4;
+        n24 = 5;
+        n32 = 6;
+        n48 = 7;
+        n64 = 8;
+        n84 = 9;
+        n96 = 10;
+        n128 = 11;
+        n168 = 12;
+        n252 = 13;
+        n504 = 14;
+    }
+    Value value = 1;
+}
+
+message ReportConfigToAddMod
+{
+    uint32 reportConfigId = 1;
+    oneof reportConfig {
+        ReportConfigNR reportConfigNR = 2;
+        ReportConfigInterRAT reportConfigInterRAT = 3;
+    }
+}
+
+message ReportConfigNR
+{
+    oneof reportType {
+        PeriodicalReportConfig periodical = 1;
+        EventTriggerConfig eventTriggered = 2;
+        ReportCGI reportCGI = 3;
+    }
+}
+
+message PeriodicalReportConfig
+{
+    NR_RS_Type rsType = 1;
+    ReportInterval reportInterval = 2;
+    ReportAmount reportAmount = 3;
+    MeasReportQuantity reportQuantityCell = 4;
+    uint32 maxReportCells = 5;
+    MeasReportQuantity reportQuantityRS_Indexes = 6;
+    google.protobuf.UInt32Value maxNrofRS_IndexesToReport = 7;
+    bool includeBeamMeasurements = 8;
+    bool useWhiteCellList = 9;
+}
+
+message NR_RS_Type
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        ssb = 1;
+        csi_rs = 2;
+    }
+    Value value = 1;
+}
+
+message NR_FreqInfo
+{
+    google.protobuf.UInt32Value measuredFrequency = 1;
+}
+
+message ReportInterval
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        ms120 = 1;
+        ms240 = 2;
+        ms480 = 3;
+        ms640 = 4;
+        ms1024 = 5;
+        ms2048 = 6;
+        ms5120 = 7;
+        ms10240 = 8;
+        ms20480 = 9;
+        ms40960 = 10;
+        min1 = 11;
+        min6 = 12;
+        min12 = 13;
+        min30 = 14;
+    }
+    Value value = 1;
+}
+
+message ReportAmount
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        r1 = 1;
+        r2 = 2;
+        r4 = 3;
+        r8 = 4;
+        r16 = 5;
+        r32 = 6;
+        r64 = 7;
+        infinity = 8;
+    }
+    Value value = 1;
+}
+
+message MeasReportQuantity
+{
+    bool rsrp = 1;
+    bool rsrq = 2;
+    bool sinr = 3;
+}
+
+message EventTriggerConfig
+{
+    oneof eventId {
+        EventA1 eventA1 = 1;
+        EventA2 eventA2 = 2;
+        EventA3 eventA3 = 3;
+        EventA4 eventA4 = 4;
+        EventA5 eventA5 = 5;
+        EventA6 eventA6 = 6;
+    }
+    NR_RS_Type rsType = 7;
+    ReportInterval reportInterval = 8;
+    ReportAmount reportAmount = 9;
+    MeasReportQuantity reportQuantityCell = 10;
+    uint32 maxReportCells = 11;
+    MeasReportQuantity reportQuantityRS_Indexes = 12;
+    google.protobuf.UInt32Value maxNrofRS_IndexesToReport = 13;
+    bool includeBeamMeasurements = 14;
+    ReportAddNeighMeas reportAddNeighMeas = 15;
+}
+
+message EventA1
+{
+    MeasTriggerQuantity a1_Threshold = 1;
+    bool reportOnLeave = 2;
+    uint32 hysteresis = 3;
+    TimeToTrigger timeToTrigger = 4;
+}
+
+message EventA2
+{
+    MeasTriggerQuantity a2_Threshold = 1;
+    bool reportOnLeave = 2;
+    uint32 hysteresis = 3;
+    TimeToTrigger timeToTrigger = 4;
+}
+
+message EventA3
+{
+    MeasTriggerQuantity a3_Threshold = 1;
+    bool reportOnLeave = 2;
+    uint32 hysteresis = 3;
+    TimeToTrigger timeToTrigger = 4;
+    bool useWhiteCellList = 5;
+}
+
+message EventA4
+{
+    MeasTriggerQuantity a4_Threshold = 1;
+    bool reportOnLeave = 2;
+    uint32 hysteresis = 3;
+    TimeToTrigger timeToTrigger = 4;
+    bool useWhiteCellList = 5;
+}
+
+message EventA5
+{
+    MeasTriggerQuantity a5_Threshold1 = 1;
+    MeasTriggerQuantity a5_Threshold2 = 2;
+    bool reportOnLeave = 3;
+    uint32 hysteresis = 4;
+    TimeToTrigger timeToTrigger = 5;
+    bool useWhiteCellList = 6;
+}
+
+message EventA6
+{
+    MeasTriggerQuantityOffset a6_Offset = 1;
+    bool reportOnLeave = 2;
+    uint32 hysteresis = 3;
+    TimeToTrigger timeToTrigger = 4;
+    bool useWhiteCellList = 5;
+}
+
+message MeasTriggerQuantity
+{
+    oneof c {
+        uint32 rsrp = 1;
+        uint32 rsrq = 2;
+        uint32 sinr = 3;
+   }
+}
+
+message TimeToTrigger
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        ms0 = 1;
+        ms40 = 2;
+        ms64 = 3;
+        ms80 = 4;
+        ms100 = 5;
+        ms128 = 6;
+        ms160 = 7;
+        ms256 = 8;
+        ms320 = 9;
+        ms480 = 10;
+        ms512 = 11;
+        ms640 = 12;
+        ms1024 = 13;
+        ms1280 = 14;
+        ms2560 = 15;
+        ms5120 = 16;
+    }
+    Value value = 1;
+}
+
+message MeasTriggerQuantityOffset
+{
+    oneof c {
+        sint32 rsrp = 1;
+        sint32 rsrq = 2;
+        sint32 sinr = 3;
+    }
+}
+
+message ReportAddNeighMeas
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        setup = 1;
+    }
+    Value value = 1;
+}
+
+message ReportCGI
+{
+    uint32 cellForWhichToReportCGI = 1;
+}
+
+message ReportConfigInterRAT
+{
+    oneof reportType {
+        PeriodicalReportConfigInterRAT periodical = 1;
+        EventTriggerConfigInterRAT eventTriggered = 2;
+        ReportCGI_EUTRA reportCGI = 3;
+    }
+}
+
+message PeriodicalReportConfigInterRAT
+{
+    ReportInterval reportInterval = 1;
+    ReportAmount reportAmount = 2;
+    MeasReportQuantity reportQuantity = 3;
+    uint32 maxReportCells = 4;
+}
+
+message EventTriggerConfigInterRAT
+{
+    oneof eventId {
+        EventB1 eventB1 = 1;
+        EventB2 eventB2 = 2;
+    }
+    NR_RS_Type rsType = 3;
+    ReportInterval reportInterval = 4;
+    ReportAmount reportAmount = 5;
+    MeasReportQuantity reportQuantity = 6;
+    uint32 maxReportCells = 7;
+}
+
+message EventB1
+{
+    MeasTriggerQuantityEUTRA b1_ThresholdEUTRA = 1;
+    bool reportOnLeave = 2;
+    uint32 hysteresis = 3;
+    TimeToTrigger timeToTrigger = 4;
+}
+
+message EventB2
+{
+    MeasTriggerQuantity b2_Threshold1 = 1;
+    MeasTriggerQuantityEUTRA b2_Threshold2EUTRA = 2;
+    bool reportOnLeave = 3;
+    uint32 hysteresis = 4;
+    TimeToTrigger timeToTrigger = 5;
+}
+
+message MeasTriggerQuantityEUTRA
+{
+    oneof c {
+        uint32 rsrp = 1;
+        uint32 rsrq = 2;
+        uint32 sinr = 3;
+    }
+}
+
+message ReportCGI_EUTRA
+{
+    uint32 cellForWhichToReportCGI = 1;
+}
+
+message MeasIdToAddMod
+{
+    uint32 measId = 1;
+    uint32 measObjectId = 2;
+    uint32 reportConfigId = 3;
+}
+
+message QuantityConfig
+{
+    repeated QuantityConfigNR quantityConfigNR_List = 1;
+    FilterConfig quantityConfigEUTRA = 2;
+}
+
+message QuantityConfigNR
+{
+    QuantityConfigRS quantityConfigCell = 1;
+    QuantityConfigRS quantityConfigRS_Index = 2;
+}
+
+message QuantityConfigRS
+{
+    FilterConfig ssb_FilterConfig = 1;
+    FilterConfig csi_RS_FilterConfig = 2;
+}
+
+message FilterConfig
+{
+    FilterCoefficient filterCoefficientRSRP = 1;
+    FilterCoefficient filterCoefficientRSRQ = 2;
+    FilterCoefficient filterCoefficientRS_SINR = 3;
+}
+
+message FilterCoefficient
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        fc0 = 1;
+        fc1 = 2;
+        fc2 = 3;
+        fc3 = 4;
+        fc4 = 5;
+        fc5 = 6;
+        fc6 = 7;
+        fc7 = 8;
+        fc8 = 9;
+        fc9 = 10;
+        fc11 = 11;
+        fc13 = 12;
+        fc15 = 13;
+        fc17 = 14;
+        fc19 = 15;
+    }
+    Value value = 1;
+}
+
+message MeasGapConfig
+{
+    oneof gapFR2 {
+        Null release_gapFR2 = 1;
+        GapConfig setup_gapFR2 = 2;
+    }
+    oneof gapFR1 {
+        Null release_gapFR1 = 3;
+        GapConfig setup_gapFR1 = 4;
+    }
+    oneof gapUE {
+        Null release_gapUE = 5;
+        GapConfig setup_gapUE = 6;
+    }
+}
+
+message GapConfig
+{
+    uint32 gapOffset = 1;
+    MGL mgl = 2;
+    MGRP mgrp = 3;
+    MGTA mgta = 4;
+}
+
+message MGL
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        ms1dot5 = 1;
+        ms3 = 2;
+        ms3dot5 = 3;
+        ms4 = 4;
+        ms5dot5 = 5;
+        ms6 = 6;
+    }
+    Value value = 1;
+}
+
+message MGRP
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        ms20 = 1;
+        ms40 = 2;
+        ms80 = 3;
+        ms160 = 4;
+    }
+    Value value = 1;
+}
+
+message MGTA
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        ms0 = 1;
+        ms0dot25 = 2;
+        ms0dot5 = 3;
+    }
+    Value value = 1;
+}
+
+message MeasGapSharingConfig
+{
+    oneof gapSharingFR2 {
+        Null release_gapSharingFR2 = 1;
+        MeasGapSharingScheme setup_gapSharingFR2 = 2;
+    }
+    oneof gapSharingFR1 {
+        Null release_gapSharingFR1 = 3;
+        MeasGapSharingScheme setup_gapSharingFR1 = 4;
+    }
+    oneof gapSharingUE {
+        Null release_gapSharingUE = 5;
+        MeasGapSharingScheme setup_gapSharingUE = 6;
+    }
+}
+
+message MeasGapSharingScheme
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        scheme00 = 1;
+        scheme01 = 2;
+        scheme10 = 3;
+        scheme11 = 4;
+    }
+    Value value = 1;
+}
+
+message OtherConfig
+{
+    oneof delayBudgetReportingConfig {
+        Null release = 1;
+        DelayBudgetReportingProhibitTimer setup = 2;
+    }
+}
+
+message DelayBudgetReportingProhibitTimer
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        s0 = 1;
+        s0dot4 = 2;
+        s0dot8 = 3;
+        s1dot6 = 4;
+        s3 = 5;
+        s6 = 6;
+        s12 = 7;
+        s30 = 8;
+    }
+    Value value = 1;
+}
+
+message OtherConfig_v1540
+{
+    oneof overheatingAssistanceConfig {
+        Null release_overheatingAssistanceConfig = 1;
+        OverheatingAssistanceConfig setup_overheatingAssistanceConfig = 2;
+    }
+}
+
+message OverheatingAssistanceConfig
+{
+    enum OverheatingIndicationProhibitTimer {
+        protobuf_unspecified = 0;
+        s0 = 1;
+        s0dot5 = 2;
+        s1 = 3;
+        s2 = 4;
+        s5 = 5;
+        s10 = 6;
+        s20 = 7;
+        s30 = 8;
+        s60 = 9;
+        s90 = 10;
+        s120 = 11;
+        s300 = 12;
+        s600 = 13;
+    }
+    OverheatingIndicationProhibitTimer overheatingIndicationProhibitTimer = 1;
+}
+
+message SCellConfig
+{
+    uint32 sCellIndex = 1;
+    ServingCellConfigCommon sCellConfigCommon = 2;
+    ServingCellConfig sCellConfigDedicated = 3;
+    SSB_MTC smtc = 4;
+}
+
+message SearchSpace
+{
+    uint32 searchSpaceId = 1;
+    google.protobuf.UInt32Value controlResourceSetId = 2;
+    oneof monitoringSlotPeriodicityAndOffset {
+        Null sl1 = 3;
+        uint32 sl2 = 4;
+        uint32 sl4 = 5;
+        uint32 sl5 = 6;
+        uint32 sl8 = 7;
+        uint32 sl10 = 8;
+        uint32 sl16 = 9;
+        uint32 sl20 = 10;
+        uint32 sl40 = 11;
+        uint32 sl80 = 12;
+        uint32 sl160 = 13;
+        uint32 sl320 = 14;
+        uint32 sl640 = 15;
+        uint32 sl1280 = 16;
+        uint32 sl2560 = 17;
+    }
+    google.protobuf.UInt32Value duration = 18;
+    google.protobuf.StringValue monitoringSymbolsWithinSlot = 19;
+    NrofCandidates nrofCandidates = 20;
+    oneof searchSpaceType {
+        Common common = 21;
+        UE_Specific ue_Specific = 22;
+    }
+}
+
+message NrofCandidates
+{
+    AggregationLevel aggregationLevel1 = 1;
+    AggregationLevel aggregationLevel2 = 2;
+    AggregationLevel aggregationLevel4 = 3;
+    AggregationLevel aggregationLevel8 = 4;
+    AggregationLevel aggregationLevel16 = 5;
+}
+
+message AggregationLevel
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        n0 = 1;
+        n1 = 2;
+        n2 = 3;
+        n3 = 4;
+        n4 = 5;
+        n5 = 6;
+        n6 = 7;
+        n8 = 8;
+    }
+    Value value = 1;
+}
+
+message Common
+{
+    DCI_Format0_0_AndFormat1_0 dci_Format0_0_AndFormat1_0 = 1;
+    DCI_Format2_0 dci_Format2_0 = 2;
+    DCI_Format2_1 dci_Format2_1 = 3;
+    DCI_Format2_2 dci_Format2_2 = 4;
+    DCI_Format2_3 dci_Format2_3 = 5;
+}
+
+message DCI_Format0_0_AndFormat1_0
+{
+}
+
+message DCI_Format2_0
+{
+    NrofCandidates_SFI nrofCandidates_SFI = 1;
+}
+
+message NrofCandidates_SFI
+{
+    AggregationLevel_SFI aggregationLevel1 = 1;
+    AggregationLevel_SFI aggregationLevel2 = 2;
+    AggregationLevel_SFI aggregationLevel4 = 3;
+    AggregationLevel_SFI aggregationLevel8 = 4;
+    AggregationLevel_SFI aggregationLevel16 = 5;
+}
+
+message AggregationLevel_SFI
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        n1 = 1;
+        n2 = 2;
+    }
+    Value value  = 1;
+}
+
+message DCI_Format2_1
+{
+}
+
+message DCI_Format2_2
+{
+}
+
+message DCI_Format2_3
+{
+    Dummy1 dummy1 = 1;
+    Dummy2 dummy2 = 2;
+}
+
+message Dummy1
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        sl1 = 1;
+        sl2 = 2;
+        sl4 = 3;
+        sl5 = 4;
+        sl8 = 5;
+        sl10 = 6;
+        sl16 = 7;
+        sl20 = 8;
+    }
+    Value value  = 1;
+}
+
+message Dummy2
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        n1 = 1;
+        n2 = 2;
+    }
+    Value value = 1;
+}
+
+
+message UE_Specific
+{
+    DCI_Formats dci_Formats = 1;
+}
+
+message DCI_Formats
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        formats0_0_And_1_0 = 1;
+        formats0_1_And_1_1 = 2;
+    }
+    Value value = 1;
+}
+
+message MeasResultCellListSFTD
+{
+    repeated MeasResultCellSFTD items = 1;
+}
+
+message MeasResultCellSFTD
+{
+    uint32 physCellId = 1;
+    uint32 sfn_OffsetResult = 2;
+    sint32 frameBoundaryOffsetResult = 3;
+    google.protobuf.UInt32Value rsrp_Result = 4;
+}
+
+message MeasResultList2NR
+{
+    repeated MeasResult2NR items = 1;
+}
+
+message MeasResult2NR
+{
+    google.protobuf.UInt32Value ssbFrequency = 1;
+    google.protobuf.UInt32Value refFreqCSI_RS = 2;
+    MeasResultNR measResultServingCell = 3;
+    MeasResultListNR measResultNeighCellListNR = 4;
+}
+
+message MeasQuantityResults
+{
+    google.protobuf.UInt32Value rsrp = 1;
+    google.protobuf.UInt32Value rsrq = 2;
+    google.protobuf.UInt32Value sinr = 3;
+}
+
+message ResultsPerSSB_Index
+{
+    uint32 ssb_Index = 1;
+    MeasQuantityResults ssb_Results = 2;
+}
+
+message ResultsPerCSI_RS_Index
+{
+    uint32 csi_rs_index = 1;
+    MeasQuantityResults csi_RS_Results = 2;
+}
+
+message MeasQuantityResultsEUTRA
+{
+    google.protobuf.UInt32Value rsrp = 1;
+    google.protobuf.UInt32Value rsrq = 2;
+    google.protobuf.UInt32Value sinr = 3;
+}
+
+message CellResults
+{
+    MeasQuantityResults resultsSSB_Cell = 1;
+    MeasQuantityResults resultsCSI_RS_Cell = 2;
+}
+
+message ResultsPerCSI_RS_IndexList
+{
+    repeated ResultsPerCSI_RS_Index items = 1;
+}
+
+message ResultsPerSSB_IndexList
+{
+    repeated ResultsPerSSB_Index items = 1;
+}
+
+message RsIndexResults
+{
+    ResultsPerSSB_IndexList resultsSSB_Indexes = 1;
+    ResultsPerCSI_RS_IndexList resultsCSI_RS_Indexes = 2;
+}
+
+message MeasResult
+{
+    CellResults cellResults = 1;
+    RsIndexResults rsIndexResults = 2;
+}
+
+message PLMN_Identity
+{
+    MCC mcc = 1;
+    MNC mnc = 2;
+}
+
+message MNC
+{
+    repeated uint32 mncval = 1;
+}
+
+message MCC
+{
+    repeated uint32 mccval = 1;
+}
+
+message PLMN_Identity_EUTRA_5GC
+{
+    PLMN_Identity plmn_Identity_EUTRA_5GC = 1;
+    uint32 plmn_index = 2;
+}
+
+message PLMN_IdentityList_EUTRA_5GC
+{
+    repeated PLMN_Identity_EUTRA_5GC items = 1;
+}
+
+message CellAccessRelatedInfo_EUTRA_5GC
+{
+    PLMN_IdentityList_EUTRA_5GC plmn_IdentityList_eutra_5gc = 1;
+    string trackingAreaCode_eutra_5gc = 2;
+    google.protobuf.UInt32Value ranac_5gc = 3;
+    oneof cellidentity_eutra_5gc {
+        string cellIdentity_EUTRA = 4;
+        uint32 cellId_index = 5;
+    }
+}
+
+message PLMN_IdentityList_EUTRA_EPC
+{
+    repeated PLMN_Identity items = 1;
+}
+
+message CellAccessRelatedInfo_EUTRA_EPC
+{
+    PLMN_IdentityList_EUTRA_EPC plmn_IdentityList_eutra_epc = 1;
+    string trackingAreaCode_eutra_epc = 2;
+    string cellidentity_eutra_epc = 3;
+}
+
+message CGI_info_EPC
+{
+    CellAccessRelatedInfo_EUTRA_EPC cgi_info_EPC_legacy = 1;
+    repeated CellAccessRelatedInfo_EUTRA_EPC cgi_info_EPC_list = 2;
+}
+
+message PLMN_IdentityInfo
+{
+    enum CellReservedForOperatorUse {
+        protobuf_unspecified = 0;
+        isreserved = 1;
+        notreserved = 2;
+    }
+    repeated PLMN_Identity plmn_IdentityList = 1;
+    google.protobuf.StringValue trackingAreaCode = 2;
+    google.protobuf.UInt32Value ranac = 3;
+    string cellIdentity = 4;
+    CellReservedForOperatorUse cellReservedForOperatorUse = 5;
+}
+
+message PDCCH_ConfigSIB1
+{
+    uint32 controlResourceSetZero = 1;
+    uint32 searchSpaceZero = 2;
+}
+
+message NoSIB1
+{
+    uint32 ssb_SubCarrierOffset = 1;
+    PDCCH_ConfigSIB1 pdcch_ConfigSIB1 = 2;
+}
+
+message PLMN_IdentityInfoList
+{
+    repeated PLMN_IdentityInfo items = 1;
+}
+
+message MultiFrequencyBandListNR
+{
+    repeated uint32 items = 1;
+}
+
+message CGI_Info
+{
+    PLMN_IdentityInfoList plmn_IdentityInfoList = 1;
+    MultiFrequencyBandListNR frequencyBandList = 2;
+    NoSIB1 noSIB1 = 3;
+}
+
+message MultiBandInfoListEUTRA
+{
+    repeated uint32 items = 1;
+}
+
+message EUTRA_CGI_Info
+{
+    CGI_info_EPC cgi_Info_EPC = 1;
+    repeated CellAccessRelatedInfo_EUTRA_5GC cgi_info_5GC = 2;
+    google.protobuf.UInt32Value freqBandIndicator = 3;
+    MultiBandInfoListEUTRA multiBandInfoList = 4;
+    TrueOpt freqBandIndicatorPriority = 5;
+}
+
+message MeasResultNR
+{
+    google.protobuf.UInt32Value physCellId = 1;
+    MeasResult measResult = 2;
+    CGI_Info cgi_Info = 3;
+}
+
+message MeasResultEUTRA
+{
+    uint32 eutra_physCellId = 1;
+    MeasQuantityResultsEUTRA measResult = 2;
+    EUTRA_CGI_Info cgi_Info = 3;
+}
+
+message MeasResultServMO
+{
+    uint32 servCellID = 1;
+    MeasResultNR measResultServingCell = 2;
+    MeasResultNR measResultBestNeighCell = 3;
+}
+
+message MeasResultServMOList
+{
+    repeated MeasResultServMO items = 1;
+}
+
+message MeasResultListNR
+{
+    repeated MeasResultNR items = 1;
+}
+
+message MeasResultListEUTRA
+{
+    repeated MeasResultEUTRA items = 1;
+}
+
+message MeasResults
+{
+    uint32 measId = 1;
+    MeasResultServMOList measResultServingMOList = 2;
+    oneof measResultNeighCells {
+        MeasResultListNR measResultListNR = 3;
+        MeasResultListEUTRA measResultListEUTRA = 4;
+    }
+}
+
+message DRX_Info
+{
+    oneof drx_LongCycleStartOffset {
+        uint32 ms10 = 1;
+        uint32 ms20 = 2;
+        uint32 ms32 = 3;
+        uint32 ms40 = 4;
+        uint32 ms60 = 5;
+        uint32 ms64 = 6;
+        uint32 ms70 = 7;
+        uint32 ms80 = 8;
+        uint32 ms128 = 9;
+        uint32 ms160 = 10;
+        uint32 ms256 = 11;
+        uint32 ms320 = 12;
+        uint32 ms512 = 13;
+        uint32 ms640 = 14;
+        uint32 ms1024 = 15;
+        uint32 ms1280 = 16;
+        uint32 ms2048 = 17;
+        uint32 ms2560 = 18;
+        uint32 ms5120 = 19;
+        uint32 ms10240 = 20;
+    }
+    ShortDRX shortDRX = 21;
+}
+
+message RadioBearerConfig
+{
+    SRB_ToAddModList srb_ToAddModList = 1;
+    google.protobuf.BoolValue srb3_ToRelease = 2;
+    DRB_ToAddModList drb_ToAddModList = 3;
+    DRB_ToReleaseList drb_ToReleaseList = 4;
+    SecurityConfig securityConfig = 5;
+}
+
+message SRB_ToAddModList
+{
+    repeated SRB_ToAddMod items = 1;
+}
+
+message SRB_ToAddMod
+{
+    uint32 srb_Identity = 1;
+    google.protobuf.BoolValue reestablishPDCP = 2;
+    google.protobuf.BoolValue discardOnPDCP = 3;
+    PDCP_Config pdcp_Config = 4;
+}
+
+message PDCP_Config
+{
+    DRB drb = 1;
+    MoreThanOneRLC moreThanOneRLC = 2;
+    T_Reordering t_Reordering = 3;
+    google.protobuf.BoolValue cipheringDisabled = 4;
+}
+
+message DRB
+{
+    DiscardTimer discardTimer = 1;
+    PDCP_SN_Size pdcp_SN_SizeUL = 2;
+    PDCP_SN_Size pdcp_SN_SizeDL = 3;
+    oneof headerCompression {
+        Null notUsed = 4;
+        Rohc rohc = 5;
+        UplinkOnlyROHC uplinkOnlyROHC = 6;
+    }
+    google.protobuf.BoolValue integrityProtection = 7;
+    google.protobuf.BoolValue statusReportRequired = 8;
+    google.protobuf.BoolValue outOfOrderDelivery = 9;
+}
+
+message DiscardTimer
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        ms10 = 1;
+        ms20 = 2;
+        ms30 = 3;
+        ms40 = 4;
+        ms50 = 5;
+        ms60 = 6;
+        ms75 = 7;
+        ms100 = 8;
+        ms150 = 9;
+        ms200 = 10;
+        ms250 = 11;
+        ms300 = 12;
+        ms500 = 13;
+        ms750 = 14;
+        ms1500 = 15;
+        infinity = 16;
+    }
+    Value value = 1;
+}
+
+message PDCP_SN_Size
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        len12bits = 1;
+        len18bits = 2;
+    }
+    Value value = 1;
+}
+
+message Rohc
+{
+    uint32 maxCID = 1;
+    RohcProfiles profiles = 2;
+    google.protobuf.BoolValue drb_ContinueROHC = 3;
+}
+
+message RohcProfiles
+{
+    bool profile0x0001 = 1;
+    bool profile0x0002 = 2;
+    bool profile0x0003 = 3;
+    bool profile0x0004 = 4;
+    bool profile0x0006 = 5;
+    bool profile0x0101 = 6;
+    bool profile0x0102 = 7;
+    bool profile0x0103 = 8;
+    bool profile0x0104 = 9;
+}
+
+message UplinkOnlyROHC
+{
+    uint32 maxCID = 1;
+    UplinkOnlyROHCProfiles profiles = 2;
+    google.protobuf.BoolValue drb_ContinueROHC = 3;
+}
+
+message UplinkOnlyROHCProfiles
+{
+
+    bool profile0x0106 = 1;
+}
+
+message MoreThanOneRLC
+{
+    PrimaryPath primaryPath = 1;
+    UL_DataSplitThreshold ul_DataSplitThreshold = 2;
+    google.protobuf.BoolValue pdcp_Duplication = 3;
+}
+
+message PrimaryPath
+{
+    google.protobuf.UInt32Value cellGroup = 1;
+    google.protobuf.UInt32Value logicalChannel = 2;
+}
+
+message UL_DataSplitThreshold
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        b0 = 1;
+        b100 = 2;
+        b200 = 3;
+        b400 = 4;
+        b800 = 5;
+        b1600 = 6;
+        b3200 = 7;
+        b6400 = 8;
+        b12800 = 9;
+        b25600 = 10;
+        b51200 = 11;
+        b102400 = 12;
+        b204800 = 13;
+        b409600 = 14;
+        b819200 = 15;
+        b1228800 = 16;
+        b1638400 = 17;
+        b2457600 = 18;
+        b3276800 = 19;
+        b4096000 = 20;
+        b4915200 = 21;
+        b5734400 = 22;
+        b6553600 = 23;
+        infinity = 24;
+    }
+    Value value = 1;
+}
+
+message T_Reordering
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        ms0 = 1;
+        ms1 = 2;
+        ms2 = 3;
+        ms4 = 4;
+        ms5 = 5;
+        ms8 = 6;
+        ms10 = 7;
+        ms15 = 8;
+        ms20 = 9;
+        ms30 = 10;
+        ms40 = 11;
+        ms50 = 12;
+        ms60 = 13;
+        ms80 = 14;
+        ms100 = 15;
+        ms120 = 16;
+        ms140 = 17;
+        ms160 = 18;
+        ms180 = 19;
+        ms200 = 20;
+        ms220 = 21;
+        ms240 = 22;
+        ms260 = 23;
+        ms280 = 24;
+        ms300 = 25;
+        ms500 = 26;
+        ms750 = 27;
+        ms1000 = 28;
+        ms1250 = 29;
+        ms1500 = 30;
+        ms1750 = 31;
+        ms2000 = 32;
+        ms2250 = 33;
+        ms2500 = 34;
+        ms2750 = 35;
+        ms3000 = 36;
+    }
+    Value value = 1;
+}
+
+message DRB_ToAddModList
+{
+    repeated DRB_ToAddMod items = 1;
+}
+
+message DRB_ToAddMod
+{
+    oneof cnAssociation {
+        uint32 eps_BearerIdentity = 1;
+        SDAP_Config sdap_Config = 2;
+    }
+    uint32 drb_Identity = 3;
+    google.protobuf.BoolValue reestablishPDCP = 4;
+    google.protobuf.BoolValue recoverPDCP = 5;
+    PDCP_Config pdcp_Config = 6;
+}
+
+message DRB_ToReleaseList
+{
+    repeated uint32 items = 1;
+}
+
+message SDAP_Config
+{
+    uint32 pdu_Session = 1;
+    SDAP_Header sdap_HeaderDL = 2;
+    SDAP_Header sdap_HeaderUL = 3;
+    bool defaultDRB = 4;
+    repeated uint32 mappedQoS_FlowsToAdd = 5;
+    repeated uint32 mappedQoS_FlowsToRelease = 6;
+}
+
+message SDAP_Header
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        present = 1;
+        absent = 2;
+    }
+    Value value = 1;
+}
+
+message SecurityConfig
+{
+    SecurityAlgorithmConfig securityAlgorithmConfig = 1;
+    KeyToUse keyToUse = 2;
+}
+
+message SecurityAlgorithmConfig
+{
+    CipheringAlgorithm cipheringAlgorithm = 1;
+    IntegrityProtAlgorithm integrityProtAlgorithm = 2;
+}
+
+message CipheringAlgorithm
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        nea0 = 1;
+        nea1 = 2;
+        nea2 = 3;
+        nea3 = 4;
+    }
+    Value value = 1;
+}
+
+message IntegrityProtAlgorithm
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        nia0 = 1;
+        nia1 = 2;
+        nia2 = 3;
+        nia3 = 4;
+    }
+    Value value = 1;
+}
+
+message KeyToUse
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        master = 1;
+        secondary = 2;
+    }
+    Value value = 1;
+}
+
+message UplinkTxDirectCurrentList
+{
+    repeated UplinkTxDirectCurrentCell items = 1;
+}
+
+message UplinkTxDirectCurrentCell
+{
+    uint32 servCellIndex = 1;
+    repeated UplinkTxDirectCurrentBWP uplinkDirectCurrentBWP = 2;
+}
+
+message UplinkTxDirectCurrentBWP
+{
+    uint32 bwp_Id = 1;
+    bool shift7dot5kHz = 2;
+    uint32 txDirectCurrentLocation = 3;
+}
+
+message CellAccessRelatedInfo
+{
+    PLMN_IdentityInfoList plmn_IdentityList = 1;
+    TrueOpt cellReservedForOtherUse = 2;
+}
+
+message ConnEstFailureControl
+{
+    ConnEstFailCount connEstFailCount = 1;
+    ConnEstFailOffsetValidity connEstFailOffsetValidity = 2;
+    google.protobuf.UInt32Value connEstFailOffset = 3;
+}
+
+message ConnEstFailCount
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        n1 = 1;
+        n2 = 2;
+        n3 = 3;
+        n4 = 4;
+    }
+    Value value = 1;
+}
+
+message ConnEstFailOffsetValidity
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        s30 = 1;
+        s60 = 2;
+        s120 = 3;
+        s240 = 4;
+        s300 = 5;
+        s420 = 6;
+        s600 = 7;
+        s900 = 8;
+    }
+    Value value = 1;
+}
+
+message SI_SchedulingInfo
+{
+    repeated SchedulingInfo schedulingInfoList = 1;
+    SI_WindowLength si_WindowLength = 2;
+    SI_RequestConfig si_RequestConfig = 3;
+    SI_RequestConfig si_RequestConfigSUL = 4;
+    google.protobuf.StringValue systemInformationAreaID = 5;
+}
+
+message SI_WindowLength
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        s5 = 1;
+        s10 = 2;
+        s20 = 3;
+        s40 = 4;
+        s80 = 5;
+        s160 = 6;
+        s320 = 7;
+        s640 = 8;
+        s1280 = 9;
+    }
+    Value value = 1;
+}
+
+message SchedulingInfo
+{
+    SI_BroadcastStatus si_BroadcastStatus = 1;
+    SI_Periodicity si_Periodicity = 2;
+    SIB_Mapping sib_MappingInfo = 3;
+}
+
+message SIB_Mapping
+{
+    repeated SIB_TypeInfo items = 1;
+}
+
+message SI_BroadcastStatus
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        broadcasting = 1;
+        notBroadcasting = 2;
+    }
+    Value value = 1;
+}
+
+message SI_Periodicity
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        rf8 = 1;
+        rf16 = 2;
+        rf32 = 3;
+        rf64 = 4;
+        rf128 = 5;
+        rf256 = 6;
+        rf512 = 7;
+    }
+    Value value = 1;
+}
+
+message SIB_TypeInfo
+{
+    SIB_TypeInfoType type = 1;
+    google.protobuf.UInt32Value valueTag = 2;
+    TrueOpt areaScope = 3;
+}
+
+message SIB_TypeInfoType
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        sibType2 = 1;
+        sibType3 = 2;
+        sibType4 = 3;
+        sibType5 = 4;
+        sibType6 = 5;
+        sibType7 = 6;
+        sibType8 = 7;
+        sibType9 = 8;
+    }
+    Value value = 1;
+}
+
+message SI_RequestConfig
+{
+    RACH_OccasionsSI rach_OccasionsSI = 1;
+    SI_RequestPeriod si_RequestPeriod = 2;
+    repeated SI_RequestResources si_RequestResources = 3;
+}
+
+message SI_RequestPeriod
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        one = 1;
+        two = 2;
+        four = 3;
+        six = 4;
+        eight = 5;
+        ten = 6;
+        twelve = 7;
+        sixteen = 8;
+    }
+    Value value = 1;
+}
+
+message RACH_OccasionsSI
+{
+    RACH_ConfigGeneric rach_ConfigSI = 1;
+    SSB_perRACH_Occasion ssb_perRACH_Occasion = 2;
+}
+
+message SI_RequestResources
+{
+    uint32 ra_PreambleStartIndex = 1;
+    google.protobuf.UInt32Value ra_AssociationPeriodIndex = 2;
+    google.protobuf.UInt32Value ra_ssb_OccasionMaskIndex = 3;
+}
+
+message ServingCellConfigCommonSIB
+{
+    DownlinkConfigCommonSIB downlinkConfigCommon = 1;
+    UplinkConfigCommonSIB uplinkConfigCommon = 2;
+    UplinkConfigCommonSIB supplementaryUplink = 3;
+    SIB_N_TimingAdvanceOffset n_TimingAdvanceOffset = 4;
+    SIB_SSB_PositionsInBurst ssb_PositionsInBurst = 5;
+    SIB_SSB_PeriodicityServingCell ssb_PeriodicityServingCell = 6;
+    TDD_UL_DL_ConfigCommon tdd_UL_DL_ConfigurationCommon = 7;
+    sint32 ss_PBCH_BlockPower = 8;
+}
+
+message DownlinkConfigCommonSIB
+{
+    FrequencyInfoDL_SIB frequencyInfoDL = 1;
+    BWP_DownlinkCommon initialDownlinkBWP = 2;
+    BCCH_Config bcch_Config = 3;
+    PCCH_Config pcch_Config = 4;
+}
+
+message FrequencyInfoDL_SIB
+{
+    MultiFrequencyBandListNR_SIB frequencyBandList = 1;
+    uint32 offsetToPointA = 2;
+    repeated SCS_SpecificCarrier scs_SpecificCarrierList = 3;
+}
+
+message MultiFrequencyBandListNR_SIB
+{
+    repeated NR_MultiBandInfo items = 1;
+}
+
+message NR_MultiBandInfo
+{
+    google.protobuf.UInt32Value freqBandIndicatorNR = 1;
+    NR_NS_PmaxList nr_NS_PmaxList = 2;
+}
+
+message NR_NS_PmaxList
+{
+    repeated NR_NS_PmaxValue items = 1;
+}
+
+message NR_NS_PmaxValue
+{
+    google.protobuf.Int32Value additionalPmax = 1;
+    uint32 additionalSpectrumEmission = 2;
+}
+
+
+message BCCH_Config
+{
+    enum ModificationPeriodCoeff {
+        protobuf_unspecified = 0;
+        n2 = 1;
+        n4 = 2;
+        n8 = 3;
+        n16 = 4;
+    }
+    ModificationPeriodCoeff modificationPeriodCoeff = 1;
+}
+
+message PCCH_Config
+{
+    PagingCycle defaultPagingCycle = 1;
+    oneof nAndPagingFrameOffset {
+        Null oneT = 2;
+        uint32 halfT = 3;
+        uint32 quarterT = 4;
+        uint32 oneEighthT = 5;
+        uint32 oneSixteenthT = 6;
+    }
+    PCCH_ConfigNs ns = 7;
+    oneof firstPDCCH_MonitoringOccasionOfPO {
+        SCS15KHZoneT sCS15KHZoneT = 8;
+        SCS30KHZoneT_SCS15KHZhalfT sCS30KHZoneT_SCS15KHZhalfT = 9;
+        SCS60KHZoneT_SCS30KHZhalfT_SCS15KHZquarterT sCS60KHZoneT_SCS30KHZhalfT_SCS15KHZquarterT = 10;
+        SCS120KHZoneT_SCS60KHZhalfT_SCS30KHZquarterT_SCS15KHZoneEighthT sCS120KHZoneT_SCS60KHZhalfT_SCS30KHZquarterT_SCS15KHZoneEighthT = 11;
+        SCS120KHZhalfT_SCS60KHZquarterT_SCS30KHZoneEighthT_SCS15KHZoneSixteenthT sCS120KHZhalfT_SCS60KHZquarterT_SCS30KHZoneEighthT_SCS15KHZoneSixteenthT = 12;
+        SCS120KHZquarterT_SCS60KHZoneEighthT_SCS30KHZoneSixteenthT sCS120KHZquarterT_SCS60KHZoneEighthT_SCS30KHZoneSixteenthT = 13;
+        SCS120KHZoneEighthT_SCS60KHZoneSixteenthT sCS120KHZoneEighthT_SCS60KHZoneSixteenthT = 14;
+        SCS120KHZoneSixteenthT sCS120KHZoneSixteenthT = 15;
+    }
+}
+
+message PagingCycle
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        rf32 = 1;
+        rf64 = 2;
+        rf128 = 3;
+        rf256 = 4;
+    }
+    Value value = 1;
+}
+
+message PCCH_ConfigNs
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        four = 1;
+        two = 2;
+        one = 3;
+    }
+    Value value = 1;
+}
+
+message SCS15KHZoneT
+{
+    repeated uint32 values = 1;
+}
+
+message SCS30KHZoneT_SCS15KHZhalfT
+{
+    repeated uint32 values = 1;
+}
+
+message SCS60KHZoneT_SCS30KHZhalfT_SCS15KHZquarterT
+{
+    repeated uint32 values = 1;
+}
+
+message SCS120KHZoneT_SCS60KHZhalfT_SCS30KHZquarterT_SCS15KHZoneEighthT
+{
+    repeated uint32 values = 1;
+}
+
+message SCS120KHZhalfT_SCS60KHZquarterT_SCS30KHZoneEighthT_SCS15KHZoneSixteenthT
+{
+    repeated uint32 values = 1;
+}
+
+message SCS120KHZquarterT_SCS60KHZoneEighthT_SCS30KHZoneSixteenthT
+{
+    repeated uint32 values = 1;
+}
+
+message SCS120KHZoneEighthT_SCS60KHZoneSixteenthT
+{
+    repeated uint32 values = 1;
+}
+
+message SCS120KHZoneSixteenthT
+{
+    repeated uint32 values = 1;
+}
+
+message UplinkConfigCommonSIB
+{
+    FrequencyInfoUL_SIB frequencyInfoUL = 1;
+    BWP_UplinkCommon initialUplinkBWP = 2;
+    TimeAlignmentTimer timeAlignmentTimerCommon = 3;
+}
+
+message FrequencyInfoUL_SIB
+{
+    MultiFrequencyBandListNR_SIB frequencyBandList = 1;
+    google.protobuf.UInt32Value absoluteFrequencyPointA = 2;
+    repeated SCS_SpecificCarrier scs_SpecificCarrierList = 3;
+    google.protobuf.Int32Value p_Max = 4;
+    TrueOpt frequencyShift7p5khz = 5;
+}
+
+message SIB_N_TimingAdvanceOffset
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        n0 = 1;
+        n25600 = 2;
+        n39936 = 3;
+    }
+    Value value = 1;
+}
+
+message SIB_SSB_PositionsInBurst
+{
+    string inOneGroup = 1;
+    google.protobuf.StringValue groupPresence = 2;
+}
+
+message SIB_SSB_PeriodicityServingCell
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        ms5 = 1;
+        ms10 = 2;
+        ms20 = 3;
+        ms40 = 4;
+        ms80 = 5;
+        ms160 = 6;
+    }
+    Value value = 1;
+}
+
+message UE_TimersAndConstants
+{
+    UE_TimersAndConstantsT300_T301_T319 t300 = 1;
+    UE_TimersAndConstantsT300_T301_T319 t301 = 2;
+    UE_TimersAndConstantsT310 t310 = 3;
+    UE_TimersAndConstantsN310 n310 = 4;
+    UE_TimersAndConstantsT311 t311 = 5;
+    UE_TimersAndConstantsN311 n311 = 6;
+    UE_TimersAndConstantsT300_T301_T319 t319 = 7;
+}
+
+message UE_TimersAndConstantsT300_T301_T319
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        ms100 = 1;
+        ms200 = 2;
+        ms300 = 3;
+        ms400 = 4;
+        ms600 = 5;
+        ms1000 = 6;
+        ms1500 = 7;
+        ms2000 = 8;
+    }
+    Value value = 1;
+}
+
+
+message UE_TimersAndConstantsT310
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        ms0 = 1;
+        ms50 = 2;
+        ms100 = 3;
+        ms200 = 4;
+        ms500 = 5;
+        ms1000 = 6;
+        ms2000 = 7;
+    }
+    Value value = 1;
+}
+
+message UE_TimersAndConstantsN310
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        n1 = 1;
+        n2 = 2;
+        n3 = 3;
+        n4 = 4;
+        n6 = 5;
+        n8 = 6;
+        n10 = 7;
+        n20 = 8;
+    }
+    Value value = 1;
+}
+
+message UE_TimersAndConstantsT311
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        ms1000 = 1;
+        ms3000 = 2;
+        ms5000 = 3;
+        ms10000 = 4;
+        ms15000 = 5;
+        ms20000 = 6;
+        ms30000 = 7;
+    }
+    Value value = 1;
+}
+
+message UE_TimersAndConstantsN311
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        n1 = 1;
+        n2 = 2;
+        n3 = 3;
+        n4 = 4;
+        n5 = 5;
+        n6 = 6;
+        n8 = 7;
+        n10 = 8;
+    }
+    Value value = 1;
+}
+
+message UAC_BarringPerCatList
+{
+    repeated UAC_BarringPerCat items = 1;
+}
+
+message UAC_BarringPerCat
+{
+    uint32 accessCategory = 1;
+    uint32 uac_barringInfoSetIndex = 2;
+}
+
+message UAC_BarringPerPLMN_List
+{
+    repeated UAC_BarringPerPLMN items = 1;
+}
+
+message UAC_BarringPerPLMN
+{
+    uint32 plmn_IdentityIndex = 1;
+    oneof uac_ACBarringListType {
+        UAC_ImplicitACBarringList uac_ImplicitACBarringList = 2;
+        UAC_BarringPerCatList uac_ExplicitACBarringList = 3;
+    }
+}
+
+message UAC_ImplicitACBarringList
+{
+    repeated uint32 items = 1;
+}
+
+message UAC_BarringInfoSetList
+{
+    repeated UAC_BarringInfoSet items = 1;
+}
+
+message UAC_BarringInfoSet
+{
+    UAC_BarringFactor uac_BarringFactor = 1;
+    UAC_BarringTime uac_BarringTime = 2;
+    string uac_BarringForAccessIdentity = 3;
+}
+
+message UAC_BarringFactor
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        p00 = 1;
+        p05 = 2;
+        p10 = 3;
+        p15 = 4;
+        p20 = 5;
+        p25 = 6;
+        p30 = 7;
+        p40 = 8;
+        p50 = 9;
+        p60 = 10;
+        p70 = 11;
+        p75 = 12;
+        p80 = 13;
+        p85 = 14;
+        p90 = 15;
+        p95 = 16;
+    }
+    Value value = 1;
+}
+
+message UAC_BarringTime
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        s4 = 1;
+        s8 = 2;
+        s16 = 3;
+        s32 = 4;
+        s64 = 5;
+        s128 = 6;
+        s256 = 7;
+        s512 = 8;
+    }
+    Value value = 1;
+}
+
+message MobilityStateParameters
+{
+    T_Evaluation_HystNormal t_Evaluation = 1;
+    T_Evaluation_HystNormal t_HystNormal = 2;
+    uint32 n_CellChangeMedium = 3;
+    uint32 n_CellChangeHigh = 4;
+}
+
+message T_Evaluation_HystNormal
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        s30 = 1;
+        s60 = 2;
+        s120 = 3;
+        s180 = 4;
+        s240 = 5;
+    }
+    Value value = 1;
+}
+
+message EUTRA_MultiBandInfoList
+{
+    repeated EUTRA_MultiBandInfo items = 1;
+}
+
+message EUTRA_MultiBandInfo
+{
+    uint32 eutra_FreqBandIndicator = 1;
+    EUTRA_NS_PmaxList eutra_NS_PmaxList = 3;
+}
+
+message EUTRA_NS_PmaxList
+{
+    repeated EUTRA_NS_PmaxValue items = 1;
+}
+
+message EUTRA_NS_PmaxValue
+{
+    google.protobuf.Int32Value additionalPmax = 1;
+    google.protobuf.UInt32Value additionalSpectrumEmission = 2;
+}

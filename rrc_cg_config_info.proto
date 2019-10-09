@@ -1,0 +1,236 @@
+/*
+   Copyright (c) 2019 AT&T Intellectual Property.
+   Copyright (c) 2019 Nokia.
+
+   Licensed under the Creative Commons Attribution 4.0 International
+   Public License (the "License"); you may not use this file except
+   in compliance with the License. You may obtain a copy of the License at
+
+       https://creativecommons.org/licenses/by/4.0/
+
+   Unless required by applicable law or agreed to in writing, documentation
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+
+syntax = "proto3";
+
+package streaming_protobufs;
+
+option go_package = "gerrit.o-ran-sc.org/r/ric-plt/streaming-protobufs";
+
+import "google/protobuf/wrappers.proto";
+import "rrc_common_types.proto";
+import "common_types.proto";
+
+/*
+   Protocol Buffer definition for CG-ConfigInfo message.
+   (3GPP 38.331, ver 15.4.0)
+
+   Naming convention follows the ASN.1 field naming defined in chapter
+   '11.2.2 Message definitions' of below document:
+   http://www.3gpp.org/ftp//Specs/archive/38_series/38.331/38331-f40.zip
+
+   Dashes converted to underscores to make protobuf message syntax correct.
+*/
+
+message CG_ConfigInfo
+{
+    oneof criticalExtensions
+    {
+        CG_ConfigInfoCriticalExtensionsChoice1 criticalExtensionsChoice1 = 1;
+    }
+}
+
+message CG_ConfigInfoCriticalExtensionsChoice1
+{
+    oneof c1 {
+        CG_ConfigInfo_IEs protocolIEs = 1;
+    }
+}
+
+message CG_ConfigInfo_IEs
+{
+    repeated UE_CapabilityRAT_Container ue_CapabilityInfo = 1;
+    MeasResultList2NR candidateCellInfoListMN = 2;
+    MeasResultList2NR candidateCellInfoListSN = 3;
+    MeasResultCellListSFTD measResultCellListSFTD = 4;
+    ScgFailureInfo scgFailureInfo = 5;
+    ConfigRestrictInfoSCG configRestrictInfo = 6;
+    DRX_Info drx_InfoMCG = 7;
+    MeasConfigMN measConfigMN = 8;
+    google.protobuf.StringValue sourceConfigSCG = 9;
+    RadioBearerConfig scg_RB_Config = 10;
+    RadioBearerConfig mcg_RB_Config = 11;
+    repeated AffectedCarrierFreqCombInfoMRDC mrdc_AssistanceInfo = 12;
+    CG_ConfigInfo_v1540_IEs nonCriticalExtension = 13;
+}
+
+message UE_CapabilityRAT_Container
+{
+    RAT_Type rat_Type = 1;
+    string ue_CapabilityRAT_Container = 2;
+}
+
+message RAT_Type
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        nr = 1;
+        eutra_nr = 2;
+        eutra = 3;
+    }
+    Value value = 1;
+}
+
+message ScgFailureInfo
+{
+    enum FailureType {
+        protobuf_unspecified = 0;
+        t310_Expiry = 1;
+        randomAccessProblem = 2;
+        rlc_MaxNumRetx = 3;
+        synchReconfigFailure_SCG = 4;
+        scg_reconfigFailure = 5;
+        srb3_IntegrityFailure = 6;
+    }
+    FailureType failureType = 1;
+    MeasResultSCG_Failure measResultSCG = 2;
+}
+
+message MeasResultSCG_Failure
+{
+    MeasResultList2NR measResultPerMOList = 1;
+}
+
+message ConfigRestrictInfoSCG
+{
+    BandCombinationInfoList allowedBC_ListMRDC = 1;
+    PowerCoordination_FR1 powerCoordination_FR1 = 2;
+    ServCellIndexRangeSCG servCellIndexRangeSCG = 3;
+    google.protobuf.UInt32Value maxMeasFreqsSCG_NR = 4;
+    google.protobuf.UInt32Value maxMeasIdentitiesSCG_NR = 5;
+}
+
+message BandCombinationInfoList
+{
+    repeated BandCombinationInfo items = 1;
+}
+
+message BandCombinationInfo
+{
+    uint32 bandCombinationIndex = 1;
+    repeated uint32 allowedFeatureSetsList = 2;
+}
+
+message PowerCoordination_FR1
+{
+   google.protobuf.Int32Value p_maxNR_FR1 = 1;
+   google.protobuf.Int32Value p_maxEUTRA = 2;
+   google.protobuf.Int32Value p_maxUE_FR1 = 3;
+}
+
+message ServCellIndexRangeSCG
+{
+    uint32 lowBound = 1;
+    uint32 upBound = 2;
+}
+
+message MeasConfigMN
+{
+    repeated NR_FreqInfo measuredFrequenciesMN = 1;
+    oneof measGapConfig {
+        Null release_measGapConfig = 2;
+        GapConfig setup_measGapConfig = 3;
+    }
+    GapPurpose gapPurpose = 4;
+}
+
+message GapPurpose
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        perUE = 1;
+        perFR1 = 2;
+    }
+    Value value = 1;
+}
+
+message AffectedCarrierFreqCombInfoMRDC
+{
+    enum InterferenceDirectionMRDC {
+        protobuf_unspecified = 0;
+        eutra_nr = 1;
+        nr = 2;
+        other = 3;
+        utra_nr_other = 4;
+        nr_other = 5;
+    }
+
+    VictimSystemType victimSystemType = 1;
+    InterferenceDirectionMRDC interferenceDirectionMRDC = 2;
+    AffectedCarrierFreqCombMRDC affectedCarrierFreqCombMRDC = 3;
+}
+
+message VictimSystemType
+{
+    TrueOpt gps = 1;
+    TrueOpt glonass = 2;
+    TrueOpt bds = 3;
+    TrueOpt galileo = 4;
+    TrueOpt wlan = 5;
+    TrueOpt bluetooth = 6;
+}
+
+message AffectedCarrierFreqCombMRDC
+{
+    AffectedCarrierFreqCombEUTRA affectedCarrierFreqCombEUTRA = 1;
+    AffectedCarrierFreqCombNR affectedCarrierFreqCombNR = 2;
+}
+
+message AffectedCarrierFreqCombEUTRA
+{
+    repeated uint32 items = 1;
+}
+
+message AffectedCarrierFreqCombNR
+{
+    repeated uint32 items = 1;
+}
+
+message CG_ConfigInfo_v1540_IEs
+{
+    PH_TypeListMCG ph_InfoMCG = 1;
+    MeasResultReportCGI measResultReportCGI = 2;
+}
+
+message PH_TypeListMCG
+{
+    repeated PH_InfoMCG items = 1;
+}
+
+message PH_InfoMCG
+{
+    uint32 servCellIndex = 1;
+    PH_UplinkCarrierMCG ph_Uplink = 2;
+    PH_UplinkCarrierMCG ph_SupplementaryUplink = 3;
+}
+
+message PH_UplinkCarrierMCG
+{
+    enum PH_Type1or3 {
+        protobuf_unspecified = 0;
+        type1 = 1;
+        type3 = 2;
+    }
+    PH_Type1or3 ph_Type1or3 = 1;
+}
+
+message MeasResultReportCGI
+{
+    uint32 ssbFrequency = 1;
+    uint32 cellForWhichToReportCGI = 2;
+    CGI_Info cgi_Info = 3;
+}

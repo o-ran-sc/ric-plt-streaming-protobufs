@@ -1,0 +1,149 @@
+/*
+   Copyright (c) 2019 AT&T Intellectual Property.
+   Copyright (c) 2019 Nokia.
+
+   Licensed under the Creative Commons Attribution 4.0 International
+   Public License (the "License"); you may not use this file except
+   in compliance with the License. You may obtain a copy of the License at
+
+       https://creativecommons.org/licenses/by/4.0/
+
+   Unless required by applicable law or agreed to in writing, documentation
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+
+syntax = "proto3";
+
+package streaming_protobufs;
+
+option go_package = "gerrit.o-ran-sc.org/r/ric-plt/streaming-protobufs";
+
+import "google/protobuf/wrappers.proto";
+import "rrc_common_types.proto";
+
+/*
+   Protocol Buffer definition for CG-Config message.
+   (3GPP 38.331, ver 15.4.0)
+
+   Naming convention follows the ASN.1 field naming defined in chapter
+   '11.2.2 Message definitions' of below document:
+   http://www.3gpp.org/ftp//Specs/archive/38_series/38.331/38331-f40.zip
+
+   Dashes converted to underscores to make protobuf message syntax correct.
+*/
+
+message CG_Config
+{
+    oneof criticalExtensions
+    {
+        CG_ConfigCriticalExtensionsChoice1 criticalExtensionsChoice1 = 1;
+    }
+}
+
+message CG_ConfigCriticalExtensionsChoice1
+{
+    oneof c1 {
+        CG_Config_IEs protocolIEs = 1;
+    }
+}
+
+message CG_Config_IEs
+{
+    google.protobuf.StringValue scg_CellGroupConfig = 1;
+    RadioBearerConfig scg_RB_Config = 2;
+    ConfigRestrictModReqSCG configRestrictModReq = 3;
+    DRX_Info drx_InfoSCG = 4;
+    MeasResultList2NR candidateCellInfoListSN = 5;
+    MeasConfigSN measConfigSN = 6;
+    BandCombinationInfoSN selectedBandCombinationNR = 7;
+    FR_InfoList fr_InfoListSCG = 8;
+    CandidateServingFreqListNR candidateServingFreqListNR = 9;
+    CG_Config_v1540_IEs nonCriticalExtension = 10;
+}
+
+message ConfigRestrictModReqSCG
+{
+    BandCombinationInfoSN requestedBC_MRDC = 1;
+    google.protobuf.Int32Value requestedP_MaxFR1 = 2;
+}
+
+
+message BandCombinationInfoSN
+{
+    uint32 bandCombinationIndex = 1;
+    uint32 requestedFeatureSets = 2;
+}
+
+message FR_InfoList
+{
+    repeated FR_Info items = 1;
+}
+
+message FR_Info
+{
+    uint32 servCellIndex = 1;
+    FR_Type fr_Type = 2;
+}
+
+message FR_Type
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        fr1 = 1;
+        fr2 = 2;
+    }
+    Value value = 1;
+}
+
+message CandidateServingFreqListNR
+{
+    repeated uint32 items = 1;
+}
+
+message CG_Config_v1540_IEs
+{
+    google.protobuf.UInt32Value pSCellFrequency = 1;
+    ReportCGI_Request reportCGI_Request = 2;
+    PH_TypeListSCG ph_InfoSCG = 3;
+}
+
+message ReportCGI_Request
+{
+    RequestedCellInfo requestedCellInfo = 1;
+}
+
+message RequestedCellInfo
+{
+    uint32 ssbFrequency = 1;
+    uint32 cellForWhichToReportCGI = 2;
+}
+
+message PH_TypeListSCG
+{
+    repeated PH_InfoSCG items = 1;
+}
+
+message PH_InfoSCG
+{
+    uint32 servCellIndex = 1;
+    PH_UplinkCarrierSCG ph_Uplink = 2;
+    PH_UplinkCarrierSCG ph_SupplementaryUplink = 3;
+}
+
+message PH_UplinkCarrierSCG
+{
+    enum PH_Type1or3 {
+        protobuf_unspecified = 0;
+        type1 = 1;
+        type3 = 2;
+    }
+    PH_Type1or3 ph_Type1or3 = 1;
+}
+
+message MeasConfigSN
+{
+    repeated NR_FreqInfo measuredFrequenciesSN = 1;
+}

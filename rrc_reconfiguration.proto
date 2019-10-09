@@ -1,0 +1,81 @@
+/*
+   Copyright (c) 2019 AT&T Intellectual Property.
+   Copyright (c) 2019 Nokia.
+
+   Licensed under the Creative Commons Attribution 4.0 International
+   Public License (the "License"); you may not use this file except
+   in compliance with the License. You may obtain a copy of the License at
+
+       https://creativecommons.org/licenses/by/4.0/
+
+   Unless required by applicable law or agreed to in writing, documentation
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+
+syntax = "proto3";
+
+package streaming_protobufs;
+
+option go_package = "gerrit.o-ran-sc.org/r/ric-plt/streaming-protobufs";
+
+import "google/protobuf/wrappers.proto";
+import "common_types.proto";
+import "rrc_common_types.proto";
+import "rrc_sib.proto";
+import "rrc_system_information.proto";
+
+/*
+   Protocol Buffer definition for RRCReconfiguration message.
+   (3GPP 38.331, ver 15.4.0)
+
+   Naming convention follows the ASN.1 field naming defined in chapter
+   '6.2.2 Message definitions' of below document:
+   http://www.3gpp.org/ftp//Specs/archive/38_series/38.331/38331-f40.zip
+
+   Dashes converted to underscores to make protobuf message syntax correct.
+*/
+
+
+message RRCReconfiguration
+{
+    uint32 rrc_TransactionIdentifier = 1;
+    oneof criticalExtensions {
+        RRCReconfiguration_IEs rrcReconfiguration = 2;
+    }
+}
+
+message RRCReconfiguration_IEs
+{
+    RadioBearerConfig radioBearerConfig = 1;
+    CellGroupConfig secondaryCellGroup = 2;
+    MeasConfig measConfig = 3;
+    google.protobuf.StringValue lateNonCriticalExtension = 4;
+    RRCReconfiguration_v1530_IEs nonCriticalExtension = 5;
+}
+
+message RRCReconfiguration_v1530_IEs
+{
+    CellGroupConfig masterCellGroup = 1;
+    TrueOpt fullConfig = 2;
+    repeated string dedicatedNAS_MessageList = 3;
+    MasterKeyUpdate masterKeyUpdate = 4;
+    SIB1 dedicatedSIB1_Delivery = 5;
+    SystemInformation dedicatedSystemInformationDelivery = 6;
+    OtherConfig otherConfig = 7;
+    RRCReconfiguration_v1540_IEs nonCriticalExtension = 8;
+}
+
+message MasterKeyUpdate
+{
+    bool keySetChangeIndicator = 1;
+    uint32 nextHopChainingCount = 2;
+    google.protobuf.StringValue nas_Container = 3;
+}
+
+message RRCReconfiguration_v1540_IEs
+{
+    OtherConfig_v1540 otherConfig_v1540 = 1;
+}

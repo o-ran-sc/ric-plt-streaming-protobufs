@@ -1,0 +1,99 @@
+/*
+   Copyright (c) 2019 AT&T Intellectual Property.
+   Copyright (c) 2019 Nokia.
+
+   Licensed under the Creative Commons Attribution 4.0 International
+   Public License (the "License"); you may not use this file except
+   in compliance with the License. You may obtain a copy of the License at
+
+       https://creativecommons.org/licenses/by/4.0/
+
+   Unless required by applicable law or agreed to in writing, documentation
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+
+syntax = "proto3";
+
+package streaming_protobufs;
+
+option go_package = "gerrit.o-ran-sc.org/r/ric-plt/streaming-protobufs";
+
+import "google/protobuf/wrappers.proto";
+import "x2ap_common_types.proto";
+
+/*
+   Protocol Buffer definition for SGNB MODIFICATION CONFIRM message.
+   (3GPP 36.423, ver 15.4.0)
+
+   Naming convention follows the ASN.1 field naming defined in chapter
+   '9.3 Message and Information Element Abstract Syntax (with ASN.1)' of below document:
+   http://www.3gpp.org/ftp//Specs/archive/36_series/36.423/36423-f40.zip
+
+   Dashes converted to underscores to make protobuf message syntax correct.
+*/
+
+
+message SgNBModificationConfirm
+{
+    SgNBModificationConfirm_IEs protocolIEs = 1;
+}
+
+message SgNBModificationConfirm_IEs
+{
+    uint32 id_MeNB_UE_X2AP_ID = 1;
+    uint32 id_SgNB_UE_X2AP_ID = 2;
+    E_RABs_AdmittedToBeModified_SgNBModConfList id_E_RABs_AdmittedToBeModified_SgNBModConfList = 3;
+    google.protobuf.StringValue id_MeNBtoSgNBContainer = 4;
+    CriticalityDiagnostics id_CriticalityDiagnostics = 5;
+    google.protobuf.UInt32Value id_MeNB_UE_X2AP_ID_Extension = 6;
+    MeNBResourceCoordinationInformation id_MeNBResourceCoordinationInformation = 7;
+}
+
+message E_RABs_AdmittedToBeModified_SgNBModConfList
+{
+    repeated E_RABs_AdmittedToBeModified_SgNBModConf_ItemIEs items = 1;
+}
+
+message E_RABs_AdmittedToBeModified_SgNBModConf_ItemIEs
+{
+    E_RABs_AdmittedToBeModified_SgNBModConf_Item id_E_RABs_AdmittedToBeModified_SgNBModConf_Item = 1;
+}
+
+message E_RABs_AdmittedToBeModified_SgNBModConf_Item
+{
+    uint32 e_RAB_ID = 1;
+    EN_DC_ResourceConfiguration en_DC_ResourceConfiguration = 2;
+    oneof resource_configuration {
+        E_RABs_AdmittedToBeModified_SgNBModConf_SgNBPDCPpresent sgNBPDCPpresent = 3;
+        E_RABs_AdmittedToBeModified_SgNBModConf_SgNBPDCPnotpresent sgNBPDCPnotpresent = 4;
+    }
+    repeated E_RABs_AdmittedToBeModified_SgNBModConf_ItemExtIEs iE_Extensions = 5;
+}
+
+message E_RABs_AdmittedToBeModified_SgNBModConf_ItemExtIEs
+{
+}
+
+message E_RABs_AdmittedToBeModified_SgNBModConf_SgNBPDCPpresent
+{
+    repeated E_RABs_AdmittedToBeModified_SgNBModConf_SgNBPDCPpresentExtIEs iE_Extensions = 1;
+}
+
+message E_RABs_AdmittedToBeModified_SgNBModConf_SgNBPDCPpresentExtIEs
+{
+}
+
+message E_RABs_AdmittedToBeModified_SgNBModConf_SgNBPDCPnotpresent
+{
+    GTPtunnelEndpoint secondary_meNB_UL_GTP_TEIDatPDCP = 1;
+    repeated E_RABs_AdmittedToBeModified_SgNBModConf_SgNBPDCPnotpresentExtIEs iE_Extensions = 2;
+}
+
+message E_RABs_AdmittedToBeModified_SgNBModConf_SgNBPDCPnotpresentExtIEs
+{
+    PDCPSnLength id_uLpDCPSnLength = 1;
+    PDCPSnLength id_dLPDCPSnLength = 2;
+}

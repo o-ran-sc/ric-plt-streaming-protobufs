@@ -1,0 +1,64 @@
+/*
+   Copyright (c) 2019 AT&T Intellectual Property.
+   Copyright (c) 2019 Nokia.
+
+   Licensed under the Creative Commons Attribution 4.0 International
+   Public License (the "License"); you may not use this file except
+   in compliance with the License. You may obtain a copy of the License at
+
+       https://creativecommons.org/licenses/by/4.0/
+
+   Unless required by applicable law or agreed to in writing, documentation
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+
+syntax = "proto3";
+
+package streaming_protobufs;
+
+option go_package = "gerrit.o-ran-sc.org/r/ric-plt/streaming-protobufs";
+
+import "google/protobuf/wrappers.proto";
+import "rrc_common_types.proto";
+import "rrc_sib.proto";
+
+/*
+   Protocol Buffer definition for SystemInformation message.
+   (3GPP 38.331, ver 15.4.0)
+
+   Naming convention follows the ASN.1 field naming defined in chapter
+   '6.2.2 Message definitions' of below document:
+   http://www.3gpp.org/ftp//Specs/archive/38_series/38.331/38331-f40.zip
+
+   Dashes converted to underscores to make protobuf message syntax correct.
+*/
+
+message SystemInformation
+{
+    oneof criticalExtensions {
+        SystemInformation_IEs systemInformation_r15 = 1;
+    }
+}
+
+message SystemInformation_IEs
+{
+    repeated SIB_TypeAndInfo sib_TypeAndInfo = 1;
+    google.protobuf.StringValue lateNonCriticalExtension = 2;
+}
+
+message SIB_TypeAndInfo
+{
+    oneof c {
+        SIB2 sib2 = 1;
+        SIB3 sib3 = 2;
+        SIB4 sib4 = 3;
+        SIB5 sib5 = 4;
+        SIB6 sib6 = 5;
+        SIB7 sib7 = 6;
+        SIB8 sib8 = 7;
+        SIB9 sib9 = 8;
+    }
+}

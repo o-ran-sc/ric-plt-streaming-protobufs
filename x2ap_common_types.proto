@@ -1,0 +1,547 @@
+/*
+   Copyright (c) 2019 AT&T Intellectual Property.
+   Copyright (c) 2019 Nokia.
+
+   Licensed under the Creative Commons Attribution 4.0 International
+   Public License (the "License"); you may not use this file except
+   in compliance with the License. You may obtain a copy of the License at
+
+       https://creativecommons.org/licenses/by/4.0/
+
+   Unless required by applicable law or agreed to in writing, documentation
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+
+syntax = "proto3";
+
+package streaming_protobufs;
+
+option go_package = "gerrit.o-ran-sc.org/r/ric-plt/streaming-protobufs";
+
+import "google/protobuf/wrappers.proto";
+import "error_cause.proto";
+
+/*
+   Protocol Buffer definitions for ASN.1 X2AP Information Element (IE) types what are used
+   commonly in Protocol Buffer files of X2AP messages.
+
+   Naming conversion of X2AP IEs follows the naming defined in 3GPP 36.423 version 15.4.0)
+   specification.
+
+   http://www.3gpp.org/ftp//Specs/archive/36_series/36.423/36423-f40.zip
+
+   Dashes converted to underscores to make protobuf message syntax correct.
+
+   DO NOT USE x2ap_common_types.proto FILE FOR TYPE DEFINITIONS:
+   a) What are ONLY used in RRC messages (RRC messages are defined in 3GPP 38.331
+      specification), instead put those types to rrc_common_types.proto file.
+   b) What are used BOTH in RRC and X2AP messages (RRC messages are defined in 3GPP 38.331
+      specification), instead put those types to common_types.proto file.
+*/
+
+
+message EN_DC_ResourceConfiguration
+{
+    enum Status {
+        protobuf_unspecified = 0;
+        present = 1;
+        not_present = 2;
+    }
+    Status pDCPatSgNB = 1;
+    Status mCGresources = 2;
+    Status sCGresources = 3;
+}
+
+message E_RAB_Level_QoS_Parameters
+{
+    uint32 qCI = 1;
+    AllocationAndRetentionPriority allocationAndRetentionPriority = 2;
+    GBR_QosInformation gbrQosInformation = 3;
+    repeated E_RAB_Level_QoS_Parameters_ExtIEs iE_Extensions = 4;
+}
+
+message AllocationAndRetentionPriority
+{
+    uint32 priorityLevel = 1;
+    Pre_emptionCapability pre_emptionCapability = 2;
+    Pre_emptionVulnerability pre_emptionVulnerability = 3;
+}
+
+message Pre_emptionVulnerability
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        not_pre_emptable = 1;
+        pre_emptable = 2;
+    }
+    Value value = 1;
+}
+
+message Pre_emptionCapability
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        shall_not_trigger_pre_emption = 1;
+        may_trigger_pre_emption = 2;
+    }
+    Value value = 1;
+}
+
+message E_RAB_Level_QoS_Parameters_ExtIEs
+{
+    google.protobuf.UInt32Value id_DownlinkPacketLossRate = 1;
+    google.protobuf.UInt32Value id_UplinkPacketLossRate = 2;
+}
+
+message GBR_QosInformation
+{
+    uint64 e_RAB_MaximumBitrateDL = 1;
+    uint64 e_RAB_MaximumBitrateUL = 2;
+    uint64 e_RAB_GuaranteedBitrateDL = 3;
+    uint64 e_RAB_GuaranteedBitrateUL = 4;
+    repeated GBR_QosInformation_ExtIEs iE_Extensions = 5;
+}
+
+message GBR_QosInformation_ExtIEs
+{
+    google.protobuf.UInt64Value id_extended_e_RAB_MaximumBitrateDL = 1;
+    google.protobuf.UInt64Value id_extended_e_RAB_MaximumBitrateUL = 2;
+    google.protobuf.UInt64Value id_extended_e_RAB_GuaranteedBitrateDL = 3;
+    google.protobuf.UInt64Value id_extended_e_RAB_GuaranteedBitrateUL = 4;
+}
+
+message GTPtunnelEndpoint
+{
+    string transportLayerAddress = 1;
+    string gTP_TEID = 2;
+    repeated GTPtunnelEndpoint_ExtIEs iE_Extensions = 3;
+}
+
+message GTPtunnelEndpoint_ExtIEs
+{
+}
+
+message RLCMode
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        rlc_am = 1;
+        rlc_um_bidirectional = 2;
+        rlc_um_unidirectional_ul = 3;
+        rlc_um_unidirectional_dl = 4;
+    }
+    Value value = 1;
+}
+
+message RLC_Status
+{
+    enum Reestablishment_Indication {
+        protobuf_unspecified = 0;
+        reestablished = 1;
+    }
+
+    Reestablishment_Indication reestablishment_Indication = 1;
+}
+
+message ULConfiguration
+{
+    enum UL_UE_Configuration {
+        protobuf_unspecified = 0;
+        no_data = 1;
+        shared = 2;
+        only = 3;
+    }
+    UL_UE_Configuration uL_PDCP = 1;
+}
+
+message PDCPSnLength
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        twelve_bits = 1;
+        eighteen_bits = 2;
+    }
+    Value value = 1;
+}
+
+message PDCPChangeIndication
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        s_KgNB_update_required = 1;
+        pDCP_data_recovery_required = 2;
+    }
+    Value value = 1;
+}
+
+message SplitSRBs
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        srb1 = 1;
+        srb2 = 2;
+        srb1and2 = 3;
+    }
+    Value value = 1;
+}
+
+message NRCGI
+{
+    string pLMN_Identity = 1;
+    string nRcellIdentifier = 2;
+    repeated NRCGI_ExtIEs iE_Extensions = 3;
+}
+
+message NRCGI_ExtIEs
+{
+}
+
+message ECGI
+{
+    string pLMN_Identity = 1;
+    string eUTRANcellIdentifier = 2;
+}
+
+message E_RAB_List
+{
+    repeated E_RAB_ItemIEs items = 1;
+}
+
+message E_RAB_ItemIEs
+{
+    E_RAB_Item id_E_RAB_Item = 1;
+}
+
+message E_RAB_Item
+{
+    uint32 e_RAB_ID = 1;
+    Cause cause = 2;
+}
+
+message CriticalityDiagnostics
+{
+    google.protobuf.UInt32Value procedureCode = 1;
+    TriggeringMessage triggeringMessage = 2;
+    Criticality procedureCriticality = 3;
+    CriticalityDiagnostics_IE_List iEsCriticalityDiagnostics = 4;
+    repeated CriticalityDiagnostics_ExtIEs iE_Extensions = 5;
+}
+
+message TriggeringMessage
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        initiating_message = 1;
+        successful_outcome = 2;
+        unsuccessful_outcome = 3;
+    }
+    Value value = 1;
+}
+
+message Criticality
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        reject = 1;
+        ignore = 2;
+        notify = 3;
+    }
+    Value value = 1;
+}
+
+message CriticalityDiagnostics_IE_List
+{
+    repeated CriticalityDiagnostics_IE_List_Item items = 1;
+}
+
+message CriticalityDiagnostics_IE_List_Item
+{
+    Criticality iECriticality = 1;
+    uint32 iE_ID = 2;
+    TypeOfError typeOfError = 3;
+}
+
+message TypeOfError
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        not_understood = 1;
+        missing = 2;
+    }
+    Value value = 1;
+}
+
+message CriticalityDiagnostics_ExtIEs
+{
+}
+
+message SgNBResourceCoordinationInformation
+{
+    NRCGI nR_CGI = 1;
+    string uLCoordinationInformation = 2;
+    google.protobuf.StringValue dLCoordinationInformation = 3;
+    repeated SgNBResourceCoordinationInformationExtIEs iE_Extensions = 4;
+}
+
+message SgNBResourceCoordinationInformationExtIEs
+{
+    ECGI id_ECGI = 1;
+    SgNBCoordinationAssistanceInformation id_SgNBCoordinationAssistanceInformation = 2;
+}
+
+message SgNBCoordinationAssistanceInformation
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        coordination_not_required = 1;
+    }
+    Value value = 1;
+}
+
+message RRC_Config_Ind
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        full_config = 1;
+        delta_config = 2;
+    }
+    Value value = 1;
+}
+
+message HandoverRestrictionList
+{
+    string servingPLMN = 1;
+    EPLMNs equivalentPLMNs = 2;
+    ForbiddenTAs forbiddenTAs = 3;
+    ForbiddenLAs forbiddenLAs = 4;
+    ForbiddenInterRATs forbiddenInterRATs = 5;
+    repeated HandoverRestrictionList_ExtIEs iE_Extensions = 6;
+}
+
+message EPLMNs
+{
+    repeated string items = 1;
+}
+
+message ForbiddenTAs
+{
+    repeated ForbiddenTAs_Item items = 1;
+}
+
+message ForbiddenTAs_Item
+{
+    string pLMN_Identity = 1;
+    ForbiddenTACs forbiddenTACs = 2;
+}
+
+message ForbiddenTACs
+{
+   repeated string items = 1;
+}
+
+message ForbiddenLAs
+{
+    repeated ForbiddenLAs_Item items = 1;
+}
+
+message ForbiddenLAs_Item
+{
+    string pLMN_Identity = 1;
+    ForbiddenLACs forbiddenLACs = 2;
+}
+
+message ForbiddenLACs
+{
+    repeated string items = 1;
+}
+
+message ForbiddenInterRATs
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        all = 1;
+        geran = 2;
+        utran = 3;
+        cdma2000 = 4;
+        geranandutran = 5;
+        cdma2000andutran = 6;
+    }
+    Value value = 1;
+}
+
+message HandoverRestrictionList_ExtIEs
+{
+    NRrestrictioninEPSasSecondaryRAT id_NRrestrictioninEPSasSecondaryRAT = 1;
+    CNTypeRestrictions id_CNTypeRestrictions = 2;
+    NRrestrictionin5GS id_NRrestrictionin5GS = 3;
+}
+
+message NRrestrictioninEPSasSecondaryRAT
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        nRrestrictedinEPSasSecondaryRAT = 1;
+    }
+    Value value = 1;
+}
+
+message CNTypeRestrictions
+{
+    repeated CNTypeRestrictionsItem items = 1;
+}
+
+message CNTypeRestrictionsItem
+{
+    enum CN_type {
+        protobuf_unspecified = 0;
+        fiveGC_forbidden = 1;
+    }
+
+    string plmn_Id = 1;
+    CN_type cn_type = 2;
+}
+
+message NRrestrictionin5GS
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        nRrestrictedin5GS = 1;
+    }
+    Value value = 1;
+}
+
+message NRUESecurityCapabilities
+{
+    string nRencryptionAlgorithms = 1;
+    string nRintegrityProtectionAlgorithms = 2;
+}
+
+message UEAggregateMaximumBitRate
+{
+    uint64 uEaggregateMaximumBitRateDownlink = 1;
+    uint64 uEaggregateMaximumBitRateUplink = 2;
+    repeated UEAggregate_MaximumBitrate_ExtIEs iE_Extensions = 3;
+}
+
+message UEAggregate_MaximumBitrate_ExtIEs
+{
+    google.protobuf.UInt64Value id_extended_uEaggregateMaximumBitRateDownlink = 1;
+    google.protobuf.UInt64Value id_extended_uEaggregateMaximumBitRateUplink = 2;
+}
+
+message DL_Forwarding
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        dL_forwardingProposed = 1;
+    }
+    Value value = 1;
+}
+
+message DuplicationActivation
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        active = 1;
+        inactive = 2;
+    }
+    Value value = 1;
+}
+
+message MeNBResourceCoordinationInformation
+{
+    ECGI eUTRA_Cell_ID = 1;
+    string uLCoordinationInformation = 2;
+    google.protobuf.StringValue dLCoordinationInformation = 3;
+    repeated MeNBResourceCoordinationInformationExtIEs iE_Extensions = 4;
+}
+
+message MeNBResourceCoordinationInformationExtIEs
+{
+    NRCGI id_NRCGI = 1;
+    MeNBCoordinationAssistanceInformation id_MeNBCoordinationAssistanceInformation = 2;
+}
+
+message MeNBCoordinationAssistanceInformation
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        coordination_not_required = 1;
+    }
+    Value value = 1;
+}
+
+message COUNTvalue
+{
+    uint32 pDCP_SN = 1;
+    uint32 hFN = 2;
+}
+
+message COUNTValueExtended
+{
+    uint32 pDCP_SNExtended = 1;
+    uint32 hFNModified = 2;
+}
+
+message COUNTvaluePDCP_SNlength18
+{
+    uint32 pDCP_SNlength18 = 1;
+    uint32 hFNforPDCP_SNlength18 = 2;
+}
+
+message ExpectedUEBehaviour
+{
+    ExpectedUEActivityBehaviour expectedActivity = 1;
+    ExpectedHOInterval expectedHOInterval = 2;
+}
+
+message ExpectedUEActivityBehaviour
+{
+   google.protobuf.UInt32Value expectedActivityPeriod = 1;
+   google.protobuf.UInt32Value expectedIdlePeriod = 2;
+   SourceOfUEActivityBehaviourInformation sourceOfUEActivityBehaviourInformation = 3;
+   repeated ExpectedUEActivityBehaviour_ExtIEs iE_Extensions = 4;
+}
+
+message ExpectedUEActivityBehaviour_ExtIEs
+{
+}
+
+message ExpectedHOInterval
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        sec15 = 1;
+        sec30 = 2;
+        sec60 = 3;
+        sec90 = 4;
+        sec120 = 5;
+        sec180 = 6;
+        long_time = 7;
+    }
+    Value value = 1;
+}
+
+message SourceOfUEActivityBehaviourInformation
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        subscription_information = 1;
+        statistics = 2;
+    }
+    Value value = 1;
+}
+
+message SGNB_Addition_Trigger_Ind
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        sn_change = 1;
+        inter_eNB_HO = 2;
+        intra_eNB_HO = 3;
+    }
+    Value value = 1;
+}
