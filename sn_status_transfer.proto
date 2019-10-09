@@ -1,0 +1,82 @@
+/*
+   Copyright (c) 2019 AT&T Intellectual Property.
+   Copyright (c) 2019 Nokia.
+
+   Licensed under the Creative Commons Attribution 4.0 International
+   Public License (the "License"); you may not use this file except
+   in compliance with the License. You may obtain a copy of the License at
+
+       https://creativecommons.org/licenses/by/4.0/
+
+   Unless required by applicable law or agreed to in writing, documentation
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+
+syntax = "proto3";
+
+package streaming_protobufs;
+
+option go_package = "gerrit.o-ran-sc.org/r/ric-plt/streaming-protobufs";
+
+import "google/protobuf/wrappers.proto";
+import "x2ap_common_types.proto";
+
+/*
+   Protocol Buffer definition for SN STATUS TRANSFER message.
+   (3GPP 36.423, ver 15.4.0)
+
+   Naming convention follows the ASN.1 field naming defined in chapter
+   '9.3 Message and Information Element Abstract Syntax (with ASN.1)' of below document:
+   http://www.3gpp.org/ftp//Specs/archive/36_series/36.423/36423-f40.zip
+
+   Dashes converted to underscores to make protobuf message syntax correct.
+*/
+
+
+message SNStatusTransfer
+{
+    SNStatusTransfer_IEs protocolIEs = 1;
+}
+
+message SNStatusTransfer_IEs
+{
+    uint32 id_Old_eNB_UE_X2AP_ID = 1;
+    uint32 id_New_eNB_UE_X2AP_ID = 2;
+    E_RABs_SubjectToStatusTransfer_List id_E_RABs_SubjectToStatusTransfer_List = 3;
+    google.protobuf.UInt32Value id_Old_eNB_UE_X2AP_ID_Extension = 4;
+    google.protobuf.UInt32Value id_New_eNB_UE_X2AP_ID_Extension = 5;
+    google.protobuf.UInt32Value id_SgNB_UE_X2AP_ID = 6;
+}
+
+message E_RABs_SubjectToStatusTransfer_List
+{
+    repeated E_RABs_SubjectToStatusTransfer_ItemIEs items = 1;
+}
+
+message E_RABs_SubjectToStatusTransfer_ItemIEs
+{
+    E_RABs_SubjectToStatusTransfer_Item id_E_RABs_SubjectToStatusTransfer_Item = 1;
+}
+
+message E_RABs_SubjectToStatusTransfer_Item
+{
+    uint32 e_RAB_ID = 1;
+    google.protobuf.StringValue receiveStatusofULPDCPSDUs = 2;
+    COUNTvalue uL_COUNTvalue = 3;
+    COUNTvalue dL_COUNTvalue = 4;
+    repeated E_RABs_SubjectToStatusTransfer_ItemExtIEs iE_Extensions = 5;
+}
+
+message E_RABs_SubjectToStatusTransfer_ItemExtIEs
+{
+    google.protobuf.StringValue id_ReceiveStatusOfULPDCPSDUsExtended = 1;
+    COUNTValueExtended id_ULCOUNTValueExtended = 2;
+    COUNTValueExtended id_DLCOUNTValueExtended = 3;
+    google.protobuf.StringValue id_ReceiveStatusOfULPDCPSDUsPDCP_SNlength18 = 4;
+    COUNTvaluePDCP_SNlength18 id_ULCOUNTValuePDCP_SNlength18 = 5;
+    COUNTvaluePDCP_SNlength18 id_DLCOUNTValuePDCP_SNlength18 = 6;
+}
+

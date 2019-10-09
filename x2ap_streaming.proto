@@ -1,0 +1,92 @@
+/*
+   Copyright (c) 2019 AT&T Intellectual Property.
+   Copyright (c) 2019 Nokia.
+
+   Licensed under the Creative Commons Attribution 4.0 International
+   Public License (the "License"); you may not use this file except
+   in compliance with the License. You may obtain a copy of the License at
+
+       https://creativecommons.org/licenses/by/4.0/
+
+   Unless required by applicable law or agreed to in writing, documentation
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+
+syntax = "proto3";
+
+package streaming_protobufs;
+
+option go_package = "gerrit.o-ran-sc.org/r/ric-plt/streaming-protobufs";
+
+import "google/protobuf/wrappers.proto";
+import "rrctransfer.proto";
+import "sgnb_addition_request.proto";
+import "sgnb_addition_request_acknowledge.proto";
+import "sgnb_addition_request_reject.proto";
+import "sgnb_modification_request.proto";
+import "sgnb_modification_request_acknowledge.proto";
+import "sgnb_modification_request_reject.proto";
+import "sgnb_modification_required.proto";
+import "sgnb_modification_confirm.proto";
+import "sgnb_modification_refuse.proto";
+import "sgnb_release_request.proto";
+import "sgnb_release_request_acknowledge.proto";
+import "sgnb_release_required.proto";
+import "sgnb_release_confirm.proto";
+import "sgnb_reconfiguration_complete.proto";
+import "sn_status_transfer.proto";
+import "ue_context_release.proto";
+import "secondary_rat_data_usage_report.proto";
+
+/*
+   X2AP Streaming Protocol Buffer definition of a wrapper like container for
+   an X2AP message. Besides an X2AP message itself, container encloses some
+   generic information such as a gNodeB identifier and a timestamp of the
+   event in question.
+
+   Naming convention of the X2AP message in 'x2ap_message' field follows the
+   ASN.1 field naming defined in chapter '9.3 Message and Information Element
+   Abstract Syntax (with ASN.1)' of below document:
+   http://www.3gpp.org/ftp//Specs/archive/36_series/36.423/36423-f40.zip
+
+   Dashes converted to underscores to make protobuf message syntax correct.
+*/
+
+message X2APStreaming
+{
+    X2APStreamingHeader header = 1;
+    oneof x2ap_message {
+        RRCTransfer rrcTransfer = 2;
+        SgNBAdditionRequest sgNBAdditionRequest = 3;
+        SgNBAdditionRequestAcknowledge sgNBAdditionRequestAcknowledge = 4;
+        SgNBAdditionRequestReject sgNBAdditionRequestReject = 5;
+        SgNBModificationRequest sgNBModificationRequest = 6;
+        SgNBModificationRequestAcknowledge sgNBModificationRequestAcknowledge = 7;
+        SgNBModificationRequestReject sgNBModificationRequestReject = 8;
+        SgNBModificationRequired sgNBModificationRequired = 9;
+        SgNBModificationConfirm sgNBModificationConfirm = 10;
+        SgNBModificationRefuse sgNBModificationRefuse = 11;
+        SgNBReconfigurationComplete sgNBReconfigurationComplete = 12;
+        SgNBReleaseRequest sgNbReleaseRequest = 13;
+        SgNBReleaseRequestAcknowledge sgNbReleaseRequestAcknowledge = 14;
+        SgNBReleaseRequired sgNbReleaseRequired = 15;
+        SgNBReleaseConfirm sgNbReleaseConfirm = 16;
+        SNStatusTransfer snStatusTransfer = 17;
+        UEContextRelease ueContextRelease = 18;
+        SecondaryRATDataUsageReport secondaryRATDataUsageReport = 19;
+    }
+}
+
+message X2APStreamingHeader
+{
+    //The revision number of X2AP streaming protobuf files
+    bytes protobuf_revision = 1;
+    //Identifier of gNodeB
+    google.protobuf.StringValue gNbID = 2;
+    //The timestamp of RIC INDICATION header, which contains 64-bit
+    //timestamp value as defined in section 6 of IETF RFC 5905.
+    uint64 timestamp = 3;
+}
