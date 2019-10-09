@@ -1,0 +1,105 @@
+/*
+   Copyright (c) 2019 AT&T Intellectual Property.
+   Copyright (c) 2019 Nokia.
+
+   Licensed under the Creative Commons Attribution 4.0 International
+   Public License (the "License"); you may not use this file except
+   in compliance with the License. You may obtain a copy of the License at
+
+       https://creativecommons.org/licenses/by/4.0/
+
+   Unless required by applicable law or agreed to in writing, documentation
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+
+syntax = "proto3";
+
+package streaming_protobufs;
+
+option go_package = "gerrit.o-ran-sc.org/r/ric-plt/streaming-protobufs";
+
+/*
+   Protocol Buffer definitions for common Protocol Buffer types what are used
+   both in X2AP and RRC messages.
+
+   Naming conversion follows the naming defined in 3GPP 36.423 (X2AP) and 38.331 (RRC)
+   specification (version 15.4.0).
+
+   http://www.3gpp.org/ftp//Specs/archive/36_series/36.423/36423-f40.zip
+   http://www.3gpp.org/ftp//Specs/archive/38_series/38.331/38331-f40.zip
+
+   Dashes converted to underscores to make protobuf message syntax correct.
+*/
+
+
+message Null
+{
+}
+
+message ConfiguredOpt
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        configured = 1;
+    }
+    Value value = 1;
+}
+
+message TrueOpt
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        true = 1;
+    }
+    Value value = 1;
+}
+
+message FalseOpt
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        false = 1;
+    }
+    Value value = 1;
+}
+
+message EnabledOpt
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        enabled = 1;
+    }
+    Value value = 1;
+}
+
+message DisabledOpt
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        disabled = 1;
+    }
+    Value value = 1;
+}
+
+message EnabledDisabledOpt
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        enabled = 1;
+        disabled = 2;
+    }
+    Value value = 1;
+}
+
+message OnOffOpt
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        on = 1;
+        off = 2;
+    }
+    Value value = 1;
+}

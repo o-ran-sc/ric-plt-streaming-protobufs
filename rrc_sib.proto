@@ -1,0 +1,412 @@
+/*
+   Copyright (c) 2019 AT&T Intellectual Property.
+   Copyright (c) 2019 Nokia.
+
+   Licensed under the Creative Commons Attribution 4.0 International
+   Public License (the "License"); you may not use this file except
+   in compliance with the License. You may obtain a copy of the License at
+
+       https://creativecommons.org/licenses/by/4.0/
+
+   Unless required by applicable law or agreed to in writing, documentation
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+
+syntax = "proto3";
+
+package streaming_protobufs;
+
+option go_package = "gerrit.o-ran-sc.org/r/ric-plt/streaming-protobufs";
+
+import "google/protobuf/wrappers.proto";
+import "rrc_common_types.proto";
+import "common_types.proto";
+
+/*
+   Protocol Buffer definition for System Information Blocks (SIB) messages.
+   (3GPP 38.331, ver 15.4.0)
+
+   Naming convention follows the ASN.1 field naming defined in chapters
+   '6.2.2 Message definitions' and '6.3.1 System information blocks' of below document:
+   http://www.3gpp.org/ftp//Specs/archive/38_series/38.331/38331-f40.zip
+
+   Dashes converted to underscores to make protobuf message syntax correct.
+*/
+
+message SIB1
+{
+    SIB1CellSelectionInfo cellSelectionInfo = 1;
+    CellAccessRelatedInfo cellAccessRelatedInfo = 2;
+    ConnEstFailureControl connEstFailureControl = 3;
+    SI_SchedulingInfo si_SchedulingInfo = 4;
+    ServingCellConfigCommonSIB servingCellConfigCommon = 5;
+    TrueOpt ims_EmergencySupport = 6;
+    TrueOpt eCallOverIMS_Support = 7;
+    UE_TimersAndConstants ue_TimersAndConstants = 8;
+    SIB1UAC_BarringInfo uac_BarringInfo = 9;
+    TrueOpt useFullResumeID = 10;
+    google.protobuf.StringValue lateNonCriticalExtension = 11;
+}
+
+message SIB1CellSelectionInfo
+{
+    sint32 q_RxLevMin = 1;
+    google.protobuf.UInt32Value q_RxLevMinOffset = 2;
+    google.protobuf.Int32Value q_RxLevMinSUL = 3;
+    google.protobuf.Int32Value q_QualMin = 4;
+    google.protobuf.UInt32Value q_QualMinOffset = 5;
+}
+
+message SIB1UAC_BarringInfo
+{
+    UAC_BarringPerCatList uac_BarringForCommon = 1;
+    UAC_BarringPerPLMN_List uac_BarringPerPLMN_List = 2;
+    UAC_BarringInfoSetList uac_BarringInfoSetList = 3;
+    oneof uac_AccessCategory1_SelectionAssistanceInfo {
+        UAC_AccessCategory1_SelectionAssistanceInfo plmnCommon = 4;
+        IndividualPLMNList individualPLMNList = 5;
+    }
+}
+
+message UAC_AccessCategory1_SelectionAssistanceInfo
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        a = 1;
+        b = 2;
+        c = 3;
+    }
+    Value value = 1;
+}
+
+message IndividualPLMNList
+{
+    repeated UAC_AccessCategory1_SelectionAssistanceInfo items = 1;
+}
+
+message SIB2
+{
+    SIB2CellReselectionInfoCommon cellReselectionInfoCommon = 1;
+    SIB2CellReselectionServingFreqInfo cellReselectionServingFreqInfo = 2;
+    SIB2IntraFreqCellReselectionInfo intraFreqCellReselectionInfo = 3;
+}
+
+message SIB2CellReselectionInfoCommon
+{
+    google.protobuf.UInt32Value nrofSS_BlocksToAverage = 1;
+    ThresholdNR absThreshSS_BlocksConsolidation = 2;
+    Q_OffsetRange rangeToBestCell = 3;
+    Q_Hyst q_Hyst = 4;
+    SpeedStateReselectionPars speedStateReselectionPars = 5;
+}
+
+message Q_Hyst
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        dB0 = 1;
+        dB1 = 2;
+        dB2 = 3;
+        dB3 = 4;
+        dB4 = 5;
+        dB5 = 6;
+        dB6 = 7;
+        dB8 = 8;
+        dB10 = 9;
+        dB12 = 10;
+        dB14 = 11;
+        dB16 = 12;
+        dB18 = 13;
+        dB20 = 14;
+        dB22 = 15;
+        dB24 = 16;
+    }
+    Value value = 1;
+}
+
+message SpeedStateReselectionPars
+{
+    MobilityStateParameters mobilityStateParameters = 1;
+    Q_HystSF q_HystSF = 2;
+}
+
+message Q_HystSF
+{
+    SF_Medium_High sf_Medium = 1;
+    SF_Medium_High sf_High = 2;
+}
+
+message SF_Medium_High
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        dB_6 = 1;
+        dB_4 = 2;
+        dB_2 = 3;
+        dB0 = 4;
+    }
+    Value value = 1;
+}
+
+message SIB2CellReselectionServingFreqInfo
+{
+    google.protobuf.UInt32Value s_NonIntraSearchP = 1;
+    google.protobuf.UInt32Value s_NonIntraSearchQ = 2;
+    uint32 threshServingLowP = 3;
+    google.protobuf.UInt32Value threshServingLowQ = 4;
+    uint32 cellReselectionPriority = 5;
+    CellReselectionSubPriority cellReselectionSubPriority = 6;
+}
+
+message CellReselectionSubPriority
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        oDot2 = 1;
+        oDot4 = 2;
+        oDot6 = 3;
+        oDot8 = 4;
+    }
+    Value value = 1;
+}
+
+message SIB2IntraFreqCellReselectionInfo
+{
+    sint32 q_RxLevMin = 1;
+    google.protobuf.Int32Value q_RxLevMinSUL = 2;
+    google.protobuf.Int32Value q_QualMin = 3;
+    uint32 s_IntraSearchP = 4;
+    google.protobuf.UInt32Value s_IntraSearchQ = 5;
+    uint32 t_ReselectionNR = 6;
+    MultiFrequencyBandListNR_SIB frequencyBandList = 7;
+    MultiFrequencyBandListNR_SIB frequencyBandListSUL = 8;
+    google.protobuf.Int32Value p_Max = 9;
+    SSB_MTC smtc = 10;
+    SS_RSSI_Measurement ss_RSSI_Measurement = 11;
+    SSB_ToMeasure ssb_ToMeasure = 12;
+    bool deriveSSB_IndexFromCell = 13;
+    SpeedStateScaleFactors t_ReselectionNR_SF = 14;
+}
+
+message SpeedStateScaleFactors
+{
+    SpeedStateScaleFactorsSF_Medium_High sf_Medium = 1;
+    SpeedStateScaleFactorsSF_Medium_High sf_High = 2;
+}
+
+message SpeedStateScaleFactorsSF_Medium_High
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        oDot25 = 1;
+        oDot5 = 2;
+        oDot75 = 3;
+        lDot0 = 4;
+    }
+    Value value = 1;
+}
+
+message SIB3
+{
+    IntraFreqNeighCellList intraFreqNeighCellList = 1;
+    IntraFreqBlackCellList intraFreqBlackCellList = 2;
+    google.protobuf.StringValue lateNonCriticalExtension = 3;
+}
+
+message IntraFreqNeighCellList
+{
+    repeated IntraFreqNeighCellInfo items = 1;
+}
+
+message IntraFreqNeighCellInfo
+{
+    uint32 physCellId = 1;
+    Q_OffsetRange  q_OffsetCell = 2;
+    google.protobuf.UInt32Value q_RxLevMinOffsetCell = 3;
+    google.protobuf.UInt32Value q_RxLevMinOffsetCellSUL = 4;
+    google.protobuf.UInt32Value q_QualMinOffsetCell = 5;
+}
+
+message IntraFreqBlackCellList
+{
+    repeated PCI_Range items = 1;
+}
+
+message SIB4
+{
+    InterFreqCarrierFreqList interFreqCarrierFreqList = 1;
+    google.protobuf.StringValue lateNonCriticalExtension = 2;
+}
+
+message InterFreqCarrierFreqList
+{
+    repeated InterFreqCarrierFreqInfo items = 1;
+}
+
+message InterFreqCarrierFreqInfo
+{
+    uint32 dl_CarrierFreq = 1;
+    MultiFrequencyBandListNR_SIB frequencyBandList = 2;
+    MultiFrequencyBandListNR_SIB frequencyBandListSUL = 3;
+    google.protobuf.UInt32Value nrofSS_BlocksToAverage = 4;
+    ThresholdNR absThreshSS_BlocksConsolidation = 5;
+    SSB_MTC smtc = 6;
+    SubcarrierSpacing ssbSubcarrierSpacing = 7;
+    SSB_ToMeasure ssb_ToMeasure = 8;
+    bool deriveSSB_IndexFromCell = 9;
+    SS_RSSI_Measurement ss_RSSI_Measurement = 10;
+    sint32 q_RxLevMin = 11;
+    google.protobuf.Int32Value q_RxLevMinSUL = 12;
+    google.protobuf.Int32Value q_QualMin = 13;
+    google.protobuf.Int32Value p_Max = 14;
+    uint32 t_ReselectionNR = 15;
+    SpeedStateScaleFactors t_ReselectionNR_SF = 16;
+    uint32 threshX_HighP = 17;
+    uint32 threshX_LowP = 18;
+    InterFreqCarrierFreqInfoThreshX_Q threshX_Q = 19;
+    google.protobuf.UInt32Value cellReselectionPriority = 20;
+    CellReselectionSubPriority cellReselectionSubPriority = 21;
+    Q_OffsetRange q_OffsetFreq = 22;
+    InterFreqNeighCellList interFreqNeighCellList = 23;
+    InterFreqBlackCellList interFreqBlackCellList = 24;
+}
+
+message InterFreqCarrierFreqInfoThreshX_Q
+{
+    uint32 threshX_HighQ = 1;
+    uint32 threshX_LowQ = 2;
+}
+
+message InterFreqNeighCellList
+{
+    repeated InterFreqNeighCellInfo items = 1;
+}
+
+message InterFreqNeighCellInfo
+{
+    uint32 physCellId = 1;
+    Q_OffsetRange q_OffsetCell = 2;
+    google.protobuf.UInt32Value q_RxLevMinOffsetCell = 3;
+    google.protobuf.UInt32Value q_RxLevMinOffsetCellSUL = 4;
+    google.protobuf.UInt32Value q_QualMinOffsetCell = 5;
+}
+
+message InterFreqBlackCellList
+{
+    repeated PCI_Range items = 1;
+}
+
+message SIB5
+{
+    CarrierFreqListEUTRA carrierFreqListEUTRA = 1;
+    uint32 t_ReselectionEUTRA = 2;
+    SpeedStateScaleFactors t_ReselectionEUTRA_SF = 3;
+    google.protobuf.StringValue lateNonCriticalExtension = 4;
+}
+
+message CarrierFreqListEUTRA
+{
+    repeated CarrierFreqEUTRA items = 1;
+}
+
+message CarrierFreqEUTRA
+{
+    uint32 carrierFreq = 1;
+    EUTRA_MultiBandInfoList eutra_multiBandInfoList = 2;
+    EUTRA_FreqNeighCellList eutra_FreqNeighCellList = 3;
+    EUTRA_FreqBlackCellList eutra_BlackCellList = 4;
+    EUTRA_AllowedMeasBandwidth allowedMeasBandwidth = 5;
+    bool presenceAntennaPort1 = 6;
+    google.protobuf.UInt32Value cellReselectionPriority = 7;
+    CellReselectionSubPriority cellReselectionSubPriority = 8;
+    uint32 threshX_High = 9;
+    uint32 threshX_Low = 10;
+    sint32 q_RxLevMin = 11;
+    sint32 q_QualMin = 12;
+    sint32 p_MaxEUTRA = 13;
+    CarrierFreqEUTRAThreshX_Q threshX_Q = 14;
+}
+
+message EUTRA_FreqNeighCellList
+{
+    repeated EUTRA_FreqNeighCellInfo items = 1;
+}
+
+message EUTRA_FreqBlackCellList
+{
+    repeated EUTRA_PhysCellIdRange items = 1;
+}
+
+message EUTRA_FreqNeighCellInfo
+{
+    uint32 physCellId = 1;
+    EUTRA_Q_OffsetRange q_OffsetCell = 2;
+    google.protobuf.UInt32Value q_RxLevMinOffsetCell = 3;
+    google.protobuf.UInt32Value q_QualMinOffsetCell = 4;
+}
+
+message CarrierFreqEUTRAThreshX_Q
+{
+    uint32 threshX_HighQ = 1;
+    uint32 threshX_LowQ = 2;
+}
+
+message SIB6
+{
+    string messageIdentifier = 1;
+    string serialNumber = 2;
+    string warningType = 3;
+    google.protobuf.StringValue lateNonCriticalExtension = 4;
+}
+
+message SIB7
+{
+    enum WarningMessageSegmentType {
+        protobuf_unspecified = 0;
+        notLastSegment = 1;
+        lastSegment = 2;
+    }
+
+    string messageIdentifier = 1;
+    string serialNumber = 2;
+    WarningMessageSegmentType warningMessageSegmentType = 3;
+    uint32 warningMessageSegmentNumber = 4;
+    string warningMessageSegment = 5;
+    google.protobuf.StringValue dataCodingScheme = 6;
+    google.protobuf.StringValue lateNonCriticalExtension = 7;
+}
+
+message SIB8
+{
+    enum WarningMessageSegmentType {
+        protobuf_unspecified = 0;
+        notLastSegment = 1;
+        lastSegment = 2;
+    }
+
+    string messageIdentifier = 1;
+    string serialNumber = 2;
+    WarningMessageSegmentType warningMessageSegmentType = 3;
+    uint32 warningMessageSegmentNumber = 4;
+    string warningMessageSegment = 5;
+    google.protobuf.StringValue dataCodingScheme = 6;
+    google.protobuf.StringValue warningAreaCoordinatesSegment = 7;
+    google.protobuf.StringValue lateNonCriticalExtension = 8;
+}
+
+message SIB9
+{
+    SIB9TimeInfo timeInfo = 1;
+    google.protobuf.StringValue lateNonCriticalExtension = 2;
+}
+
+message SIB9TimeInfo
+{
+    uint64 timeInfoUTC = 1;
+    google.protobuf.StringValue dayLightSavingTime = 2;
+    google.protobuf.Int32Value leapSeconds = 3;
+    google.protobuf.Int32Value localTimeOffset = 4;
+}

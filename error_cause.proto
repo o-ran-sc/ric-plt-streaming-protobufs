@@ -1,0 +1,138 @@
+/*
+   Copyright (c) 2019 AT&T Intellectual Property.
+   Copyright (c) 2019 Nokia.
+
+   Licensed under the Creative Commons Attribution 4.0 International
+   Public License (the "License"); you may not use this file except
+   in compliance with the License. You may obtain a copy of the License at
+
+       https://creativecommons.org/licenses/by/4.0/
+
+   Unless required by applicable law or agreed to in writing, documentation
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+
+syntax = "proto3";
+
+package streaming_protobufs;
+
+option go_package = "gerrit.o-ran-sc.org/r/ric-plt/streaming-protobufs";
+
+/*
+   Protocol Buffer definition for error cause codes. Naming conversion follows
+   the naming defined in 3GPP 36.423 (version 15.5.0) specification.
+*/
+
+message Cause
+{
+    oneof value {
+        CauseRadioNetwork radioNetwork = 1;
+        CauseTransport transport = 2;
+        CauseProtocol protocol = 3;
+        CauseMisc misc = 4;
+    }
+}
+
+message CauseRadioNetwork
+{
+    enum Value
+    {
+        protobuf_unspecified = 0;
+        handover_desirable_for_radio_reasons = 1;
+        time_critical_handover = 2;
+        resource_optimisation_handover = 3;
+        reduce_load_in_serving_cell = 4;
+        partial_handover = 5;
+        unknown_new_eNB_UE_X2AP_ID = 6;
+        unknown_old_eNB_UE_X2AP_ID = 7;
+        unknown_pair_of_UE_X2AP_ID = 8;
+        ho_target_not_allowed = 9;
+        tx2relocoverall_expiry = 10;
+        trelocprep_expiry = 11;
+        cell_not_available = 12;
+        no_radio_resources_available_in_target_cell = 13;
+        invalid_MME_GroupID = 14;
+        unknown_MME_Code = 15;
+        encryption_and_or_integrity_protection_algorithms_not_supported = 16;
+        reportCharacteristicsEmpty = 17;
+        noReportPeriodicity = 18;
+        existingMeasurementID = 19;
+        unknown_eNB_Measurement_ID = 20;
+        measurement_temporarily_not_available = 21;
+        unspecified = 22;
+        load_balancing = 23;
+        handover_optimisation = 24;
+        value_out_of_allowed_range = 25;
+        multiple_E_RAB_ID_instances = 26;
+        switch_off_ongoing = 27;
+        not_supported_QCI_value = 28;
+        measurement_not_supported_for_the_object = 29;
+        tDCoverall_expiry = 30;
+        tDCprep_expiry = 31;
+        action_desirable_for_radio_reasons = 32;
+        reduce_load = 33;
+        resource_optimisation = 34;
+        time_critical_action = 35;
+        target_not_allowed = 36;
+        no_radio_resources_available = 37;
+        invalid_QoS_combination = 38;
+        encryption_algorithms_not_aupported = 39;
+        procedure_cancelled = 40;
+        rRM_purpose = 41;
+        improve_user_bit_rate = 42;
+        user_inactivity = 43;
+        radio_connection_with_UE_lost = 44;
+        failure_in_the_radio_interface_procedure = 45;
+        bearer_option_not_supported = 46;
+        mCG_Mobility = 47;
+        sCG_Mobility = 48;
+        count_reaches_max_value = 49;
+        unknown_old_en_gNB_UE_X2AP_ID = 50;
+        pDCP_Overload = 51;
+    }
+    Value value = 1;
+}
+
+message CauseTransport
+{
+    enum Value
+    {
+        protobuf_unspecified = 0;
+        transport_resource_unavailable = 1;
+        unspecified = 2;
+    }
+    Value value = 1;
+}
+
+message CauseProtocol
+{
+    enum Value
+    {
+        protobuf_unspecified = 0;
+        transfer_syntax_error = 1;
+        abstract_syntax_error_reject = 2;
+        abstract_syntax_error_ignore_and_notify = 3;
+        message_not_compatible_with_receiver_state = 4;
+        semantic_error = 5;
+        unspecified = 6;
+        abstract_syntax_error_falsely_constructed_message = 7;
+    }
+    Value value = 1;
+}
+
+message CauseMisc
+{
+    enum Value
+    {
+        protobuf_unspecified = 0;
+        control_processing_overload = 1;
+        hardware_failure = 2;
+        om_intervention = 3;
+        not_enough_user_plane_processing_resources = 4;
+        unspecified = 5;
+    }
+    Value value = 1;
+}
