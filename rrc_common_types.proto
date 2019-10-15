@@ -5396,8 +5396,10 @@ message MCC
 
 message PLMN_Identity_EUTRA_5GC
 {
-    PLMN_Identity plmn_Identity_EUTRA_5GC = 1;
-    uint32 plmn_index = 2;
+    oneof c {
+        PLMN_Identity plmn_Identity_EUTRA_5GC = 1;
+        uint32 plmn_index = 2;
+    }
 }
 
 message PLMN_IdentityList_EUTRA_5GC
