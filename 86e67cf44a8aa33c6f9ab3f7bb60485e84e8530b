@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "89da01d6_e4ff0063",
+        "filename": "INFO.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000108
+      },
+      "writtenOn": "2019-11-11T10:38:33Z",
+      "side": 0,
+      "message": "as per original approval also Jussi continues to be committer. Pls. add again. See also IT-17820 in which this was added.\n\nTOC approval has been given in the O-RAN SC TOC meeting on Oct-2-2019 in agenda item 7.c.ii.\nhttps://wiki.o-ran-sc.org/display/TOC/2019+Q4-Oct%2C+Nov%2C+Dec#id-2019Q4-Oct,Nov,Dec-20191002",
+      "revId": "86e67cf44a8aa33c6f9ab3f7bb60485e84e8530b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53",
+      "unresolved": true
+    }
+  ]
+}
