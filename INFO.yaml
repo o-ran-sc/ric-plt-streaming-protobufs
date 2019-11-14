@@ -44,10 +44,15 @@ committers:
       company: 'nokia'
       id: 'badorek'
       timezone: 'Unknown/Unknown'
+    - name: 'Jussi Maki Aijala'
+      email: 'jussi.maki-aijala@nokia.com'
+      company: 'nokia'
+      id: 'makiaija'
+      timezone: 'Europe/Helsinki'
 tsc:
     # yamllint disable rule:line-length
-    approval: 'missing'
+    approval: 'https://wiki.o-ran-sc.org/display/TOC/2019+Q4-Oct%2C+Nov%2C+Dec#id-2019Q4-Oct,Nov,Dec-20191002'
     changes:
-        - type: ''
-          name: ''
-          link: ''
+        - type: 'promotion'
+          name: 'Jussi Maki Aijala'
+          link: 'https://wiki.o-ran-sc.org/display/TOC/2019+Q4-Oct%2C+Nov%2C+Dec#id-2019Q4-Oct,Nov,Dec-20191002'
