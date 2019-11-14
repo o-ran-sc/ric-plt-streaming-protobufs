@@ -1,0 +1,8 @@
+Code-Review+2: Thoralf Czichy <thoralf.czichy@nokia.com>
+Verified+1: Thoralf Czichy <thoralf.czichy@nokia.com>
+Verified+1: ORAN Jobbuilder <releng+oran-jobbuilder@linuxfoundation.org>
+Submitted-by: Thoralf Czichy <thoralf.czichy@nokia.com>
+Submitted-at: Thu, 14 Nov 2019 09:43:15 +0000
+Reviewed-on: https://gerrit.o-ran-sc.org/r/c/ric-plt/streaming-protobufs/+/1591
+Project: ric-plt/streaming-protobufs
+Branch: refs/heads/master
