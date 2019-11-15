@@ -1,3 +1,8 @@
+#
+# This file contains various administrative aspects of the (sub)project
+# it is used for management of committers as well general information
+# about the project
+#
 ---
 project: 'ric_plt_streaming_protobufs'
 project_creation_date: '2019-11-08'
