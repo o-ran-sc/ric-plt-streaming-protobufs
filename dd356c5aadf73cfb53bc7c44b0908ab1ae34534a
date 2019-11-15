@@ -1,0 +1,8 @@
+Verified+1: ORAN Jobbuilder <releng+oran-jobbuilder@linuxfoundation.org>
+Code-Review+2: makiaija <jussi.maki-aijala@nokia.com>
+Verified+1: makiaija <jussi.maki-aijala@nokia.com>
+Submitted-by: Thoralf Czichy <thoralf.czichy@nokia.com>
+Submitted-at: Fri, 15 Nov 2019 10:16:45 +0000
+Reviewed-on: https://gerrit.o-ran-sc.org/r/c/ric-plt/streaming-protobufs/+/1611
+Project: ric-plt/streaming-protobufs
+Branch: refs/heads/master
