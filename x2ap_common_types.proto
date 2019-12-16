@@ -113,6 +113,24 @@ message GBR_QosInformation_ExtIEs
     google.protobuf.UInt64Value id_extended_e_RAB_GuaranteedBitrateUL = 4;
 }
 
+message GlobalGNB_ID
+{
+    string pLMN_Identity = 1;
+    GNB_ID gNB_ID = 2;
+    repeated GlobalGNB_ID_ExtIEs iE_Extensions = 3;
+}
+
+message GNB_ID
+{
+    oneof c {
+        string gNB_ID = 1;
+    }
+}
+
+message GlobalGNB_ID_ExtIEs
+{
+}
+
 message GTPtunnelEndpoint
 {
     string transportLayerAddress = 1;
@@ -219,6 +237,42 @@ message E_RAB_Item
 {
     uint32 e_RAB_ID = 1;
     Cause cause = 2;
+}
+
+message ERABActivityNotifyItemList
+{
+    repeated ERABActivityNotifyItem items = 1;
+}
+
+message ERABActivityNotifyItem
+{
+    uint32 e_RAB_ID = 1;
+    UserPlaneTrafficActivityReport activityReport = 2;
+    ERABActivityNotifyItem_ExtIEs iE_Extensions = 3;
+}
+
+message ERABActivityNotifyItem_ExtIEs
+{
+}
+
+message UserPlaneTrafficActivityReport
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        inactive = 1;
+        re_activated = 2;
+    }
+    Value value = 1;
+}
+
+message GNBOverloadInformation
+{
+    enum Value {
+        protobuf_unspecified = 0;
+        overloaded = 1;
+        not_overloaded = 2;
+    }
+    Value value = 1;
 }
 
 message CriticalityDiagnostics
