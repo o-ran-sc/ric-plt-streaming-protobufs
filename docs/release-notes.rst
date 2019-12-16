@@ -31,6 +31,16 @@ ric-plt/streaming-protobufs.
 Version history
 ---------------
 
+[0.2.3] - 2019-12-18
+
+* Implement Protobuf schema for following X2AP messages:
+
+  * SGNB CHANGE REQUIRED
+  * SGNB CHANGE CONFIRM
+  * SGNB CHANGE REFUSE
+  * SGNB ACTIVITY NOTIFICATION
+  * GNB STATUS INDICATION
+
 [0.2.2] - 2019-11-14
 
 * Add mandatory documentation files.
