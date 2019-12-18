@@ -1,0 +1,7 @@
+Verified+1: ORAN Jobbuilder <releng+oran-jobbuilder@linuxfoundation.org>
+Code-Review+2: Timo Tietavainen <timo.tietavainen@nokia.com>
+Submitted-by: Timo Tietavainen <timo.tietavainen@nokia.com>
+Submitted-at: Wed, 18 Dec 2019 10:21:22 +0000
+Reviewed-on: https://gerrit.o-ran-sc.org/r/c/ric-plt/streaming-protobufs/+/2034
+Project: ric-plt/streaming-protobufs
+Branch: refs/heads/master
