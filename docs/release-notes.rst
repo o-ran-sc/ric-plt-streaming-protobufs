@@ -31,6 +31,12 @@ ric-plt/streaming-protobufs.
 Version history
 ---------------
 
+[1.0.0] - 2020-01-14
+
+* Fixed overlapping declaration error hit in Golang data structures, which
+  were generated from SGNB CHANGE CONFIRM protobuf message. API backward
+  incompatible change.
+
 [0.2.3] - 2019-12-18
 
 * Implement Protobuf schema for following X2AP messages:

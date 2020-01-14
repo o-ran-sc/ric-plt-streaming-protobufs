@@ -65,8 +65,8 @@ message E_RABs_ToBeReleased_SgNBChaConf_Item
     uint32 e_RAB_ID = 1;
     EN_DC_ResourceConfiguration en_DC_ResourceConfiguration = 2;
     oneof resource_configuration {
-        E_RABs_ToBeReleased_SgNBChaConf_Item_SgNBPDCPpresent sgNBPDCPpresent = 3;
-        E_RABs_ToBeReleased_SgNBChaConf_Item_SgNBPDCPnotpresent sgNBPDCPnotpresent = 4;
+        E_RABs_ToBeReleased_SgNBChaConf_SgNBPDCPpresent sgNBPDCPpresent = 3;
+        E_RABs_ToBeReleased_SgNBChaConf_SgNBPDCPnotpresent sgNBPDCPnotpresent = 4;
     }
     repeated E_RABs_ToBeReleased_SgNBChaConf_ItemExtIEs iE_Extensions = 5;
 }
@@ -75,22 +75,22 @@ message E_RABs_ToBeReleased_SgNBChaConf_ItemExtIEs
 {
 }
 
-message E_RABs_ToBeReleased_SgNBChaConf_Item_SgNBPDCPpresent
+message E_RABs_ToBeReleased_SgNBChaConf_SgNBPDCPpresent
 {
     GTPtunnelEndpoint uL_GTPtunnelEndpoint = 1;
     GTPtunnelEndpoint dL_GTPtunnelEndpoint = 2;
-    repeated E_RABs_ToBeReleased_SgNBChaConf_Item_SgNBPDCPpresentExtIEs iE_Extensions = 3;
+    repeated E_RABs_ToBeReleased_SgNBChaConf_SgNBPDCPpresentExtIEs iE_Extensions = 3;
 }
 
-message E_RABs_ToBeReleased_SgNBChaConf_Item_SgNBPDCPpresentExtIEs
+message E_RABs_ToBeReleased_SgNBChaConf_SgNBPDCPpresentExtIEs
 {
 }
 
-message E_RABs_ToBeReleased_SgNBChaConf_Item_SgNBPDCPnotpresent
+message E_RABs_ToBeReleased_SgNBChaConf_SgNBPDCPnotpresent
 {
-    repeated E_RABs_ToBeReleased_SgNBChaConf_Item_SgNBPDCPnotpresentExtIEs iE_Extensions = 1;
+    repeated E_RABs_ToBeReleased_SgNBChaConf_SgNBPDCPnotpresentExtIEs iE_Extensions = 1;
 }
 
-message E_RABs_ToBeReleased_SgNBChaConf_Item_SgNBPDCPnotpresentExtIEs
+message E_RABs_ToBeReleased_SgNBChaConf_SgNBPDCPnotpresentExtIEs
 {
 }
