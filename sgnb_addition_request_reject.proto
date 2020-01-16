@@ -39,7 +39,7 @@ import "error_cause.proto";
 message SgNBAdditionRequestReject
 {
     uint32 id_MeNB_UE_X2AP_ID = 1;
-    uint32 id_SgNB_UE_X2AP_ID = 2;
+    google.protobuf.UInt32Value id_SgNB_UE_X2AP_ID = 2;
     Cause id_Cause = 3;
     CriticalityDiagnostics id_CriticalityDiagnostics = 4;
     google.protobuf.UInt32Value id_MeNB_UE_X2AP_ID_Extension = 5;

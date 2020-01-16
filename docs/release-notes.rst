@@ -31,6 +31,11 @@ ric-plt/streaming-protobufs.
 Version history
 ---------------
 
+[2.0.0] - 2020-01-16
+
+* Changed SgNB UE X2AP ID to be an optional IE in SGNB ADDITION REQUEST REJECT
+  to be compatible with 3GPP 36.423 standard. API backward incompatible change.
+
 [1.0.0] - 2020-01-14
 
 * Fixed overlapping declaration error hit in Golang data structures, which
