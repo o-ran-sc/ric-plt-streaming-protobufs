@@ -52,7 +52,7 @@ message RRCReconfiguration_IEs
     RadioBearerConfig radioBearerConfig = 1;
     CellGroupConfig secondaryCellGroup = 2;
     MeasConfig measConfig = 3;
-    google.protobuf.StringValue lateNonCriticalExtension = 4;
+    google.protobuf.BytesValue lateNonCriticalExtension = 4;
     RRCReconfiguration_v1530_IEs nonCriticalExtension = 5;
 }
 
@@ -60,7 +60,7 @@ message RRCReconfiguration_v1530_IEs
 {
     CellGroupConfig masterCellGroup = 1;
     TrueOpt fullConfig = 2;
-    repeated string dedicatedNAS_MessageList = 3;
+    repeated bytes dedicatedNAS_MessageList = 3;
     MasterKeyUpdate masterKeyUpdate = 4;
     SIB1 dedicatedSIB1_Delivery = 5;
     SystemInformation dedicatedSystemInformationDelivery = 6;
@@ -72,7 +72,7 @@ message MasterKeyUpdate
 {
     bool keySetChangeIndicator = 1;
     uint32 nextHopChainingCount = 2;
-    google.protobuf.StringValue nas_Container = 3;
+    google.protobuf.BytesValue nas_Container = 3;
 }
 
 message RRCReconfiguration_v1540_IEs

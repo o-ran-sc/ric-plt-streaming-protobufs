@@ -61,7 +61,7 @@ message CG_ConfigInfo_IEs
     ConfigRestrictInfoSCG configRestrictInfo = 6;
     DRX_Info drx_InfoMCG = 7;
     MeasConfigMN measConfigMN = 8;
-    google.protobuf.StringValue sourceConfigSCG = 9;
+    google.protobuf.BytesValue sourceConfigSCG = 9;
     RadioBearerConfig scg_RB_Config = 10;
     RadioBearerConfig mcg_RB_Config = 11;
     repeated AffectedCarrierFreqCombInfoMRDC mrdc_AssistanceInfo = 12;
@@ -71,7 +71,7 @@ message CG_ConfigInfo_IEs
 message UE_CapabilityRAT_Container
 {
     RAT_Type rat_Type = 1;
-    string ue_CapabilityRAT_Container = 2;
+    bytes ue_CapabilityRAT_Container = 2;
 }
 
 message RAT_Type

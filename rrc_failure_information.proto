@@ -43,7 +43,7 @@ message FailureInformation
 message FailureInformation_IEs
 {
     FailureInfoRLC_Bearer failureInfoRLC_Bearer = 1;
-    google.protobuf.StringValue lateNonCriticalExtension = 2;
+    google.protobuf.BytesValue lateNonCriticalExtension = 2;
 }
 
 message FailureInfoRLC_Bearer

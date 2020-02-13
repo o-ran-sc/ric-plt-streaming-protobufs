@@ -115,7 +115,7 @@ message GBR_QosInformation_ExtIEs
 
 message GlobalGNB_ID
 {
-    string pLMN_Identity = 1;
+    bytes pLMN_Identity = 1;
     GNB_ID gNB_ID = 2;
     repeated GlobalGNB_ID_ExtIEs iE_Extensions = 3;
 }
@@ -123,7 +123,7 @@ message GlobalGNB_ID
 message GNB_ID
 {
     oneof c {
-        string gNB_ID = 1;
+        bytes gNB_ID = 1;
     }
 }
 
@@ -133,8 +133,8 @@ message GlobalGNB_ID_ExtIEs
 
 message GTPtunnelEndpoint
 {
-    string transportLayerAddress = 1;
-    string gTP_TEID = 2;
+    bytes transportLayerAddress = 1;
+    bytes gTP_TEID = 2;
     repeated GTPtunnelEndpoint_ExtIEs iE_Extensions = 3;
 }
 
@@ -208,8 +208,8 @@ message SplitSRBs
 
 message NRCGI
 {
-    string pLMN_Identity = 1;
-    string nRcellIdentifier = 2;
+    bytes pLMN_Identity = 1;
+    bytes nRcellIdentifier = 2;
     repeated NRCGI_ExtIEs iE_Extensions = 3;
 }
 
@@ -219,8 +219,8 @@ message NRCGI_ExtIEs
 
 message ECGI
 {
-    string pLMN_Identity = 1;
-    string eUTRANcellIdentifier = 2;
+    bytes pLMN_Identity = 1;
+    bytes eUTRANcellIdentifier = 2;
 }
 
 message E_RAB_List
@@ -335,8 +335,8 @@ message CriticalityDiagnostics_ExtIEs
 message SgNBResourceCoordinationInformation
 {
     NRCGI nR_CGI = 1;
-    string uLCoordinationInformation = 2;
-    google.protobuf.StringValue dLCoordinationInformation = 3;
+    bytes uLCoordinationInformation = 2;
+    google.protobuf.BytesValue dLCoordinationInformation = 3;
     repeated SgNBResourceCoordinationInformationExtIEs iE_Extensions = 4;
 }
 
@@ -367,7 +367,7 @@ message RRC_Config_Ind
 
 message HandoverRestrictionList
 {
-    string servingPLMN = 1;
+    bytes servingPLMN = 1;
     EPLMNs equivalentPLMNs = 2;
     ForbiddenTAs forbiddenTAs = 3;
     ForbiddenLAs forbiddenLAs = 4;
@@ -377,7 +377,7 @@ message HandoverRestrictionList
 
 message EPLMNs
 {
-    repeated string items = 1;
+    repeated bytes items = 1;
 }
 
 message ForbiddenTAs
@@ -387,13 +387,13 @@ message ForbiddenTAs
 
 message ForbiddenTAs_Item
 {
-    string pLMN_Identity = 1;
+    bytes pLMN_Identity = 1;
     ForbiddenTACs forbiddenTACs = 2;
 }
 
 message ForbiddenTACs
 {
-   repeated string items = 1;
+   repeated bytes items = 1;
 }
 
 message ForbiddenLAs
@@ -403,13 +403,13 @@ message ForbiddenLAs
 
 message ForbiddenLAs_Item
 {
-    string pLMN_Identity = 1;
+    bytes pLMN_Identity = 1;
     ForbiddenLACs forbiddenLACs = 2;
 }
 
 message ForbiddenLACs
 {
-    repeated string items = 1;
+    repeated bytes items = 1;
 }
 
 message ForbiddenInterRATs
@@ -454,7 +454,7 @@ message CNTypeRestrictionsItem
         fiveGC_forbidden = 1;
     }
 
-    string plmn_Id = 1;
+    bytes plmn_Id = 1;
     CN_type cn_type = 2;
 }
 
@@ -469,8 +469,8 @@ message NRrestrictionin5GS
 
 message NRUESecurityCapabilities
 {
-    string nRencryptionAlgorithms = 1;
-    string nRintegrityProtectionAlgorithms = 2;
+    bytes nRencryptionAlgorithms = 1;
+    bytes nRintegrityProtectionAlgorithms = 2;
 }
 
 message UEAggregateMaximumBitRate
@@ -508,8 +508,8 @@ message DuplicationActivation
 message MeNBResourceCoordinationInformation
 {
     ECGI eUTRA_Cell_ID = 1;
-    string uLCoordinationInformation = 2;
-    google.protobuf.StringValue dLCoordinationInformation = 3;
+    bytes uLCoordinationInformation = 2;
+    google.protobuf.BytesValue dLCoordinationInformation = 3;
     repeated MeNBResourceCoordinationInformationExtIEs iE_Extensions = 4;
 }
 

@@ -46,7 +46,7 @@ message SgNBModificationConfirm_IEs
     uint32 id_MeNB_UE_X2AP_ID = 1;
     uint32 id_SgNB_UE_X2AP_ID = 2;
     E_RABs_AdmittedToBeModified_SgNBModConfList id_E_RABs_AdmittedToBeModified_SgNBModConfList = 3;
-    google.protobuf.StringValue id_MeNBtoSgNBContainer = 4;
+    google.protobuf.BytesValue id_MeNBtoSgNBContainer = 4;
     CriticalityDiagnostics id_CriticalityDiagnostics = 5;
     google.protobuf.UInt32Value id_MeNB_UE_X2AP_ID_Extension = 6;
     MeNBResourceCoordinationInformation id_MeNBResourceCoordinationInformation = 7;

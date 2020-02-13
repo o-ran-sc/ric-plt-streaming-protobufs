@@ -46,7 +46,7 @@ message SystemInformation
 message SystemInformation_IEs
 {
     repeated SIB_TypeAndInfo sib_TypeAndInfo = 1;
-    google.protobuf.StringValue lateNonCriticalExtension = 2;
+    google.protobuf.BytesValue lateNonCriticalExtension = 2;
 }
 
 message SIB_TypeAndInfo

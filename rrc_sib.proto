@@ -48,7 +48,7 @@ message SIB1
     UE_TimersAndConstants ue_TimersAndConstants = 8;
     SIB1UAC_BarringInfo uac_BarringInfo = 9;
     TrueOpt useFullResumeID = 10;
-    google.protobuf.StringValue lateNonCriticalExtension = 11;
+    google.protobuf.BytesValue lateNonCriticalExtension = 11;
 }
 
 message SIB1CellSelectionInfo
@@ -213,7 +213,7 @@ message SIB3
 {
     IntraFreqNeighCellList intraFreqNeighCellList = 1;
     IntraFreqBlackCellList intraFreqBlackCellList = 2;
-    google.protobuf.StringValue lateNonCriticalExtension = 3;
+    google.protobuf.BytesValue lateNonCriticalExtension = 3;
 }
 
 message IntraFreqNeighCellList
@@ -238,7 +238,7 @@ message IntraFreqBlackCellList
 message SIB4
 {
     InterFreqCarrierFreqList interFreqCarrierFreqList = 1;
-    google.protobuf.StringValue lateNonCriticalExtension = 2;
+    google.protobuf.BytesValue lateNonCriticalExtension = 2;
 }
 
 message InterFreqCarrierFreqList
@@ -304,7 +304,7 @@ message SIB5
     CarrierFreqListEUTRA carrierFreqListEUTRA = 1;
     uint32 t_ReselectionEUTRA = 2;
     SpeedStateScaleFactors t_ReselectionEUTRA_SF = 3;
-    google.protobuf.StringValue lateNonCriticalExtension = 4;
+    google.protobuf.BytesValue lateNonCriticalExtension = 4;
 }
 
 message CarrierFreqListEUTRA
@@ -356,10 +356,10 @@ message CarrierFreqEUTRAThreshX_Q
 
 message SIB6
 {
-    string messageIdentifier = 1;
-    string serialNumber = 2;
-    string warningType = 3;
-    google.protobuf.StringValue lateNonCriticalExtension = 4;
+    bytes messageIdentifier = 1;
+    bytes serialNumber = 2;
+    bytes warningType = 3;
+    google.protobuf.BytesValue lateNonCriticalExtension = 4;
 }
 
 message SIB7
@@ -370,13 +370,13 @@ message SIB7
         lastSegment = 2;
     }
 
-    string messageIdentifier = 1;
-    string serialNumber = 2;
+    bytes messageIdentifier = 1;
+    bytes serialNumber = 2;
     WarningMessageSegmentType warningMessageSegmentType = 3;
     uint32 warningMessageSegmentNumber = 4;
-    string warningMessageSegment = 5;
-    google.protobuf.StringValue dataCodingScheme = 6;
-    google.protobuf.StringValue lateNonCriticalExtension = 7;
+    bytes warningMessageSegment = 5;
+    google.protobuf.BytesValue dataCodingScheme = 6;
+    google.protobuf.BytesValue lateNonCriticalExtension = 7;
 }
 
 message SIB8
@@ -387,26 +387,26 @@ message SIB8
         lastSegment = 2;
     }
 
-    string messageIdentifier = 1;
-    string serialNumber = 2;
+    bytes messageIdentifier = 1;
+    bytes serialNumber = 2;
     WarningMessageSegmentType warningMessageSegmentType = 3;
     uint32 warningMessageSegmentNumber = 4;
-    string warningMessageSegment = 5;
-    google.protobuf.StringValue dataCodingScheme = 6;
-    google.protobuf.StringValue warningAreaCoordinatesSegment = 7;
-    google.protobuf.StringValue lateNonCriticalExtension = 8;
+    bytes warningMessageSegment = 5;
+    google.protobuf.BytesValue dataCodingScheme = 6;
+    google.protobuf.BytesValue warningAreaCoordinatesSegment = 7;
+    google.protobuf.BytesValue lateNonCriticalExtension = 8;
 }
 
 message SIB9
 {
     SIB9TimeInfo timeInfo = 1;
-    google.protobuf.StringValue lateNonCriticalExtension = 2;
+    google.protobuf.BytesValue lateNonCriticalExtension = 2;
 }
 
 message SIB9TimeInfo
 {
     uint64 timeInfoUTC = 1;
-    google.protobuf.StringValue dayLightSavingTime = 2;
+    google.protobuf.BytesValue dayLightSavingTime = 2;
     google.protobuf.Int32Value leapSeconds = 3;
     google.protobuf.Int32Value localTimeOffset = 4;
 }

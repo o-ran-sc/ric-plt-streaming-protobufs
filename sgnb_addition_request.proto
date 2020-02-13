@@ -46,9 +46,9 @@ message SgNBAdditionRequest_IEs
 {
     uint32 id_MeNB_UE_X2AP_ID = 1;
     NRUESecurityCapabilities id_NRUESecurityCapabilities = 2;
-    string id_SgNBSecurityKey = 3;
+    bytes id_SgNBSecurityKey = 3;
     UEAggregateMaximumBitRate id_SgNBUEAggregateMaximumBitRate = 4;
-    google.protobuf.StringValue id_SelectedPLMN = 5;
+    google.protobuf.BytesValue id_SelectedPLMN = 5;
     HandoverRestrictionList id_HandoverRestrictionList = 6;
     E_RABs_ToBeAdded_SgNBAddReqList id_E_RABs_ToBeAdded_SgNBAddReqList = 7;
     CG_ConfigInfo id_MeNBtoSgNBContainer = 8;

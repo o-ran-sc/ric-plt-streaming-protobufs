@@ -54,7 +54,7 @@ message ResponseInformationSgNBReconfComp
 
 message ResponseInformationSgNBReconfComp_SuccessItem
 {
-    google.protobuf.StringValue meNBtoSgNBContainer = 1;
+    google.protobuf.BytesValue meNBtoSgNBContainer = 1;
     repeated ResponseInformationSgNBReconfComp_SuccessItemExtIEs iE_Extensions = 2;
 }
 

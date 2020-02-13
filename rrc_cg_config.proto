@@ -52,7 +52,7 @@ message CG_ConfigCriticalExtensionsChoice1
 
 message CG_Config_IEs
 {
-    google.protobuf.StringValue scg_CellGroupConfig = 1;
+    google.protobuf.BytesValue scg_CellGroupConfig = 1;
     RadioBearerConfig scg_RB_Config = 2;
     ConfigRestrictModReqSCG configRestrictModReq = 3;
     DRX_Info drx_InfoSCG = 4;

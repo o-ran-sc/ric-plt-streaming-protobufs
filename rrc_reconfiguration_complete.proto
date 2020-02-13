@@ -46,7 +46,7 @@ message RRCReconfigurationComplete
 
 message RRCReconfigurationComplete_IEs
 {
-    google.protobuf.StringValue lateNonCriticalExtension = 1;
+    google.protobuf.BytesValue lateNonCriticalExtension = 1;
     RRCReconfigurationComplete_v1530_IEs nonCriticalExtension = 2;
 }
 

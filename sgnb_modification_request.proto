@@ -49,7 +49,7 @@ message SgNBModificationRequest_IEs
     uint32 id_MeNB_UE_X2AP_ID = 1;
     uint32 id_SgNB_UE_X2AP_ID = 2;
     Cause id_Cause = 3;
-    google.protobuf.StringValue id_SelectedPLMN = 4;
+    google.protobuf.BytesValue id_SelectedPLMN = 4;
     HandoverRestrictionList id_HandoverRestrictionList = 5;
     TrueOpt id_SCGConfigurationQuery = 6;
     UE_ContextInformation_SgNBModReq id_UE_ContextInformation_SgNBModReq = 7;
@@ -64,7 +64,7 @@ message SgNBModificationRequest_IEs
 message UE_ContextInformation_SgNBModReq
 {
     NRUESecurityCapabilities nRUE_SecurityCapabilities = 1;
-    google.protobuf.StringValue sgNB_SecurityKey = 2;
+    google.protobuf.BytesValue sgNB_SecurityKey = 2;
     UEAggregateMaximumBitRate sgNBUEAggregateMaximumBitRate = 3;
     E_RABs_ToBeAdded_SgNBModReq_List e_RABs_ToBeAdded = 4;
     E_RABs_ToBeModified_SgNBModReq_List e_RABs_ToBeModified = 5;

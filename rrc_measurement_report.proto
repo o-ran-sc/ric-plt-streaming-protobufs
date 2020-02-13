@@ -46,5 +46,5 @@ message MeasurementReport
 message MeasurementReport_IEs
 {
     MeasResults measResults = 1;
-    google.protobuf.StringValue lateNonCriticalExtension = 2;
+    google.protobuf.BytesValue lateNonCriticalExtension = 2;
 }

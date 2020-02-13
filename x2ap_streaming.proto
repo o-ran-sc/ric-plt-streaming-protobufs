@@ -60,7 +60,7 @@ import "gnb_status_indication.proto";
    Dashes converted to underscores to make protobuf message syntax correct.
 
    Revision number of this X2AP Streaming protobuf file is:
-       x2ap_streaming_protobuf_revision: v2.0.0
+       x2ap_streaming_protobuf_revision: v3.0.0
    The location of X2AP Streaming protobuf files is a Linux Foundation
    repository:
        https://gerrit.o-ran-sc.org/r/ric-plt/streaming-protobufs

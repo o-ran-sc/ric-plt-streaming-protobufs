@@ -1000,9 +1000,9 @@ message ServingCellConfigCommon
     UplinkConfigCommon supplementaryUplinkConfigCommon = 4;
     N_TimingAdvanceOffset n_TimingAdvanceOffset = 5;
     oneof ssb_PositionsInBurst {
-        string shortBitmap = 6;
-        string mediumBitmap = 7;
-        string longBitmap = 8;
+        bytes shortBitmap = 6;
+        bytes mediumBitmap = 7;
+        bytes longBitmap = 8;
     }
     SSB_PeriodicityServingCell ssb_PeriodicityServingCell = 9;
     DMRS_TypeA_Position dmrs_TypeA_Position = 10;
@@ -1084,7 +1084,7 @@ message PDCCH_ConfigCommon
 message ControlResourceSet
 {
     uint32 controlResourceSetId = 1;
-    string frequencyDomainResources = 2;
+    bytes frequencyDomainResources = 2;
     uint32 duration = 3;
     oneof cce_REG_MappingType {
         Interleaved interleaved = 4;
@@ -1556,8 +1556,8 @@ message RadioframeAllocationPeriod
 message SubframeAllocation
 {
     oneof sfAllocation {
-        string oneFrame = 1;
-        string fourFrames = 2;
+        bytes oneFrame = 1;
+        bytes fourFrames = 2;
     }
 }
 
@@ -1599,19 +1599,19 @@ message RateMatchPattern
 
 message Bitmaps
 {
-    string resourceBlocks = 1;
+    bytes resourceBlocks = 1;
     oneof symbolsInResourceBlock {
-        string oneSlot = 2;
-        string twoSlots = 3;
+        bytes oneSlot = 2;
+        bytes twoSlots = 3;
     }
     oneof periodicityAndPattern {
-        string n2 = 4;
-        string n4 = 5;
-        string n5 = 6;
-        string n8 = 7;
-        string n10 = 8;
-        string n20 = 9;
-        string n40 = 10;
+        bytes n2 = 4;
+        bytes n4 = 5;
+        bytes n5 = 6;
+        bytes n8 = 7;
+        bytes n10 = 8;
+        bytes n20 = 9;
+        bytes n40 = 10;
     }
 }
 
@@ -2294,10 +2294,10 @@ message ZP_CSI_RS_Resource
 message CSI_RS_ResourceMapping
 {
     oneof frequencyDomainAllocation {
-        string row1 = 1;
-        string row2 = 2;
-        string row4 = 3;
-        string other = 5;
+        bytes row1 = 1;
+        bytes row2 = 2;
+        bytes row4 = 3;
+        bytes other = 5;
     }
     NrofPorts nrofPorts = 6;
     uint32 firstOFDMSymbolInTimeDomain = 7;
@@ -3239,7 +3239,7 @@ message RRC_ConfiguredUplinkGrant
 {
     uint32 timeDomainOffset = 1;
     uint32 timeDomainAllocation = 2;
-    string frequencyDomainAllocation = 3;
+    bytes frequencyDomainAllocation = 3;
     uint32 antennaPort = 4;
     google.protobuf.UInt32Value dmrs_SeqInitialization = 5;
     uint32 precodingAndNumberOfLayers = 6;
@@ -3888,23 +3888,23 @@ message ReportFreqConfiguration
     CQI_FormatIndicator cqi_FormatIndicator = 1;
     PMI_FormatIndicator pmi_FormatIndicator = 2;
     oneof csi_ReportingBand {
-        string subbands3 = 3;
-        string subbands4 = 4;
-        string subbands5 = 5;
-        string subbands6 = 6;
-        string subbands7 = 7;
-        string subbands8 = 8;
-        string subbands9 = 9;
-        string subbands10 = 10;
-        string subbands11 = 11;
-        string subbands12 = 12;
-        string subbands13 = 13;
-        string subbands14 = 14;
-        string subbands15 = 15;
-        string subbands16 = 16;
-        string subbands17 = 17;
-        string subbands18 = 18;
-        string subbands19_v1530 = 19;
+        bytes subbands3 = 3;
+        bytes subbands4 = 4;
+        bytes subbands5 = 5;
+        bytes subbands6 = 6;
+        bytes subbands7 = 7;
+        bytes subbands8 = 8;
+        bytes subbands9 = 9;
+        bytes subbands10 = 10;
+        bytes subbands11 = 11;
+        bytes subbands12 = 12;
+        bytes subbands13 = 13;
+        bytes subbands14 = 14;
+        bytes subbands15 = 15;
+        bytes subbands16 = 16;
+        bytes subbands17 = 17;
+        bytes subbands18 = 18;
+        bytes subbands19_v1530 = 19;
     }
 }
 
@@ -3951,47 +3951,47 @@ message CodebookSubType_SinglePanel
         CodebookNrOfAntennaPorts_Two two = 1;
         CodebookNrOfAntennaPorts_MoreThanTwo moreThanTwo = 2;
     }
-    string typeI_SinglePanel_ri_Restriction = 3;
+    bytes typeI_SinglePanel_ri_Restriction = 3;
 }
 
 message CodebookNrOfAntennaPorts_Two
 {
-    string twoTX_CodebookSubsetRestriction = 1;
+    bytes twoTX_CodebookSubsetRestriction = 1;
 }
 
 message CodebookNrOfAntennaPorts_MoreThanTwo
 {
     oneof n1_n2 {
-        string two_one_TypeI_SinglePanel_Restriction = 1;
-        string two_two_TypeI_SinglePanel_Restriction = 2;
-        string four_one_TypeI_SinglePanel_Restriction = 3;
-        string three_two_TypeI_SinglePanel_Restriction = 4;
-        string six_one_TypeI_SinglePanel_Restriction = 5;
-        string four_two_TypeI_SinglePanel_Restriction = 6;
-        string eight_one_TypeI_SinglePanel_Restriction = 7;
-        string four_three_TypeI_SinglePanel_Restriction = 8;
-        string six_two_TypeI_SinglePanel_Restriction = 9;
-        string twelve_one_TypeI_SinglePanel_Restriction = 10;
-        string four_four_TypeI_SinglePanel_Restriction = 11;
-        string eight_two_TypeI_SinglePanel_Restriction = 12;
-        string sixteen_one_TypeI_SinglePanel_Restriction = 13;
+        bytes two_one_TypeI_SinglePanel_Restriction = 1;
+        bytes two_two_TypeI_SinglePanel_Restriction = 2;
+        bytes four_one_TypeI_SinglePanel_Restriction = 3;
+        bytes three_two_TypeI_SinglePanel_Restriction = 4;
+        bytes six_one_TypeI_SinglePanel_Restriction = 5;
+        bytes four_two_TypeI_SinglePanel_Restriction = 6;
+        bytes eight_one_TypeI_SinglePanel_Restriction = 7;
+        bytes four_three_TypeI_SinglePanel_Restriction = 8;
+        bytes six_two_TypeI_SinglePanel_Restriction = 9;
+        bytes twelve_one_TypeI_SinglePanel_Restriction = 10;
+        bytes four_four_TypeI_SinglePanel_Restriction = 11;
+        bytes eight_two_TypeI_SinglePanel_Restriction = 12;
+        bytes sixteen_one_TypeI_SinglePanel_Restriction = 13;
     }
-    google.protobuf.StringValue typeI_SinglePanel_codebookSubsetRestriction_i2 = 14;
+    google.protobuf.BytesValue typeI_SinglePanel_codebookSubsetRestriction_i2 = 14;
 }
 
 message CodebookSubType_MultiPanel
 {
     oneof ng_n1_n2 {
-        string two_two_one_TypeI_MultiPanel_Restriction = 1;
-        string two_four_one_TypeI_MultiPanel_Restriction = 2;
-        string four_two_one_TypeI_MultiPanel_Restriction = 3;
-        string two_two_two_TypeI_MultiPanel_Restriction = 4;
-        string two_eight_one_TypeI_MultiPanel_Restriction = 5;
-        string four_four_one_TypeI_MultiPanel_Restriction = 6;
-        string two_four_two_TypeI_MultiPanel_Restriction = 7;
-        string four_two_two_TypeI_MultiPanel_Restriction = 8;
+        bytes two_two_one_TypeI_MultiPanel_Restriction = 1;
+        bytes two_four_one_TypeI_MultiPanel_Restriction = 2;
+        bytes four_two_one_TypeI_MultiPanel_Restriction = 3;
+        bytes two_two_two_TypeI_MultiPanel_Restriction = 4;
+        bytes two_eight_one_TypeI_MultiPanel_Restriction = 5;
+        bytes four_four_one_TypeI_MultiPanel_Restriction = 6;
+        bytes two_four_two_TypeI_MultiPanel_Restriction = 7;
+        bytes four_two_two_TypeI_MultiPanel_Restriction = 8;
     }
-    string ri_Restriction = 9;
+    bytes ri_Restriction = 9;
 }
 
 message CodebookType_Type2
@@ -4008,27 +4008,27 @@ message CodebookType_Type2
 message CodebookSubType_TypeII
 {
     oneof n1_n2_codebookSubsetRestriction {
-        string two_one = 1;
-        string two_two = 2;
-        string four_one = 3;
-        string three_two = 4;
-        string six_one = 5;
-        string four_two = 6;
-        string eight_one = 7;
-        string four_three = 8;
-        string six_two = 9;
-        string twelve_one = 10;
-        string four_four = 11;
-        string eight_two = 12;
-        string sixteen_one = 13;
+        bytes two_one = 1;
+        bytes two_two = 2;
+        bytes four_one = 3;
+        bytes three_two = 4;
+        bytes six_one = 5;
+        bytes four_two = 6;
+        bytes eight_one = 7;
+        bytes four_three = 8;
+        bytes six_two = 9;
+        bytes twelve_one = 10;
+        bytes four_four = 11;
+        bytes eight_two = 12;
+        bytes sixteen_one = 13;
     }
-    string typeII_RI_Restriction = 14;
+    bytes typeII_RI_Restriction = 14;
 }
 
 message CodebookSubType_TypeII_PortSelection
 {
     PortSelectionSamplingSize portSelectionSamplingSize = 1;
-    string typeII_PortSelectionRI_Restriction = 2;
+    bytes typeII_PortSelectionRI_Restriction = 2;
 }
 
 message PhaseAlphabetSize
@@ -4346,15 +4346,15 @@ message SSB_ConfigMobility
 message SSB_ToMeasure
 {
     oneof c {
-        string shortBitmap = 1;
-        string mediumBitmap = 2;
-        string longBitmap = 3;
+        bytes shortBitmap = 1;
+        bytes mediumBitmap = 2;
+        bytes longBitmap = 3;
     }
 }
 
 message SS_RSSI_Measurement
 {
-    string measurementSlots = 1;
+    bytes measurementSlots = 1;
     uint32 endSymbol = 2;
 }
 
@@ -4410,8 +4410,8 @@ message CSI_RS_Resource_Mobility
     }
     AssociatedSSB associatedSSB = 7;
     oneof frequencyDomainAllocation {
-        string row1 = 8;
-        string row2 = 9;
+        bytes row1 = 8;
+        bytes row2 = 9;
     }
     uint32 firstOFDMSymbolInTimeDomain = 10;
     uint32 sequenceGenerationConfig = 11;
@@ -5172,7 +5172,7 @@ message SearchSpace
         uint32 sl2560 = 17;
     }
     google.protobuf.UInt32Value duration = 18;
-    google.protobuf.StringValue monitoringSymbolsWithinSlot = 19;
+    google.protobuf.BytesValue monitoringSymbolsWithinSlot = 19;
     NrofCandidates nrofCandidates = 20;
     oneof searchSpaceType {
         Common common = 21;
@@ -5410,10 +5410,10 @@ message PLMN_IdentityList_EUTRA_5GC
 message CellAccessRelatedInfo_EUTRA_5GC
 {
     PLMN_IdentityList_EUTRA_5GC plmn_IdentityList_eutra_5gc = 1;
-    string trackingAreaCode_eutra_5gc = 2;
+    bytes trackingAreaCode_eutra_5gc = 2;
     google.protobuf.UInt32Value ranac_5gc = 3;
     oneof cellidentity_eutra_5gc {
-        string cellIdentity_EUTRA = 4;
+        bytes cellIdentity_EUTRA = 4;
         uint32 cellId_index = 5;
     }
 }
@@ -5426,8 +5426,8 @@ message PLMN_IdentityList_EUTRA_EPC
 message CellAccessRelatedInfo_EUTRA_EPC
 {
     PLMN_IdentityList_EUTRA_EPC plmn_IdentityList_eutra_epc = 1;
-    string trackingAreaCode_eutra_epc = 2;
-    string cellidentity_eutra_epc = 3;
+    bytes trackingAreaCode_eutra_epc = 2;
+    bytes cellidentity_eutra_epc = 3;
 }
 
 message CGI_info_EPC
@@ -5444,9 +5444,9 @@ message PLMN_IdentityInfo
         notreserved = 2;
     }
     repeated PLMN_Identity plmn_IdentityList = 1;
-    google.protobuf.StringValue trackingAreaCode = 2;
+    google.protobuf.BytesValue trackingAreaCode = 2;
     google.protobuf.UInt32Value ranac = 3;
-    string cellIdentity = 4;
+    bytes cellIdentity = 4;
     CellReservedForOperatorUse cellReservedForOperatorUse = 5;
 }
 
@@ -5920,7 +5920,7 @@ message SI_SchedulingInfo
     SI_WindowLength si_WindowLength = 2;
     SI_RequestConfig si_RequestConfig = 3;
     SI_RequestConfig si_RequestConfigSUL = 4;
-    google.protobuf.StringValue systemInformationAreaID = 5;
+    google.protobuf.BytesValue systemInformationAreaID = 5;
 }
 
 message SI_WindowLength
@@ -6213,8 +6213,8 @@ message SIB_N_TimingAdvanceOffset
 
 message SIB_SSB_PositionsInBurst
 {
-    string inOneGroup = 1;
-    google.protobuf.StringValue groupPresence = 2;
+    bytes inOneGroup = 1;
+    google.protobuf.BytesValue groupPresence = 2;
 }
 
 message SIB_SSB_PeriodicityServingCell
@@ -6360,7 +6360,7 @@ message UAC_BarringInfoSet
 {
     UAC_BarringFactor uac_BarringFactor = 1;
     UAC_BarringTime uac_BarringTime = 2;
-    string uac_BarringForAccessIdentity = 3;
+    bytes uac_BarringForAccessIdentity = 3;
 }
 
 message UAC_BarringFactor
