@@ -31,6 +31,12 @@ ric-plt/streaming-protobufs.
 Version history
 ---------------
 
+[3.0.0] - 2020-02-14
+
+* Changed all parameters string types to bytes type except parameters 'gNbID'
+  and 'protobuf_revision' types in x2ap_streaming.proto file were still left
+  a string type.
+
 [2.0.0] - 2020-01-16
 
 * Changed SgNB UE X2AP ID to be an optional IE in SGNB ADDITION REQUEST REJECT
