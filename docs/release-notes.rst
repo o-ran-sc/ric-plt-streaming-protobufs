@@ -31,6 +31,12 @@ ric-plt/streaming-protobufs.
 Version history
 ---------------
 
+[4.0.0] - 2020-04-14
+
+* Changed scg-CellGroupConfig parameter type from Bytes to RRCReconfiguration
+  to describe SCG configuration as a Protobuf structure. Moved also all
+  '.proto' files from streaming-protobufs root directory to proto subdirectory.
+
 [3.0.0] - 2020-02-14
 
 * Changed all parameters string types to bytes type except parameters 'gNbID'
