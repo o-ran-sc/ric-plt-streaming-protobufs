@@ -31,6 +31,11 @@ ric-plt/streaming-protobufs.
 Version history
 ---------------
 
+[4.0.2] - 2020-04-15
+
+* Moved Golang source code generated from '.proto' files to new subdirectory
+  go/streaming_protobufs to be in line with the Go package name of Protobufs.
+
 [4.0.1] - 2020-04-15
 
 * Add Golang module files.
