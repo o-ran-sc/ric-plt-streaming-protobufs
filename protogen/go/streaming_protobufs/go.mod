@@ -1,4 +1,4 @@
-module gerrit.o-ran-sc.org/r/ric-plt/streaming-protobufs/protogen/go/streaming_protobufs
+module gerrit.o-ran-sc.org/r/ric-plt/streaming-protobufs.git/protogen/go/streaming_protobufs
 
 go 1.12
 
