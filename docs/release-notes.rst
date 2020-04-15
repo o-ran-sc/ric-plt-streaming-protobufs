@@ -31,6 +31,10 @@ ric-plt/streaming-protobufs.
 Version history
 ---------------
 
+[4.0.1] - 2020-04-15
+
+* Add Golang module files.
+
 [4.0.0] - 2020-04-14
 
 * Changed scg-CellGroupConfig parameter type from Bytes to RRCReconfiguration
