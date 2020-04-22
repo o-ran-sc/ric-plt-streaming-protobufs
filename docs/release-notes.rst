@@ -31,6 +31,10 @@ ric-plt/streaming-protobufs.
 Version history
 ---------------
 
+[5.0.0] - 2020-04-22
+
+* Fixed CSI-MeasConfig configuration under ServingCellConfig to be optional.
+
 [4.0.3] - 2020-04-15
 
 * Added git extension to Golang streaming_protobufs module path name.

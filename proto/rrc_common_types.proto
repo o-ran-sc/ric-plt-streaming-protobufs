@@ -1906,20 +1906,23 @@ message ServingCellConfig
         Null release_pdsch_ServingCellConfig = 12;
         PDSCH_ServingCellConfig setup_pdsch_ServingCellConfig = 13;
     }
-    CSI_MeasConfig csi_MeasConfig = 14;
-    SCellDeactivationTimer sCellDeactivationTimer = 15;
-    CrossCarrierSchedulingConfig crossCarrierSchedulingConfig = 16;
-    uint32 tag_Id = 17;
-    EnabledOpt ue_BeamLockFunction = 18;
-    PathlossReferenceLinking pathlossReferenceLinking = 19;
-    google.protobuf.UInt32Value servingCellMO = 20;
-    oneof lte_CRS_ToMatchAround {
-        Null release_lte_CRS_ToMatchAround = 21;
-        RateMatchPatternLTE_CRS setup_lte_CRS_ToMatchAround = 22;
+    oneof csi_MeasConfig {
+        Null release_csi_MeasConfig = 14;
+        CSI_MeasConfig setup_csi_MeasConfig = 15;
     }
-    repeated RateMatchPattern rateMatchPatternToAddModList = 23;
-    repeated google.protobuf.UInt32Value rateMatchPatternToReleaseList = 24;
-    repeated SCS_SpecificCarrier downlinkChannelBW_PerSCS_List = 25;
+    SCellDeactivationTimer sCellDeactivationTimer = 16;
+    CrossCarrierSchedulingConfig crossCarrierSchedulingConfig = 17;
+    uint32 tag_Id = 18;
+    EnabledOpt ue_BeamLockFunction = 19;
+    PathlossReferenceLinking pathlossReferenceLinking = 20;
+    google.protobuf.UInt32Value servingCellMO = 21;
+    oneof lte_CRS_ToMatchAround {
+        Null release_lte_CRS_ToMatchAround = 22;
+        RateMatchPatternLTE_CRS setup_lte_CRS_ToMatchAround = 23;
+    }
+    repeated RateMatchPattern rateMatchPatternToAddModList = 24;
+    repeated google.protobuf.UInt32Value rateMatchPatternToReleaseList = 25;
+    repeated SCS_SpecificCarrier downlinkChannelBW_PerSCS_List = 26;
 }
 
 message TDD_UL_DL_ConfigDedicated
