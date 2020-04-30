@@ -4796,7 +4796,7 @@ message EventA2
 
 message EventA3
 {
-    MeasTriggerQuantity a3_Threshold = 1;
+    MeasTriggerQuantityOffset a3_Offset = 1;
     bool reportOnLeave = 2;
     uint32 hysteresis = 3;
     TimeToTrigger timeToTrigger = 4;

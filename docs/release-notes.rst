@@ -31,6 +31,11 @@ ric-plt/streaming-protobufs.
 Version history
 ---------------
 
+[6.0.0] - 2020-04-30
+
+* Renamed RRC event trigger EventA3 configuration's a3_Threshold parameter
+  name to a3_Offset and change parameter type to MeasTriggerQuantityOffset.
+
 [5.0.0] - 2020-04-22
 
 * Fixed CSI-MeasConfig configuration under ServingCellConfig to be optional.
