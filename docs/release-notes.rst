@@ -19,8 +19,7 @@
 Release-Notes
 =============
 
-This document provides the release notes for O-RAN SC Amber release of
-ric-plt/streaming-protobufs.
+This document provides the release notes of the streaming-protobufs.
 
 .. contents::
    :depth: 3
