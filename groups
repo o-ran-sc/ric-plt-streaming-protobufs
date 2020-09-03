@@ -1,4 +1,5 @@
 # UUID                                                                                      	Group Name
 #
 add1d629e64dce7097223c93ca6e710c1460b5ba                                                    	GitHub Replication
+e844f808f3282f1f571229dd8c4e88a97c0de418                                                    	saml/oran-gerrit-ric-plt-streaming-protobufs-committers
 ldap:cn=oran-gerrit-ric-plt-streaming-protobufs-committers,ou=Groups,dc=freestandards,dc=org	ldap/oran-gerrit-ric-plt-streaming-protobufs-committers
